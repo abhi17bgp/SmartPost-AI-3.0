@@ -136,7 +136,6 @@ exports.register = catchAsync(async (req, res, next) => {
           <div class="content">
             <!-- ENGLISH SECTION -->
             <div class="lang-section">
-              <div class="lang-header">English</div>
               
               <h2>Welcome to SmartPost AI</h2>
               <p>Hello <span class="highlight">${newUser.name}</span>,</p>
@@ -183,7 +182,6 @@ exports.register = catchAsync(async (req, res, next) => {
             
             <!-- HINDI SECTION -->
             <div class="lang-section">
-              <div class="lang-header">हिंदी</div>
               
               <h2>SmartPost AI में आपका स्वागत है</h2>
               <p>नमस्ते <span class="highlight">${newUser.name}</span>,</p>
@@ -441,7 +439,6 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
           <div class="content">
             <!-- ENGLISH SECTION -->
             <div class="lang-section">
-              <div class="lang-header">English</div>
               
               <h2>Password Reset Request</h2>
               <p>Hello <span class="highlight">${user.name}</span>,</p>
@@ -479,7 +476,6 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
             
             <!-- HINDI SECTION -->
             <div class="lang-section">
-              <div class="lang-header">हिंदी</div>
               
               <h2>पासवर्ड रीसेट अनुरोध</h2>
               <p>नमस्ते <span class="highlight">${user.name}</span>,</p>
