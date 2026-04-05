@@ -6,7 +6,7 @@ const app = express();
 
 // Middlewares
 app.use(cors({
-  origin: [ 'http://localhost:5173'].filter(Boolean),
+  origin: [ 'https://smart-post-ai-3-0.vercel.app'].filter(Boolean),
   credentials: true
 }));
 app.use(express.json());

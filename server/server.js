@@ -27,7 +27,7 @@ mongoose.connect(DB)
     const { Server } = require('socket.io');
     const io = new Server(server, {
       cors: {
-        origin: [ 'http://localhost:5173'].filter(Boolean),
+        origin: [ 'https://smart-post-ai-3-0.vercel.app'].filter(Boolean),
         credentials: true
       }
     });
