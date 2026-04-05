@@ -129,7 +129,7 @@ export const WorkspaceProvider = ({ children }) => {
     }
 
     try {
-      const newSocket = io('https://smartpost-ai-2-0.onrender.com', {
+      const newSocket = io('https://smartpost-ai-3-0.onrender.com', {
         withCredentials: true
       });
       setSocket(newSocket);
