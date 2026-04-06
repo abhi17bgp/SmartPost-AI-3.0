@@ -30,6 +30,19 @@ app.use('/api/ai', aiRouter);
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'success', message: 'API is running' });
 });
+// ✅ Health check
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'success', message: 'API is running' });
+});
+
+// ✅ ADD PING HERE (IMPORTANT POSITION)
+app.get('/ping', (req, res) => {
+  res.status(200).json({
+    status: 'success',
+    message: 'Server is alive 🚀'
+  });
+});
+
 
 const proxyController = require('./controllers/proxyController');
 const authController = require('./controllers/authController');
@@ -44,13 +57,7 @@ app.use((req, res, next) => {
     message: `Can't find ${req.originalUrl} on this server!`
   });
 });
-//for checking api is live or not
-    app.get('/ping', (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    message: 'Server is alive 🚀'
-  });
-});
+
 // Global error handler
 app.use((err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
