@@ -1,15 +1,20 @@
 {
   "routes": [
     {
-      "src": "/sitemap.xml",
-      "headers": {
-        "Content-Type": "application/xml"
-      },
+      "src": "^/sitemap.xml$",
       "dest": "/sitemap.xml"
     },
     {
-      "src": "/robots.txt",
+      "src": "^/robots.txt$",
       "dest": "/robots.txt"
+    },
+    {
+      "src": "^/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "^/(.*\\.(js|css|png|jpg|jpeg|svg|ico))$",
+      "dest": "/$1"
     },
     {
       "src": "/(.*)",
