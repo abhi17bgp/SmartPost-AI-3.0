@@ -85,7 +85,7 @@ exports.register = catchAsync(async (req, res, next) => {
   });
 
   // Send verification email
-  const frontendUrl = 'https://smart-post-ai-3-0.vercel.app' ;
+ const frontendUrl = 'https://smartpostai.online';
   const verifyUrl = `${frontendUrl}/verify-email/${verificationToken}`;
 
   const message = `Welcome to SmartPost AI! Please verify your email address by clicking this link:\n\n${verifyUrl}\n\n`;
@@ -386,7 +386,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   // 3) Send it to user's email
-  const frontendUrl =  'https://smart-post-ai-3-0.vercel.app' ;
+const frontendUrl = 'https://smartpostai.online';
   const resetUrl = `${frontendUrl}/reset-password/${resetToken}`;
 
   const html = `

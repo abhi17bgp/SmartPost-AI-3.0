@@ -6,7 +6,9 @@ const app = express();
 
 // Middlewares
 app.use(cors({
-  origin: [ 'https://smart-post-ai-3-0.vercel.app'].filter(Boolean),
+  origin: [   'https://smartpostai.online',
+  'https://www.smartpostai.online'
+].filter(Boolean),
   credentials: true
 }));
 app.use(express.json());
