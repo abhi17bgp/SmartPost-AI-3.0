@@ -22,13 +22,7 @@ mongoose.connect(DB)
     const server = app.listen(PORT, () => {
       console.log(`🚀 App running on port ${PORT}...`);
     });
-    //for checkig api is live or not
-    app.get('/ping', (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    message: 'Server is alive 🚀'
-  });
-});
+    
 
     // 🌐 INITIALIZE SOCKET.IO
     const { Server } = require('socket.io');
