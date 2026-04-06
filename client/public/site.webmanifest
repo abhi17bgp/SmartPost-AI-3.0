@@ -1,0 +1,14 @@
+{
+  "name": "SmartPost AI",
+  "short_name": "SmartPost",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "display": "standalone"
+}
