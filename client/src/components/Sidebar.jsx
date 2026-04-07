@@ -328,12 +328,10 @@ const Sidebar = () => {
     <aside className="w-72 flex-shrink-0 bg-slate-800 border-r border-slate-700 flex flex-col h-full font-sans transition-all duration-300">
       <div className="p-4 border-b border-slate-700 flex items-center justify-between bg-slate-800/80 backdrop-blur top-0 sticky z-10">
         <span className="font-bold text-xl flex items-center gap-2 tracking-tight">
-<img 
-      src="/logo.png" 
-      alt="SmartPost AI Logo"
-      className="w-full h-full object-contain"
-    />
-              <span className="text-white">Smart</span><span className="text-emerald-500 -ml-1">Post</span>
+<div className="w-7 h-7 overflow-hidden">
+  <img src="/logo.png" alt="logo" className="w-full h-full object-contain" />
+</div>
+         <span className="text-white">Smart</span><span className="text-emerald-500 -ml-1">Post</span>
         </span>
       </div>
 
