@@ -116,14 +116,21 @@ export default function Home() {
       >
         <div className="w-full max-w-5xl bg-slate-900/50 backdrop-blur-2xl border border-white/10 rounded-full h-16 flex items-center justify-between px-6 shadow-[0_8px_32px_rgba(0,0,0,0.6)] pointer-events-auto transition-all hover:bg-slate-900/70 hover:border-emerald-500/30">
             {/* Logo Left */}
-            <Link to="/" className="flex items-center gap-2 group w-1/4 min-w-max">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-white shadow-lg shadow-emerald-500/20 group-hover:shadow-emerald-500/40 group-hover:scale-110 transition-all">
-                <Bot size={20} />
-              </div>
-              <span className="text-lg font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400 tracking-tight hidden sm:block">
-                SmartPost AI
-              </span>
-            </Link>
+          <Link to="/" className="flex items-center gap-2 group w-1/4 min-w-max">
+  <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:shadow-emerald-500/40 group-hover:scale-110 transition-all overflow-hidden">
+    
+    <img 
+      src="/logo.png" 
+      alt="SmartPost AI Logo"
+      className="w-full h-full object-contain"
+    />
+
+  </div>
+
+  <span className="text-lg font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400 tracking-tight hidden sm:block">
+    SmartPost AI
+  </span>
+</Link>
             
             {/* Center Links */}
             <div className="hidden md:flex items-center justify-center gap-1 flex-1 relative bg-white/5 p-1 rounded-full border border-white/5">
