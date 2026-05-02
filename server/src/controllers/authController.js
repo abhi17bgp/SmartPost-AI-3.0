@@ -45,18 +45,18 @@ exports.uploadUserPhoto = upload.single('photo');
 // Helper function to ensure owner is in members list
 const ensureOwnerInMembers = (workspace) => {
   if (!workspace || !workspace.owner) return workspace;
-  
-  const ownerInMembers = workspace.members.some(m => 
+
+  const ownerInMembers = workspace.members.some(m =>
     m.user._id.toString() === workspace.owner._id.toString()
   );
-  
+
   if (!ownerInMembers) {
     workspace.members.push({
       user: workspace.owner,
       role: 'admin'
     });
   }
-  
+
   return workspace;
 };
 
@@ -68,7 +68,7 @@ const signToken = id => {
 
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
-  
+
   // Calculate token expiry
   const expiresIn = process.env.JWT_EXPIRES_IN || '30d';
   const expiresInMs = parseInt(expiresIn) * 24 * 60 * 60 * 1000; // Convert days to ms
@@ -112,14 +112,14 @@ exports.register = catchAsync(async (req, res, next) => {
   await newUser.save({ validateBeforeSave: false });
 
   // Create default workspace for user
-  await Workspace.create({ 
-    name: 'My Workspace', 
+  await Workspace.create({
+    name: 'My Workspace',
     owner: newUser._id,
     members: [{ user: newUser._id, role: 'admin' }]
   });
 
   // Send verification email
-  const frontendUrl = 'https://www.smartpostai.online' || 'http://localhost:5173';
+  const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
   const verifyUrl = `${frontendUrl}/verify-email/${verificationToken}`;
 
   const message = `Welcome to SmartPost AI! Please verify your email address by clicking this link:\n\n${verifyUrl}\n\n`;
@@ -301,7 +301,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
   // 2) Check if user exists && password is correct
   const user = await User.findOne({ email }).select('+password');
-  
+
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError('Incorrect email or password', 401));
   }
@@ -331,7 +331,7 @@ exports.logout = catchAsync(async (req, res) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       userId = decoded.id;
       const expiresInMs = (process.env.JWT_EXPIRES_IN || 30) * 24 * 60 * 60 * 1000;
-      
+
       await TokenBlacklist.create({
         token,
         userId: decoded.id,
@@ -346,7 +346,7 @@ exports.logout = catchAsync(async (req, res) => {
   // Remove user from all workspaces they're a member of
   if (userId) {
     try {
-      const workspaces = await Workspace.find({ 
+      const workspaces = await Workspace.find({
         'members.user': userId
       });
 
@@ -372,8 +372,8 @@ exports.logout = catchAsync(async (req, res) => {
     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     secure: process.env.NODE_ENV === 'production'
   });
-  
-  res.status(200).json({ 
+
+  res.status(200).json({
     status: 'success',
     message: 'Logged out successfully'
   });
@@ -427,7 +427,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   // 3) Send it to user's email
-  const frontendUrl = 'https://www.smartpostai.online';
+  const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
   const resetUrl = `${frontendUrl}/reset-password/${resetToken}`;
 
   const html = `
@@ -588,28 +588,28 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   // 1) Get user based on the token
   const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
 
-  const user = await User.findOne({ 
-    passwordResetToken: hashedToken, 
-    passwordResetExpires: { $gt: Date.now() } 
+  const user = await User.findOne({
+    passwordResetToken: hashedToken,
+    passwordResetExpires: { $gt: Date.now() }
   });
 
   // 2) If token has not expired, and there is user, set the new password
   if (!user) {
     return next(new AppError('Token is invalid or has expired', 400));
   }
-  
+
   // Also validate payload
   if (!req.body.password || req.body.password.length < 8) {
     return next(new AppError('Password must be at least 8 characters long.', 400));
   }
 
-user.password = req.body.password;
-user.passwordConfirm = req.body.password; // 🔥 FIX
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.password; // 🔥 FIX
 
-user.passwordResetToken = undefined;
-user.passwordResetExpires = undefined;
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
 
-await user.save();
+  await user.save();
 
   // 3) Log the user in, send JWT
   createSendToken(user, 200, res);
@@ -688,8 +688,8 @@ exports.verifyEmail = catchAsync(async (req, res, next) => {
 
 exports.deleteAccount = catchAsync(async (req, res, next) => {
   await User.findByIdAndDelete(req.user.id);
-  res.cookie('jwt', 'loggedout', { 
-    expires: new Date(Date.now() + 10 * 1000), 
+  res.cookie('jwt', 'loggedout', {
+    expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     secure: process.env.NODE_ENV === 'production'
@@ -709,7 +709,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   Object.keys(req.body).forEach(el => {
     if (allowedFields.includes(el)) filteredBody[el] = req.body[el];
   });
-  
+
   if (req.file) {
     filteredBody.photo = req.file.path; // Cloudinary secure URL
   }
@@ -728,28 +728,28 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 
 exports.performanceCheck = catchAsync(async (req, res, next) => {
   const user = req.user;
-  
+
   if (user.isSubscribed) {
     return res.status(200).json({
       status: 'success',
       data: { allowed: true, isPro: true }
     });
   }
-  
+
   if (user.performanceTestCount < 4) {
     user.performanceTestCount += 1;
     await user.save({ validateBeforeSave: false });
     return res.status(200).json({
       status: 'success',
-      data: { 
-        allowed: true, 
+      data: {
+        allowed: true,
         isPro: false,
         count: user.performanceTestCount,
         remaining: 4 - user.performanceTestCount
       }
     });
   }
-  
+
   return res.status(403).json({
     status: 'fail',
     message: 'Free trial limit exceeded. Please upgrade to Pro to continue testing API performance.'

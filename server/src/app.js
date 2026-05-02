@@ -9,7 +9,15 @@ const app = express();
 
 
 
-app.use(cors());
+const allowedOrigins = [
+  "https://www.smartpostai.online",
+  "https://smartpostai.online"
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
 app.use(express.json());
 app.use(cookieParser());
 
