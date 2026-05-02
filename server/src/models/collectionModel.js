@@ -21,12 +21,11 @@ const collectionSchema = new mongoose.Schema({
 });
 
 // Cascading Delete: When a collection is destroyed, destroy all its requests to prevent orphans
-collectionSchema.pre('findOneAndDelete', async function(next) {
+collectionSchema.pre('findOneAndDelete', async function() {
   const collectionId = this.getQuery()['_id'];
   if (collectionId) {
     await mongoose.model('Request').deleteMany({ collectionId });
   }
-  next();
 });
 
 const Collection = mongoose.model('Collection', collectionSchema);

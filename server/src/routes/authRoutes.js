@@ -12,6 +12,7 @@ router.patch('/resetPassword/:token', authController.resetPassword);
 router.patch('/verifyEmail/:token', authController.verifyEmail);
 
 router.delete('/deleteMe', authController.protect, authController.deleteAccount);
-router.patch('/updateMe', authController.protect, authController.updateMe);
+router.patch('/updateMe', authController.protect, authController.uploadUserPhoto, authController.updateMe);
+router.post('/performance-check', authController.protect, authController.performanceCheck);
 
 module.exports = router;

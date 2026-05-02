@@ -7,6 +7,40 @@ const TokenBlacklist = require('../models/tokenBlacklistModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
 const sendEmail = require('../utils/email');
+const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('cloudinary').v2;
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+const multerStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'smartpost-avatars',
+    allowed_formats: ['jpg', 'png', 'jpeg', 'webp'],
+    transformation: [{ width: 500, height: 500, crop: 'limit' }]
+  }
+});
+
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')) {
+    cb(null, true);
+  } else {
+    cb(new AppError('Not an image! Please upload only images.', 400), false);
+  }
+};
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter
+});
+
+exports.uploadUserPhoto = upload.single('photo');
 
 // Helper function to ensure owner is in members list
 const ensureOwnerInMembers = (workspace) => {
@@ -85,7 +119,7 @@ exports.register = catchAsync(async (req, res, next) => {
   });
 
   // Send verification email
- const frontendUrl = 'https://smartpostai.online';
+  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
   const verifyUrl = `${frontendUrl}/verify-email/${verificationToken}`;
 
   const message = `Welcome to SmartPost AI! Please verify your email address by clicking this link:\n\n${verifyUrl}\n\n`;
@@ -370,6 +404,13 @@ exports.protect = catchAsync(async (req, res, next) => {
     return next(new AppError('The user belonging to this token does no longer exist.', 401));
   }
 
+  // Check if subscription has expired
+  if (currentUser.isSubscribed && currentUser.subscriptionExpiresAt && currentUser.subscriptionExpiresAt < Date.now()) {
+    currentUser.isSubscribed = false;
+    // We do NOT clear performanceTestCount so they remain blocked until they pay again
+    await currentUser.save({ validateBeforeSave: false });
+  }
+
   req.user = currentUser;
   next();
 });
@@ -386,7 +427,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   // 3) Send it to user's email
-const frontendUrl = 'https://smartpostai.online';
+  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
   const resetUrl = `${frontendUrl}/reset-password/${resetToken}`;
 
   const html = `
@@ -668,6 +709,10 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   Object.keys(req.body).forEach(el => {
     if (allowedFields.includes(el)) filteredBody[el] = req.body[el];
   });
+  
+  if (req.file) {
+    filteredBody.photo = req.file.path; // Cloudinary secure URL
+  }
 
   // 3) Update user document
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
@@ -678,5 +723,35 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     data: { user: updatedUser }
+  });
+});
+
+exports.performanceCheck = catchAsync(async (req, res, next) => {
+  const user = req.user;
+  
+  if (user.isSubscribed) {
+    return res.status(200).json({
+      status: 'success',
+      data: { allowed: true, isPro: true }
+    });
+  }
+  
+  if (user.performanceTestCount < 4) {
+    user.performanceTestCount += 1;
+    await user.save({ validateBeforeSave: false });
+    return res.status(200).json({
+      status: 'success',
+      data: { 
+        allowed: true, 
+        isPro: false,
+        count: user.performanceTestCount,
+        remaining: 4 - user.performanceTestCount
+      }
+    });
+  }
+  
+  return res.status(403).json({
+    status: 'fail',
+    message: 'Free trial limit exceeded. Please upgrade to Pro to continue testing API performance.'
   });
 });

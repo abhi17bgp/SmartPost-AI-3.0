@@ -33,6 +33,10 @@ exports.getAllWorkspaces = catchAsync(async (req, res, next) => {
 });
 
 exports.createWorkspace = catchAsync(async (req, res, next) => {
+  if (!req.user.isSubscribed) {
+    return next(new AppError('Team Collaboration is a Pro feature. Please upgrade to create additional workspaces.', 403));
+  }
+
   const joinCode = crypto.randomBytes(3).toString('hex').toUpperCase(); // 6 chars
   let newWorkspace = await Workspace.create({
     name: req.body.name,
@@ -99,6 +103,10 @@ exports.deleteWorkspace = catchAsync(async (req, res, next) => {
 });
 
 exports.generateCode = catchAsync(async (req, res, next) => {
+  if (!req.user.isSubscribed) {
+    return next(new AppError('Team Collaboration is a Pro feature. Please upgrade to invite members.', 403));
+  }
+
   const joinCode = crypto.randomBytes(3).toString('hex').toUpperCase();
   let workspace = await Workspace.findOneAndUpdate(
     { _id: req.params.id, owner: req.user.id },
@@ -122,6 +130,10 @@ exports.generateCode = catchAsync(async (req, res, next) => {
 });
 
 exports.joinWorkspace = catchAsync(async (req, res, next) => {
+  if (!req.user.isSubscribed) {
+    return next(new AppError('Team Collaboration is a Pro feature. Please upgrade to join workspaces.', 403));
+  }
+
   const { joinCode } = req.body;
   
   let workspace = await Workspace.findOne({ joinCode });

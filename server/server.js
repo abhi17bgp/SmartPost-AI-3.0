@@ -28,9 +28,7 @@ mongoose.connect(DB)
     const { Server } = require('socket.io');
     const io = new Server(server, {
       cors: {
-        origin: [   'https://smartpostai.online',
-  'https://www.smartpostai.online'
-].filter(Boolean),
+        origin: [process.env.FRONTEND_URL || 'http://localhost:5173'].filter(Boolean),
         credentials: true
       }
     });

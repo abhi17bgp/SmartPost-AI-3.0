@@ -6,11 +6,10 @@ const app = express();
 
 // Middlewares
 app.use(cors({
-  origin: [   'https://smartpostai.online',
-  'https://www.smartpostai.online'
-].filter(Boolean),
+  origin: [process.env.FRONTEND_URL || 'http://localhost:5173'].filter(Boolean),
   credentials: true
 }));
+// app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
@@ -20,6 +19,7 @@ const collectionRouter = require('./routes/collectionRoutes');
 const requestRouter = require('./routes/requestRoutes');
 const historyRouter = require('./routes/historyRoutes');
 const aiRouter = require('./routes/aiRoutes');
+const paymentRouter = require('./routes/paymentRoutes');
 
 // Routes
 app.use('/api/auth', authRouter);
@@ -28,6 +28,7 @@ app.use('/api/collections', collectionRouter);
 app.use('/api/requests', requestRouter);
 app.use('/api/history', historyRouter);
 app.use('/api/ai', aiRouter);
+app.use('/api/payment', paymentRouter);
 
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'success', message: 'API is running' });

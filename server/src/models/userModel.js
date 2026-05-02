@@ -13,6 +13,10 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true
   },
+  photo: {
+    type: String,
+    default: 'default.jpg'
+  },
   bio: String,
   company: String,
   title: String,
@@ -41,6 +45,20 @@ const userSchema = new mongoose.Schema({
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
+  isSubscribed: {
+    type: Boolean,
+    default: false
+  },
+  performanceTestCount: {
+    type: Number,
+    default: 0
+  },
+  razorpayPaymentId: {
+    type: String
+  },
+  subscriptionExpiresAt: {
+    type: Date
+  }
 }, {
   timestamps: true
 });

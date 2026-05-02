@@ -268,8 +268,68 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const handleUpgrade = async () => {
+    try {
+      // 1. Create order
+      const orderRes = await api.post('/payment/create-order');
+      const order = orderRes.data.data.order;
+
+      // 2. Open Razorpay Modal
+      const options = {
+        key: 'rzp_test_p4c7S7N77moVrd', // Could be from env in production
+        amount: order.amount,
+        currency: order.currency,
+        name: 'SmartPost AI',
+        description: 'Upgrade to Pro',
+        order_id: order.id,
+        handler: async function (response) {
+          try {
+            // 3. Verify payment
+            const verifyRes = await api.post('/payment/verify-payment', {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature
+            });
+            
+            const updatedUser = verifyRes.data.data.user;
+            setUser(updatedUser);
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+            
+            if (broadcastChannelRef.current) {
+              broadcastChannelRef.current.postMessage({
+                type: 'UPDATE_PROFILE',
+                user: updatedUser
+              });
+            }
+            
+            toast.success('Successfully upgraded to Pro!');
+          } catch (err) {
+            toast.error('Payment verification failed. Please contact support.');
+            console.error(err);
+          }
+        },
+        prefill: {
+          name: user?.name,
+          email: user?.email
+        },
+        theme: {
+          color: '#10b981'
+        }
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.on('payment.failed', function (response) {
+        toast.error(`Payment Failed: ${response.error.description}`);
+      });
+      rzp.open();
+    } catch (err) {
+      toast.error('Failed to initiate payment.');
+      console.error(err);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, updateProfile, loading }}>
+    <AuthContext.Provider value={{ user, setUser, login, register, logout, updateProfile, loading, handleUpgrade }}>
       {!loading && children}
     </AuthContext.Provider>
   );

@@ -16,7 +16,7 @@ const BackgroundParticles = () => {
       options={{
         background: {
           color: {
-            value: "#0f172a", // Tailwind slate-900 equivalent
+            value: "transparent", 
           },
         },
         fpsLimit: 120,
@@ -24,7 +24,7 @@ const BackgroundParticles = () => {
           events: {
             onHover: {
               enable: true,
-              mode: "grab", // Grabs nodes with lines when mouse is near
+              mode: "grab",
             },
             resize: true,
           },
@@ -33,7 +33,7 @@ const BackgroundParticles = () => {
               distance: 140,
               links: {
                 opacity: 0.5,
-                color: "#10b981" // Tailwind emerald-500
+                color: "hsl(var(--primary) / 0.5)"
               }
             },
             push: {
@@ -47,13 +47,13 @@ const BackgroundParticles = () => {
         },
         particles: {
           color: {
-            value: ["#10b981", "#38bdf8", "#818cf8"], // Emerald, Sky blue, Indigo
+            value: ["hsl(var(--primary))", "hsl(var(--secondary))", "hsl(var(--primary) / 0.8)"],
           },
           links: {
-            color: "#334155", // slate-700
+            color: "hsl(var(--border))",
             distance: 150,
             enable: true,
-            opacity: 0.4,
+            opacity: 0.3,
             width: 1,
           },
           move: {

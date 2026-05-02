@@ -1,8 +1,8 @@
 import React from 'react';
-import { Plus, X } from 'lucide-react';
+import { Plus, X, Menu } from 'lucide-react';
 import { useWorkspace } from '../context/WorkspaceContext';
 
-const TabManager = () => {
+const TabManager = ({ onToggleSidebar }) => {
   const { tabs, setTabs, activeTabId, setActiveTabId } = useWorkspace();
 
   const handleAddTab = () => {
@@ -30,28 +30,34 @@ const TabManager = () => {
   };
 
   return (
-    <div className="flex bg-slate-900 border-b border-slate-700 overflow-x-auto h-10 w-full shrink-0" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+    <div className="flex bg-card border-b border-border overflow-x-auto h-10 w-full shrink-0 items-center" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
       <style dangerouslySetInnerHTML={{ __html: `::-webkit-scrollbar { display: none; }` }} />
-      <div className="flex items-center">
+      <button 
+        onClick={onToggleSidebar}
+        className="md:hidden h-10 px-3 text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors flex items-center justify-center shrink-0 border-r border-border"
+      >
+        <Menu size={18} />
+      </button>
+      <div className="flex items-center h-full">
         {tabs.map((tab) => (
           <div
             key={tab.id}
             onClick={() => setActiveTabId(tab.id)}
             className={`
-              h-full flex items-center px-4 min-w-[150px] max-w-[200px] border-r border-slate-700 cursor-pointer group select-none transition-colors
+              h-full flex items-center px-4 min-w-[150px] max-w-[200px] border-r border-border cursor-pointer group select-none transition-colors
               ${activeTabId === tab.id
-                ? 'bg-slate-800 text-emerald-400 border-t-2 border-t-emerald-500'
-                : 'bg-slate-900 text-slate-400 hover:bg-slate-800/50 hover:text-slate-300 border-t-2 border-t-transparent'}
+                ? 'bg-muted/50 text-primary border-t-2 border-t-primary'
+                : 'bg-card text-muted-foreground hover:bg-muted/30 hover:text-foreground border-t-2 border-t-transparent'}
             `}
           >
             <div className="flex items-center gap-2 overflow-hidden w-full h-10">
-              <span className={`text-[10px] font-mono font-bold shrink-0 ${tab.method === 'GET' ? 'text-emerald-500' : tab.method === 'POST' ? 'text-blue-500' : 'text-slate-500'}`}>
+              <span className={`text-[10px] font-mono font-bold shrink-0 ${tab.method === 'GET' ? 'text-primary' : tab.method === 'POST' ? 'text-secondary' : 'text-muted-foreground'}`}>
                 {tab.method || 'GET'}
               </span>
               <span className="text-xs truncate flex-1 font-medium">{tab.title}</span>
               <button
                 onClick={(e) => handleCloseTab(e, tab.id)}
-                className={`shrink-0 p-1 rounded hover:bg-slate-700/50 text-slate-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity ${activeTabId === tab.id ? 'opacity-100 text-slate-400' : ''}`}
+                className={`shrink-0 p-1 rounded hover:bg-muted/50 text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity ${activeTabId === tab.id ? 'opacity-100' : ''}`}
               >
                 <X size={12} strokeWidth={2.5} />
               </button>
@@ -60,7 +66,7 @@ const TabManager = () => {
         ))}
         <button
           onClick={handleAddTab}
-          className="h-10 px-3 text-slate-400 hover:text-emerald-400 hover:bg-slate-800/50 transition-colors flex items-center justify-center shrink-0 border-r border-slate-700"
+          className="h-10 px-3 text-muted-foreground hover:text-primary hover:bg-muted/30 transition-colors flex items-center justify-center shrink-0 border-r border-border"
           title="New Tab"
         >
           <Plus size={16} />

@@ -31,7 +31,11 @@ const WorkspaceContext = createContext({
   latestHistoryId: null,
   setLatestHistoryId: () => {},
   typingUsers: {},
-  socket: null
+  socket: null,
+  performanceModalOpen: false,
+  setPerformanceModalOpen: () => {},
+  performanceViewState: 'normal', // 'normal', 'maximized', 'minimized'
+  setPerformanceViewState: () => {}
 });
 
 export const useWorkspace = () => {
@@ -64,6 +68,10 @@ export const WorkspaceProvider = ({ children }) => {
 
   // Socket reference
   const [socket, setSocket] = useState(null);
+
+  // Performance Modal State
+  const [performanceModalOpen, setPerformanceModalOpen] = useState(false);
+  const [performanceViewState, setPerformanceViewState] = useState('normal');
 
   const fetchWorkspaces = useCallback(async () => {
     if (!user) return;
@@ -129,7 +137,7 @@ export const WorkspaceProvider = ({ children }) => {
     }
 
     try {
-      const newSocket = io('https://smartpost-ai-3-0.onrender.com', {
+      const newSocket = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000', {
         withCredentials: true
       });
       setSocket(newSocket);
@@ -363,7 +371,11 @@ export const WorkspaceProvider = ({ children }) => {
     latestHistoryId,
     setLatestHistoryId,
     typingUsers,
-    socket
+    socket,
+    performanceModalOpen,
+    setPerformanceModalOpen,
+    performanceViewState,
+    setPerformanceViewState
   };
 
   return <WorkspaceContext.Provider value={value}>{children}</WorkspaceContext.Provider>;

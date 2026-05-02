@@ -9,7 +9,7 @@ const ProtectedRoute = ({ children }) => {
   
   if (loading) {
     console.log('[ProtectedRoute] Still loading, showing loading screen');
-    return <div className="h-screen w-screen flex items-center justify-center bg-slate-900 text-emerald-500">Loading...</div>;
+    return <div className="h-screen w-screen flex items-center justify-center bg-background text-primary font-bold">Loading...</div>;
   }
   
   if (!user) {
