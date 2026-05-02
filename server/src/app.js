@@ -11,7 +11,8 @@ const app = express();
 
 const allowedOrigins = [
   "https://www.smartpostai.online",
-  "https://smartpostai.online"
+  "https://smartpostai.online",
+  "http://localhost:5173"
 ];
 
 app.use(cors({

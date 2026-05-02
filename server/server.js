@@ -28,7 +28,8 @@ mongoose.connect(DB)
     const { Server } = require('socket.io');
    const allowedOrigins = [
   "https://www.smartpostai.online",
-  "https://smartpostai.online"
+  "https://smartpostai.online",
+  "http://localhost:5173"
 ];
 
 const io = new Server(server, {
