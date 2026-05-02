@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const app = express();
 
 // Middlewares
-const cors = require('cors');
+
 
 const allowedOrigins = [
   "https://www.smartpostai.online",
