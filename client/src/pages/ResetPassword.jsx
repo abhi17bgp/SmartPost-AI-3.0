@@ -10,11 +10,10 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [countdown, setCountdown] = useState(4);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-   
-console.log(password === confirmPassword);
 
     if (password !== confirmPassword) {
       toast.error('Passwords do not match');
@@ -37,13 +36,30 @@ console.log(password === confirmPassword);
         }
       );
       setSuccess(true);
-      setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
       // Handled by toast
     } finally {
       setLoading(false);
     }
   };
+
+  // Auto-redirect to login after successful reset
+  React.useEffect(() => {
+    if (!success) return;
+
+    const timer = setInterval(() => {
+      setCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          navigate('/login', { replace: true });
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [success, navigate]);
 
   return (
     <div className="flex items-center justify-center min-h-screen w-full bg-background relative overflow-hidden font-sans">
@@ -69,8 +85,9 @@ console.log(password === confirmPassword);
                 <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
               </div>
               <p className="font-semibold text-lg mb-2 text-foreground">Password Secured</p>
-              <p className="text-sm text-primary/70 mb-6">Your account is safe. Redirecting you to login...</p>
-              <Link to="/login" className="inline-block w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 px-6 rounded-xl transition-all shadow-lg shadow-primary/25 ring-1 ring-primary-foreground/10 hover:shadow-primary/40">
+              <p className="text-sm text-primary/70 mb-2">Your account is safe.</p>
+              <p className="text-xs text-muted-foreground mb-6">Redirecting to login in {countdown}s...</p>
+              <Link to="/login" replace className="inline-block w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 px-6 rounded-xl transition-all shadow-lg shadow-primary/25 ring-1 ring-primary-foreground/10 hover:shadow-primary/40 text-center">
                 Continue to Login
               </Link>
             </div>
