@@ -22,13 +22,15 @@ mongoose.connect(DB)
     const server = app.listen(PORT, () => {
       console.log(`🚀 App running on port ${PORT}...`);
     });
-    
+
 
     // 🌐 INITIALIZE SOCKET.IO
     const { Server } = require('socket.io');
+    const allowedOrigins = process.env.FRONTEND_URL.split(",");
+
     const io = new Server(server, {
       cors: {
-        origin: [process.env.FRONTEND_URL || 'http://localhost:5173'].filter(Boolean),
+        origin: allowedOrigins,
         credentials: true
       }
     });

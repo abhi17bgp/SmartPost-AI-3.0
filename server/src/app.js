@@ -5,8 +5,19 @@ const cookieParser = require('cookie-parser');
 const app = express();
 
 // Middlewares
+const allowedOrigins = process.env.FRONTEND_URL.split(",");
+
 app.use(cors({
-  origin: [process.env.FRONTEND_URL || 'http://localhost:5173'].filter(Boolean),
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true); // allow Postman
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.log("❌ Blocked by CORS:", origin);
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true
 }));
 // app.use(cors());
