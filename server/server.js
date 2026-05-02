@@ -26,14 +26,17 @@ mongoose.connect(DB)
 
     // 🌐 INITIALIZE SOCKET.IO
     const { Server } = require('socket.io');
-    const allowedOrigins = process.env.FRONTEND_URL.split(",");
+   const allowedOrigins = [
+  "https://www.smartpostai.online",
+  "https://smartpostai.online"
+];
 
-    const io = new Server(server, {
-      cors: {
-        origin: allowedOrigins,
-        credentials: true
-      }
-    });
+const io = new Server(server, {
+  cors: {
+    origin: allowedOrigins,
+    credentials: true
+  }
+});
 
     app.set('io', io);
 

@@ -119,7 +119,7 @@ exports.register = catchAsync(async (req, res, next) => {
   });
 
   // Send verification email
-  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+  const frontendUrl = 'https://www.smartpostai.online' || 'http://localhost:5173';
   const verifyUrl = `${frontendUrl}/verify-email/${verificationToken}`;
 
   const message = `Welcome to SmartPost AI! Please verify your email address by clicking this link:\n\n${verifyUrl}\n\n`;
@@ -427,7 +427,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   // 3) Send it to user's email
-  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+  const frontendUrl = 'https://www.smartpostai.online';
   const resetUrl = `${frontendUrl}/reset-password/${resetToken}`;
 
   const html = `

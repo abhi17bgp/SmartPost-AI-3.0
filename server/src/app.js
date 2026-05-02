@@ -5,20 +5,22 @@ const cookieParser = require('cookie-parser');
 const app = express();
 
 // Middlewares
-const allowedOrigins = process.env.FRONTEND_URL.split(",");
+const cors = require('cors');
+
+const allowedOrigins = [
+  "https://www.smartpostai.online",
+  "https://smartpostai.online"
+];
 
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // allow Postman
+  origin: allowedOrigins,
+  credentials: true,
+}));
 
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.log("❌ Blocked by CORS:", origin);
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true
+// IMPORTANT: handle preflight globally
+app.options('*', cors({
+  origin: allowedOrigins,
+  credentials: true,
 }));
 // app.use(cors());
 app.use(express.json());
