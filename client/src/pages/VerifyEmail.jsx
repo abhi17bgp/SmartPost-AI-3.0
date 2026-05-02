@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import api from '../utils/axiosInstance';
 import toast from 'react-hot-toast';
 
 const VerifyEmail = () => {
   const { token } = useParams();
+  const navigate = useNavigate();
   const [status, setStatus] = useState('loading'); // 'loading', 'success', 'error'
   const [message, setMessage] = useState('Verifying your email...');
+  const [countdown, setCountdown] = useState(4);
   const hasFetched = useRef(false);
 
   useEffect(() => {
@@ -20,9 +22,16 @@ const VerifyEmail = () => {
         setMessage(res.data.message || 'Email verified successfully!');
         toast.success('Email verified successfully!');
       } catch (err) {
-        setStatus('error');
-        setMessage(err.response?.data?.message || 'Verification link is invalid or has expired.');
-        toast.error('Verification failed');
+        const errorMsg = err.response?.data?.message || 'Verification link is invalid or has expired.';
+        // If the email is already verified, treat it as success
+        if (errorMsg.toLowerCase().includes('already verified') || errorMsg.toLowerCase().includes('already been verified')) {
+          setStatus('success');
+          setMessage('Your email is already verified. You can sign in.');
+        } else {
+          setStatus('error');
+          setMessage(errorMsg);
+          toast.error('Verification failed');
+        }
       }
     };
 
@@ -30,6 +39,24 @@ const VerifyEmail = () => {
       verifyToken();
     }
   }, [token]);
+
+  // Auto-redirect to login after successful verification
+  useEffect(() => {
+    if (status !== 'success') return;
+
+    const timer = setInterval(() => {
+      setCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          navigate('/login', { replace: true });
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [status, navigate]);
 
   return (
     <div className="flex items-center justify-center min-h-screen w-full bg-background relative overflow-hidden font-sans">
@@ -56,9 +83,10 @@ const VerifyEmail = () => {
                 <svg className="w-10 h-10 text-primary-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
               </div>
               <h1 className="text-3xl font-extrabold text-foreground mb-3 tracking-tight">Email Verified!</h1>
-              <p className="text-muted-foreground font-medium mb-8">{message}</p>
+              <p className="text-muted-foreground font-medium mb-2">{message}</p>
+              <p className="text-xs text-muted-foreground mb-8">Redirecting to login in {countdown}s...</p>
               
-              <Link to="/login" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold tracking-wide py-3.5 rounded-xl transition-all shadow-xl shadow-primary/20 ring-1 ring-primary-foreground/10 hover:shadow-primary/40 transform hover:-translate-y-0.5">
+              <Link to="/login" replace className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold tracking-wide py-3.5 rounded-xl transition-all shadow-xl shadow-primary/20 ring-1 ring-primary-foreground/10 hover:shadow-primary/40 transform hover:-translate-y-0.5 block text-center">
                 Sign In to SmartPost AI
               </Link>
             </div>
@@ -72,7 +100,7 @@ const VerifyEmail = () => {
               <h1 className="text-3xl font-extrabold text-foreground mb-3 tracking-tight">Verification Failed</h1>
               <p className="text-destructive/80 mb-8 max-w-[250px] mx-auto">{message}</p>
               
-              <Link to="/register" className="w-full bg-muted hover:bg-muted/80 text-foreground font-bold tracking-wide py-3.5 rounded-xl transition-all shadow-lg border border-border">
+              <Link to="/register" className="w-full bg-muted hover:bg-muted/80 text-foreground font-bold tracking-wide py-3.5 rounded-xl transition-all shadow-lg border border-border block text-center">
                 Back to Registration
               </Link>
             </div>
