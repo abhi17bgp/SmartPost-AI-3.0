@@ -131,33 +131,27 @@ exports.register = catchAsync(async (req, res, next) => {
       <meta charset="UTF-8">
       <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
-        .wrapper { background: #f5f5f5; padding: 20px; }
-        .container { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; }
-        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 40px 30px; text-align: center; color: #ffffff; }
-        .header-logo { font-size: 32px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 10px; }
-        .header-subtitle { font-size: 14px; opacity: 0.95; font-weight: 500; }
-        .content { padding: 40px 30px; }
-        .lang-section { margin-bottom: 50px; }
-        .lang-header { font-size: 12px; color: #10b981; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-        h2 { color: #1f2937; font-size: 22px; margin-bottom: 15px; font-weight: 700; }
-        h3 { color: #1f2937; font-size: 16px; margin-top: 25px; margin-bottom: 12px; font-weight: 700; }
-        p { color: #4b5563; font-size: 15px; margin-bottom: 12px; line-height: 1.7; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif; background: #0a0a0a; color: #e5e5e5; line-height: 1.7; }
+        .wrapper { background: #0a0a0a; padding: 40px 20px; }
+        .container { max-width: 600px; margin: 0 auto; background: #111; border-radius: 16px; border: 1px solid #222; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 50px 40px; text-align: center; color: #fff; }
+        .header-logo { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
+        .header-subtitle { font-size: 14px; opacity: 0.9; font-weight: 500; }
+        .content { padding: 40px; }
+        h2 { color: #fff; font-size: 22px; margin-bottom: 16px; font-weight: 700; }
+        p { color: #a3a3a3; font-size: 15px; margin-bottom: 16px; }
         .highlight { color: #10b981; font-weight: 600; }
-        .info-box { background: #f0fdf4; border-left: 4px solid #10b981; padding: 16px; margin: 20px 0; border-radius: 4px; }
-        .info-box p { margin: 5px 0; font-size: 14px; color: #2d5a3d; }
-        .button-container { text-align: center; margin: 35px 0; }
-        .button { display: inline-block; background: #10b981; color: #ffffff !important; padding: 14px 42px; border-radius: 6px; text-decoration: none; font-weight: 700; font-size: 15px; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transition: background 0.3s ease; }
-        .button:hover { background: #059669; }
-        .button-note { color: #6b7280; font-size: 12px; margin-top: 10px; }
-        .steps { background: #f9fafb; border-radius: 6px; padding: 20px; margin: 20px 0; }
-        .step { display: flex; margin: 12px 0; }
-        .step-number { background: #10b981; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-right: 12px; flex-shrink: 0; font-size: 14px; }
-        .step-content { flex: 1; }
-        .step-content p { margin: 0; }
-        .divider { height: 1px; background: #e5e7eb; margin: 30px 0; }
-        .footer { background: #f9fafb; padding: 25px 30px; text-align: center; border-top: 1px solid #e5e7eb; font-size: 12px; color: #6b7280; }
-        .footer p { margin: 5px 0; }
+        .info-box { background: #1a1a1a; border-left: 3px solid #10b981; padding: 16px 20px; margin: 24px 0; border-radius: 6px; }
+        .info-box p { margin: 4px 0; font-size: 14px; color: #d4d4d4; }
+        .button-container { text-align: center; margin: 32px 0; }
+        .button { display: inline-block; background: #10b981; color: #fff !important; padding: 14px 48px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 15px; box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3); }
+        .button-note { color: #737373; font-size: 12px; margin-top: 12px; }
+        .steps { background: #1a1a1a; border-radius: 8px; padding: 24px; margin: 24px 0; }
+        .step { display: flex; margin: 14px 0; align-items: flex-start; }
+        .step-number { background: #10b981; color: #fff; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-right: 14px; flex-shrink: 0; font-size: 13px; }
+        .step-content p { margin: 0; color: #d4d4d4; font-size: 14px; }
+        .footer { background: #0a0a0a; padding: 24px 40px; text-align: center; border-top: 1px solid #222; font-size: 12px; color: #525252; }
+        .footer p { margin: 4px 0; }
       </style>
     </head>
     <body>
@@ -165,104 +159,49 @@ exports.register = catchAsync(async (req, res, next) => {
         <div class="container">
           <div class="header">
             <div class="header-logo">SmartPost AI</div>
-            <div class="header-subtitle">Email Verification Required</div>
+            <div class="header-subtitle">Verify Your Email Address</div>
           </div>
           <div class="content">
-            <!-- ENGLISH SECTION -->
-            <div class="lang-section">
-              
-              <h2>Welcome to SmartPost AI</h2>
-              <p>Hello <span class="highlight">${newUser.name}</span>,</p>
-              
-              <p>Thank you for creating your SmartPost AI account. We're excited to have you on board! To complete your registration and access all features of our platform, please verify your email address.</p>
-              
-              <div class="info-box">
-                <p><strong>Why verify your email?</strong></p>
-                <p>Email verification ensures the security of your account and allows us to send you important notifications and updates about your workspace.</p>
-              </div>
-              
-              <div class="button-container">
-                <a href="${verifyUrl}" class="button">Verify Email Address</a>
-                <p class="button-note">This link will expire in 24 hours</p>
-              </div>
-              
-              <h3>Getting Started</h3>
-              <p>Once your email is verified, you'll be able to:</p>
-              <div class="steps">
-                <div class="step">
-                  <div class="step-number">1</div>
-                  <div class="step-content">
-                    <p><strong>Create Workspaces</strong> - Set up project-specific environments for your API testing</p>
-                  </div>
-                </div>
-                <div class="step">
-                  <div class="step-number">2</div>
-                  <div class="step-content">
-                    <p><strong>Build Requests</strong> - Create and manage API requests with advanced testing capabilities</p>
-                  </div>
-                </div>
-                <div class="step">
-                  <div class="step-number">3</div>
-                  <div class="step-content">
-                    <p><strong>Collaborate</strong> - Invite team members and work together in real-time</p>
-                  </div>
-                </div>
-              </div>
-              
-              <p>If you did not create this account, please disregard this email. Your account will not be activated unless you verify your email address.</p>
+            <h2>Welcome, ${newUser.name}!</h2>
+            <p>Thank you for creating your SmartPost AI account. To complete your registration and unlock all features, please verify your email address by clicking the button below.</p>
+            
+            <div class="info-box">
+              <p><strong>Why verify?</strong></p>
+              <p>Email verification secures your account and enables us to send important workspace notifications and updates.</p>
             </div>
             
-            <div class="divider"></div>
-            
-            <!-- HINDI SECTION -->
-            <div class="lang-section">
-              
-              <h2>SmartPost AI में आपका स्वागत है</h2>
-              <p>नमस्ते <span class="highlight">${newUser.name}</span>,</p>
-              
-              <p>SmartPost AI खाता बनाने के लिए धन्यवाद। हम आपको हमारे प्लेटफॉर्म पर स्वागत करते हैं! अपने खाते को सक्रिय करने और हमारे प्लेटफॉर्म की सभी सुविधाओं तक पहुंचने के लिए कृपया अपना ईमेल पता सत्यापित करें।</p>
-              
-              <div class="info-box">
-                <p><strong>ईमेल को सत्यापित करना क्यों महत्वपूर्ण है?</strong></p>
-                <p>ईमेल सत्यापन आपके खाते की सुरक्षा सुनिश्चित करता है और हमें आपको महत्वपूर्ण अधिसूचनाएं और अपडेट भेजने की अनुमति देता है।</p>
-              </div>
-              
-              <div class="button-container">
-                <a href="${verifyUrl}" class="button">ईमेल पता सत्यापित करें</a>
-                <p class="button-note">यह लिंक 24 घंटों में समाप्त हो जाएगा</p>
-              </div>
-              
-              <h3>शुरुआत करना</h3>
-              <p>एक बार आपका ईमेल सत्यापित हो जाने के बाद, आप निम्न कर सकेंगे:</p>
-              <div class="steps">
-                <div class="step">
-                  <div class="step-number">1</div>
-                  <div class="step-content">
-                    <p><strong>कार्यक्षेत्र बनाएं</strong> - अपने API परीक्षण के लिए परियोजना-विशिष्ट वातावरण सेट करें</p>
-                  </div>
-                </div>
-                <div class="step">
-                  <div class="step-number">2</div>
-                  <div class="step-content">
-                    <p><strong>अनुरोध बनाएं</strong> - उन्नत परीक्षण क्षमताओं के साथ API अनुरोध बनाएं और प्रबंधित करें</p>
-                  </div>
-                </div>
-                <div class="step">
-                  <div class="step-number">3</div>
-                  <div class="step-content">
-                    <p><strong>सहयोग करें</strong> - टीम के सदस्यों को आमंत्रित करें और रीयल-टाइम में एक साथ काम करें</p>
-                  </div>
-                </div>
-              </div>
-              
-              <p>यदि आपने यह खाता नहीं बनाया है, तो कृपया इस ईमेल को अनदेखा करें। आपका खाता तब तक सक्रिय नहीं होगा जब तक आप अपने ईमेल पते को सत्यापित न करें।</p>
+            <div class="button-container">
+              <a href="${verifyUrl}" class="button">Verify Email Address</a>
+              <p class="button-note">This link expires in 24 hours</p>
             </div>
+            
+            <h2 style="font-size: 17px; margin-top: 32px;">What you can do after verifying</h2>
+            <div class="steps">
+              <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                  <p><strong>Create Workspaces</strong> — Set up project-specific environments for your API testing</p>
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                  <p><strong>Build & Test Requests</strong> — Create and manage API requests with advanced testing capabilities</p>
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                  <p><strong>Collaborate</strong> — Invite team members and work together in real-time</p>
+                </div>
+              </div>
+            </div>
+            
+            <p style="font-size: 13px; color: #737373; margin-top: 24px;">If you did not create this account, you can safely ignore this email. Your account will not be activated unless you verify.</p>
           </div>
-          
           <div class="footer">
-            <p>SmartPost AI Automation</p>
-            <p>© ${new Date().getFullYear()} All rights reserved</p>
-            <p style="margin-top: 10px; color: #9ca3af;">This is an automated email. Please do not reply to this message.</p>
+            <p>&copy; ${new Date().getFullYear()} SmartPost AI. All rights reserved.</p>
+            <p style="margin-top: 6px; color: #404040;">This is an automated message — please do not reply.</p>
           </div>
         </div>
       </div>
@@ -438,36 +377,28 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
       <meta charset="UTF-8">
       <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
-        .wrapper { background: #f5f5f5; padding: 20px; }
-        .container { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; }
-        .header { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); padding: 40px 30px; text-align: center; color: #ffffff; }
-        .header-logo { font-size: 32px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 10px; }
-        .header-subtitle { font-size: 14px; opacity: 0.95; font-weight: 500; }
-        .content { padding: 40px 30px; }
-        .lang-section { margin-bottom: 50px; }
-        .lang-header { font-size: 12px; color: #dc2626; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-        h2 { color: #1f2937; font-size: 22px; margin-bottom: 15px; font-weight: 700; }
-        h3 { color: #1f2937; font-size: 16px; margin-top: 25px; margin-bottom: 12px; font-weight: 700; }
-        p { color: #4b5563; font-size: 15px; margin-bottom: 12px; line-height: 1.7; }
-        strong { font-weight: 700; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif; background: #0a0a0a; color: #e5e5e5; line-height: 1.7; }
+        .wrapper { background: #0a0a0a; padding: 40px 20px; }
+        .container { max-width: 600px; margin: 0 auto; background: #111; border-radius: 16px; border: 1px solid #222; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+        .header { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); padding: 50px 40px; text-align: center; color: #fff; }
+        .header-logo { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
+        .header-subtitle { font-size: 14px; opacity: 0.9; font-weight: 500; }
+        .content { padding: 40px; }
+        h2 { color: #fff; font-size: 22px; margin-bottom: 16px; font-weight: 700; }
+        h3 { color: #e5e5e5; font-size: 16px; margin-top: 28px; margin-bottom: 12px; font-weight: 700; }
+        p { color: #a3a3a3; font-size: 15px; margin-bottom: 16px; }
         .highlight { color: #dc2626; font-weight: 600; }
-        .warning-box { background: #fef2f2; border-left: 4px solid #dc2626; padding: 16px; margin: 20px 0; border-radius: 4px; }
-        .warning-box p { margin: 5px 0; font-size: 14px; color: #7f1d1d; }
-        .warning-title { color: #991b1b; font-weight: 700; }
-        .info-box { background: #f3f4f6; border-left: 4px solid #6b7280; padding: 16px; margin: 20px 0; border-radius: 4px; }
-        .info-box p { margin: 5px 0; font-size: 14px; color: #374151; }
-        .button-container { text-align: center; margin: 35px 0; }
-        .button { display: inline-block; background: #dc2626; color: #ffffff !important; padding: 14px 42px; border-radius: 6px; text-decoration: none; font-weight: 700; font-size: 15px; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3); transition: background 0.3s ease; }
-        .button:hover { background: #b91c1c; }
-        .button-note { color: #6b7280; font-size: 12px; margin-top: 10px; }
-        .timer { background: #fee2e2; border: 1px solid #fecaca; border-radius: 4px; padding: 12px; margin: 10px 0; text-align: center; color: #991b1b; font-weight: 600; font-size: 14px; }
-        .security-tips { background: #faf5ff; border: 1px solid #f3e8ff; border-radius: 6px; padding: 20px; margin: 20px 0; }
-        .security-tips p { font-size: 14px; color: #4c1d95; margin: 8px 0; }
-        .security-tips li { color: #4c1d95; font-size: 14px; margin: 8px 0; margin-left: 20px; }
-        .divider { height: 1px; background: #e5e7eb; margin: 30px 0; }
-        .footer { background: #f9fafb; padding: 25px 30px; text-align: center; border-top: 1px solid #e5e7eb; font-size: 12px; color: #6b7280; }
-        .footer p { margin: 5px 0; }
+        .warning-box { background: #1a1a1a; border-left: 3px solid #dc2626; padding: 16px 20px; margin: 24px 0; border-radius: 6px; }
+        .warning-box p { margin: 4px 0; font-size: 14px; color: #d4d4d4; }
+        .warning-title { color: #ef4444; font-weight: 700; }
+        .button-container { text-align: center; margin: 32px 0; }
+        .button { display: inline-block; background: #dc2626; color: #fff !important; padding: 14px 48px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 15px; box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3); }
+        .timer { background: #1a1a1a; border: 1px solid #333; border-radius: 6px; padding: 10px; margin: 12px 0; text-align: center; color: #ef4444; font-weight: 600; font-size: 13px; }
+        .security-tips { background: #1a1a1a; border: 1px solid #222; border-radius: 8px; padding: 20px; margin: 24px 0; }
+        .security-tips p { font-size: 14px; color: #d4d4d4; margin: 6px 0; }
+        .security-tips li { color: #a3a3a3; font-size: 14px; margin: 8px 0; margin-left: 20px; }
+        .footer { background: #0a0a0a; padding: 24px 40px; text-align: center; border-top: 1px solid #222; font-size: 12px; color: #525252; }
+        .footer p { margin: 4px 0; }
       </style>
     </head>
     <body>
@@ -478,83 +409,37 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
             <div class="header-subtitle">Password Reset Request</div>
           </div>
           <div class="content">
-            <!-- ENGLISH SECTION -->
-            <div class="lang-section">
-              
-              <h2>Password Reset Request</h2>
-              <p>Hello <span class="highlight">${user.name}</span>,</p>
-              
-              <p>We received a request to reset the password for your SmartPost AI account. If you initiated this request, please click the button below to securely set a new password.</p>
-              
-              <div class="button-container">
-                <a href="${resetUrl}" style="display: inline-block;" class="button">Reset Your Password</a>
-                <div class="timer">Valid for 10 minutes only</div>
-              </div>
-              
-              <h3>What if you didn't request this?</h3>
-              <div class="warning-box">
-                <p><span class="warning-title">No action needed</span></p>
-                <p>If you did not request a password reset, please disregard this email. Your account is secure and your current password remains unchanged. Never share your password with anyone.</p>
-              </div>
-              
-              <h3>Security Best Practices</h3>
-              <div class="security-tips">
-                <p><strong>When setting your new password, please remember:</strong></p>
-                <ul style="margin: 10px 0; padding-left: 20px;">
-                  <li>Use a strong password with a mix of uppercase, lowercase, numbers, and special characters</li>
-                  <li>Avoid using easily guessable information like birthdays or names</li>
-                  <li>Do not reuse passwords from other accounts</li>
-                  <li>Consider enabling two-factor authentication for additional security</li>
-                </ul>
-              </div>
-              
-              <div class="info-box">
-                <p><strong>Need help?</strong> If you're having trouble resetting your password, please contact our support team at support@smartpost.ai</p>
-              </div>
+            <h2>Reset Your Password</h2>
+            <p>Hello <span class="highlight">${user.name}</span>,</p>
+            
+            <p>We received a request to reset the password for your SmartPost AI account. If you initiated this request, click the button below to securely set a new password.</p>
+            
+            <div class="button-container">
+              <a href="${resetUrl}" class="button">Reset Your Password</a>
+              <div class="timer">This link is valid for 10 minutes only</div>
             </div>
             
-            <div class="divider"></div>
-            
-            <!-- HINDI SECTION -->
-            <div class="lang-section">
-              
-              <h2>पासवर्ड रीसेट अनुरोध</h2>
-              <p>नमस्ते <span class="highlight">${user.name}</span>,</p>
-              
-              <p>हमने आपके SmartPost AI खाते के पासवर्ड को रीसेट करने के लिए एक अनुरोध प्राप्त किया है। यदि आपने यह अनुरोध किया है, तो कृपया नीचे दिए गए बटन पर क्लिक करें और एक नया पासवर्ड सेट करें।</p>
-              
-              <div class="button-container">
-                <a href="${resetUrl}" style="display: inline-block;" class="button">अपना पासवर्ड रीसेट करें</a>
-                <div class="timer">केवल 10 मिनट के लिए वैध</div>
-              </div>
-              
-              <h3>अगर आपने यह अनुरोध नहीं किया</h3>
-              <div class="warning-box">
-                <p><span class="warning-title">कोई कार्रवाई की आवश्यकता नहीं</span></p>
-                <p>यदि आपने पासवर्ड रीसेट का अनुरोध नहीं किया है, तो कृपया इस ईमेल को अनदेखा करें। आपका खाता सुरक्षित है और आपका वर्तमान पासवर्ड अपरिवर्तित रहेगा। कभी भी अपना पासवर्ड किसी को साझा न करें।</p>
-              </div>
-              
-              <h3>सुरक्षा सर्वोत्तम प्रथाएं</h3>
-              <div class="security-tips">
-                <p><strong>अपना नया पासवर्ड सेट करते समय, कृपया याद रखें:</strong></p>
-                <ul style="margin: 10px 0; padding-left: 20px;">
-                  <li>एक मजबूत पासवर्ड का उपयोग करें जिसमें अपरकेस, लोअरकेस, नंबर और विशेष वर्ण हों</li>
-                  <li>जन्मदिन या नामों जैसी आसानी से अनुमान लगाई जा सकने वाली जानकारी का उपयोग न करें</li>
-                  <li>अन्य खातों से पासवर्ड का पुनः उपयोग न करें</li>
-                  <li>अतिरिक्त सुरक्षा के लिए दो-कारक प्रमाणीकरण सक्षम करने पर विचार करें</li>
-                </ul>
-              </div>
-              
-              <div class="info-box">
-                <p><strong>सहायता चाहिए?</strong> यदि आपको अपना पासवर्ड रीसेट करने में कोई परेशानी हो रही है, तो कृपया हमारी सहायता टीम से support@smartpost.ai पर संपर्क करें</p>
-              </div>
+            <h3>Didn't request this?</h3>
+            <div class="warning-box">
+              <p><span class="warning-title">No action needed.</span></p>
+              <p>If you did not request a password reset, simply ignore this email. Your account is secure and your current password remains unchanged.</p>
             </div>
+            
+            <h3>Security Tips</h3>
+            <div class="security-tips">
+              <p><strong>When setting your new password:</strong></p>
+              <ul style="margin: 10px 0; padding-left: 20px;">
+                <li>Use a mix of uppercase, lowercase, numbers, and special characters</li>
+                <li>Avoid easily guessable information like birthdays or names</li>
+                <li>Do not reuse passwords from other accounts</li>
+              </ul>
+            </div>
+            
+            <p style="font-size: 13px; color: #737373; margin-top: 24px;">If you are having trouble, contact us at <a href="mailto:support@smartpostai.online" style="color: #dc2626;">support@smartpostai.online</a></p>
           </div>
-          
           <div class="footer">
-            <p>SmartPost AI Automation</p>
-            <p>© ${new Date().getFullYear()} All rights reserved</p>
-            <p style="margin-top: 10px; color: #9ca3af;">This is an automated email. Please do not reply to this message.</p>
+            <p>&copy; ${new Date().getFullYear()} SmartPost AI. All rights reserved.</p>
+            <p style="margin-top: 6px; color: #404040;">This is an automated message — please do not reply.</p>
           </div>
         </div>
       </div>
@@ -565,8 +450,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   try {
     await sendEmail({
       email: user.email,
-      subject: 'Your password reset token (valid for 10 min)',
-      //message likhna h baad mai
+      subject: 'Reset Your Password — SmartPost AI',
       html
     });
 
