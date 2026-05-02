@@ -129,6 +129,40 @@ export const AuthProvider = ({ children }) => {
     isInitializedRef.current = true;
   }, []);
 
+  // Periodic cross-device sync: refetch user profile every 5 min + on window focus
+  useEffect(() => {
+    if (!user) return;
+
+    const syncProfile = async () => {
+      try {
+        const res = await api.get('/auth/me');
+        const freshUser = res.data.data.user;
+        // Only update if something actually changed
+        const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+        if (JSON.stringify(freshUser) !== JSON.stringify(storedUser)) {
+          console.log('[AuthContext] 🔄 Cross-device sync: user data updated');
+          setUser(freshUser);
+          localStorage.setItem('user', JSON.stringify(freshUser));
+        }
+      } catch (err) {
+        // Silently fail — user might be offline or token expired
+        console.log('[AuthContext] ℹ️ Profile sync skipped:', err.message);
+      }
+    };
+
+    // Sync on window focus (user switches back to this tab/window)
+    const handleFocus = () => syncProfile();
+    window.addEventListener('focus', handleFocus);
+
+    // Sync every 5 minutes
+    const interval = setInterval(syncProfile, 5 * 60 * 1000);
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      clearInterval(interval);
+    };
+  }, [user]);
+
   // Debug: Log user state changes
   useEffect(() => {
     console.log('[AuthContext] User state changed:', user ? `Logged in as ${user.name}` : 'Not logged in');

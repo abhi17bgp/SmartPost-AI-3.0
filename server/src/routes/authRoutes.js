@@ -13,6 +13,7 @@ router.patch('/verifyEmail/:token', authController.verifyEmail);
 
 router.delete('/deleteMe', authController.protect, authController.deleteAccount);
 router.patch('/updateMe', authController.protect, authController.uploadUserPhoto, authController.updateMe);
+router.get('/me', authController.protect, authController.getMe);
 router.post('/performance-check', authController.protect, authController.performanceCheck);
 
 module.exports = router;

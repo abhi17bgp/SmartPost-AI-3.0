@@ -71,8 +71,8 @@ const Sidebar = ({ isOpen, onClose }) => {
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error("Image size should be less than 5MB");
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error("Image size should be less than 10MB");
         return;
       }
       setPhotoFile(file);
@@ -654,7 +654,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                       />
                     </label>
                   </div>
-                  <span className="text-[10px] text-muted-foreground">Max size: 5MB</span>
+                  <span className="text-[10px] text-muted-foreground">Max size: 10MB</span>
                 </div>
 
                 <div className="space-y-3">

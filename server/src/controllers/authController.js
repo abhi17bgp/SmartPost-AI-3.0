@@ -37,7 +37,8 @@ const multerFilter = (req, file, cb) => {
 
 const upload = multer({
   storage: multerStorage,
-  fileFilter: multerFilter
+  fileFilter: multerFilter,
+  limits: { fileSize: 10 * 1024 * 1024 } // 10MB
 });
 
 exports.uploadUserPhoto = upload.single('photo');
@@ -637,5 +638,19 @@ exports.performanceCheck = catchAsync(async (req, res, next) => {
   return res.status(403).json({
     status: 'fail',
     message: 'Free trial limit exceeded. Please upgrade to Pro to continue testing API performance.'
+  });
+});
+
+// Get current user profile (for cross-device sync)
+exports.getMe = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+
+  if (!user) {
+    return next(new AppError('User not found.', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: { user }
   });
 });
