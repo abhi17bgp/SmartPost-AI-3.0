@@ -7,22 +7,9 @@ const app = express();
 // Middlewares
 
 
-const allowedOrigins = [
-  "https://www.smartpostai.online",
-  "https://smartpostai.online"
-];
 
-app.use(cors({
-  origin: allowedOrigins,
-  credentials: true,
-}));
 
-// IMPORTANT: handle preflight globally
-app.options('*', cors({
-  origin: allowedOrigins,
-  credentials: true,
-}));
-// app.use(cors());
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
