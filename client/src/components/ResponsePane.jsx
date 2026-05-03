@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Copy, Check, FileJson, Clock, Server, MonitorDown, Sparkles, Loader2, Activity } from 'lucide-react';
+import { Copy, Check, FileJson, Clock, Server, MonitorDown, Bot, Loader2, Activity } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import toast from 'react-hot-toast';
@@ -146,7 +146,7 @@ const ResponsePane = ({ data, loading }) => {
               className={`px-4 py-2 text-xs font-medium transition-all relative ${activeTab === t ? (t === 'AI Analysis' ? 'text-purple-600 dark:text-purple-400' : 'text-primary') : 'text-muted-foreground hover:text-foreground hover:bg-accent'} ${t === 'AI Analysis' && activeTab !== t ? 'hover:text-purple-500' : ''}`}
             >
               <div className="flex items-center gap-1.5">
-                {t === 'AI Analysis' && <Sparkles size={12} className={activeTab === t ? 'text-purple-600 dark:text-purple-400' : 'text-purple-500/60'} />}
+                {t === 'AI Analysis' && <Bot size={12} className={activeTab === t ? 'text-purple-600 dark:text-purple-400' : 'text-purple-500/60'} />}
                 {t}
               </div>
               {activeTab === t && <div className={`absolute bottom-0 left-0 w-full h-[2px] ${t === 'AI Analysis' ? 'bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.8)]' : 'bg-primary shadow-[0_0_8px_hsl(var(--primary)/0.8)]'}`} />}
@@ -167,7 +167,7 @@ const ResponsePane = ({ data, loading }) => {
             className="mb-1 mr-2 text-xs font-bold px-3 py-1.5 rounded-md bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white flex items-center gap-1.5 shadow-lg shadow-purple-500/20 transform transition-all active:scale-95 disabled:opacity-75 disabled:cursor-not-allowed border border-purple-400/30"
             title="Analyze response using SmartPost AI"
           >
-            {aiLoading ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />} Analyze ✨
+            {aiLoading ? <Loader2 size={12} className="animate-spin" /> : <Bot size={12} />} Analyze
           </button>
         </div>
       </div>
@@ -207,7 +207,7 @@ const ResponsePane = ({ data, loading }) => {
               <div className="flex flex-col items-center justify-center h-full opacity-80 animate-fade-in">
                 <div className="relative mb-6">
                   <div className="absolute inset-0 bg-purple-500 rounded-full blur-xl opacity-20 animate-pulse"></div>
-                  <Sparkles size={48} className="text-purple-500 animate-pulse relative z-10" />
+                  <Bot size={48} className="text-purple-500 animate-pulse relative z-10" />
                 </div>
                 <h3 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-500 mb-2 tracking-tight">SmartPost AI is analyzing...</h3>
                 <p className="text-muted-foreground text-sm font-medium">Scanning payload, headers, and status code</p>
@@ -218,9 +218,9 @@ const ResponsePane = ({ data, loading }) => {
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center h-full opacity-60">
-                <Sparkles size={40} className="text-muted-foreground mb-4" />
+                <Bot size={40} className="text-muted-foreground mb-4" />
                 <h3 className="text-lg font-bold text-foreground mb-1">No Analysis Yet</h3>
-                <p className="text-muted-foreground text-sm">Click the <strong className="text-purple-500">Analyze ✨</strong> button above to uncover insights.</p>
+                <p className="text-muted-foreground text-sm">Click the <strong className="text-purple-500">Analyze</strong> button above to uncover insights.</p>
               </div>
             )}
           </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import { Bot, Sparkles, Zap, Shield, ChevronRight, Activity, Workflow, CheckCircle, MousePointer2, Users, Search, Play, ChevronUp, Menu, X } from 'lucide-react';
+import { Bot, Zap, Shield, ChevronRight, Activity, Workflow, CheckCircle, MousePointer2, Users, Search, Play, ChevronUp, Menu, X, Lock, Layers, Layout } from 'lucide-react';
 import { TypeAnimation } from 'react-type-animation';
 import { useAuth } from '../context/AuthContext';
 import ThemeToggle from '../components/ThemeToggle';
@@ -259,34 +259,139 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Enterprise Grade Capabilities</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">Everything you need to debug and track your endpoints, packed into a beautiful, lightning-fast interface.</p>
+      <section id="features" className="py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
+        <div className="text-center mb-20">
+          <h2 className="text-4xl md:text-5xl font-extrabold text-foreground mb-6 tracking-tight">Enterprise Grade Capabilities</h2>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">Everything you need to debug, track, and optimize your endpoints, packed into a highly polished, professional interface.</p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {[
-            { icon: <Zap size={24} className="text-amber-500" />, title: "Lightning Fast API Call Engine", desc: "Execute complex API workflows instantly with minimal latency." },
-            { icon: <Bot size={24} className="text-primary" />, title: "Smart AI Auto-Analysis", desc: "Automatically analyze responses for security, performance, and best practices." },
-            { icon: <Users size={24} className="text-indigo-500" />, title: "Collaborative Workspaces", desc: "Work together in real-time within secure team environments safely." }
-          ].map((feature, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ delay: i * 0.2 }}
-              whileHover={{ y: -5 }}
-              className="p-8 rounded-3xl bg-card/40 backdrop-blur-xl border border-border hover:border-primary/30 transition-all group"
-            >
-              <div className="w-14 h-14 rounded-2xl bg-muted/20 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-primary/10 transition-all shadow-inner">
-                {feature.icon}
+        {/* Bento Grid Design */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[320px]">
+          
+          {/* Card 1: API Engine (Spans 2 columns) */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            className="md:col-span-2 relative group overflow-hidden rounded-3xl bg-[#0c0c0e] border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
+          >
+            <div className="absolute top-0 right-0 w-[400px] h-[300px] bg-gradient-to-bl from-amber-500/10 via-transparent to-transparent opacity-50 blur-3xl pointer-events-none" />
+            <div className="absolute -right-10 -bottom-10 w-[300px] h-[200px] border border-border/20 rounded-2xl bg-[#121214] shadow-2xl rotate-[-5deg] group-hover:rotate-[-2deg] transition-transform duration-500 overflow-hidden flex flex-col">
+              <div className="h-8 border-b border-border/20 flex items-center px-3 gap-2 bg-[#0c0c0e]">
+                <div className="w-2 h-2 rounded-full bg-rose-500/80" /><div className="w-2 h-2 rounded-full bg-amber-500/80" /><div className="w-2 h-2 rounded-full bg-emerald-500/80" />
               </div>
-              <h3 className="text-xl font-semibold text-foreground mb-3">{feature.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{feature.desc}</p>
-            </motion.div>
-          ))}
+              <div className="p-4 space-y-2">
+                 <div className="h-3 w-1/2 bg-amber-500/20 rounded-full" />
+                 <div className="h-3 w-3/4 bg-border/20 rounded-full" />
+                 <div className="h-3 w-5/6 bg-border/20 rounded-full" />
+                 <div className="h-3 w-1/3 bg-amber-500/30 rounded-full mt-4" />
+              </div>
+            </div>
+            
+            <div className="relative z-10 max-w-[60%]">
+              <div className="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center mb-6 border border-amber-500/20">
+                <Zap className="text-amber-500" size={24} />
+              </div>
+              <h3 className="text-2xl font-bold text-foreground mb-3 tracking-tight">Lightning Fast Engine</h3>
+              <p className="text-muted-foreground leading-relaxed">Execute complex API workflows instantly with minimal latency. Built on a high-performance proxy architecture that completely eliminates CORS barriers.</p>
+            </div>
+          </motion.div>
+
+          {/* Card 2: AI Analysis (1 column) */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
+            className="relative group overflow-hidden rounded-3xl bg-gradient-to-b from-[#101014] to-[#0c0c0e] border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
+          >
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:20px_20px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+            <div className="relative z-10">
+              <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center mb-6 border border-purple-500/20 group-hover:scale-110 transition-transform">
+                <Bot className="text-purple-400" size={24} />
+              </div>
+              <h3 className="text-xl font-bold text-foreground mb-3 tracking-tight">Smart AI Analysis</h3>
+              <p className="text-muted-foreground leading-relaxed text-sm">Automatically analyzes your JSON responses for security flaws, performance bottlenecks, and REST best practices.</p>
+            </div>
+          </motion.div>
+
+          {/* Card 3: Performance (1 column) */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+            className="relative group overflow-hidden rounded-3xl bg-[#0c0c0e] border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
+          >
+            <div className="absolute right-0 bottom-0 w-32 h-32 flex items-end justify-end p-6 gap-2 opacity-30 group-hover:opacity-100 transition-opacity pointer-events-none">
+              <div className="w-3 h-12 bg-rose-500/80 rounded-t-sm" />
+              <div className="w-3 h-16 bg-amber-500/80 rounded-t-sm" />
+              <div className="w-3 h-24 bg-primary/80 rounded-t-sm" />
+              <div className="w-3 h-8 bg-blue-500/80 rounded-t-sm" />
+            </div>
+            <div className="relative z-10">
+              <div className="w-12 h-12 rounded-xl bg-rose-500/10 flex items-center justify-center mb-6 border border-rose-500/20">
+                <Activity className="text-rose-400" size={24} />
+              </div>
+              <h3 className="text-xl font-bold text-foreground mb-3 tracking-tight">Performance Metrics</h3>
+              <p className="text-muted-foreground leading-relaxed text-sm">Detailed waterfall charts dissecting DNS, TCP, and TLS handshake times for extreme precision optimization.</p>
+            </div>
+          </motion.div>
+
+          {/* Card 4: Collaboration (Spans 2 columns) */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
+            className="md:col-span-2 relative group overflow-hidden rounded-3xl bg-[#0c0c0e] border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
+          >
+            <div className="absolute right-10 top-1/2 -translate-y-1/2 flex -space-x-4 pointer-events-none">
+               <div className="w-16 h-16 rounded-full border-4 border-[#0c0c0e] bg-indigo-500 flex items-center justify-center text-white font-bold text-xl shadow-xl z-30 transform group-hover:-translate-y-2 transition-transform">AS</div>
+               <div className="w-16 h-16 rounded-full border-4 border-[#0c0c0e] bg-rose-500 flex items-center justify-center text-white font-bold text-xl shadow-xl z-20 transform group-hover:translate-y-2 transition-transform duration-500">SA</div>
+               <div className="w-16 h-16 rounded-full border-4 border-[#0c0c0e] bg-emerald-500 flex items-center justify-center text-white font-bold text-xl shadow-xl z-10 transform group-hover:-translate-y-1 transition-transform duration-700">CH</div>
+            </div>
+            <div className="relative z-10 max-w-[55%]">
+              <div className="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center mb-6 border border-indigo-500/20">
+                <Users className="text-indigo-400" size={24} />
+              </div>
+              <h3 className="text-2xl font-bold text-foreground mb-3 tracking-tight">Real-Time Workspaces</h3>
+              <p className="text-muted-foreground leading-relaxed">Invite your entire engineering team. Share endpoints, environments, and response history securely in real-time without ever sending a `.env` file via Slack.</p>
+            </div>
+          </motion.div>
+
+          {/* Card 5: Collections (1 column) */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
+            className="relative group overflow-hidden rounded-3xl bg-gradient-to-tr from-[#101014] to-[#0c0c0e] border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
+          >
+            <div className="relative z-10">
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-6 border border-emerald-500/20 group-hover:scale-110 transition-transform">
+                <Layers className="text-emerald-400" size={24} />
+              </div>
+              <h3 className="text-xl font-bold text-foreground mb-3 tracking-tight">Organized Collections</h3>
+              <p className="text-muted-foreground leading-relaxed text-sm">Save, structure, and document your endpoints securely in the cloud with instant device synchronization.</p>
+            </div>
+          </motion.div>
+
+          {/* Card 6: Multi-Tab (Spans 2 columns) */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.5 }}
+            className="md:col-span-2 relative group overflow-hidden rounded-3xl bg-[#0c0c0e] border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
+          >
+            <div className="absolute top-10 right-10 flex gap-2 pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity">
+              <div className="w-32 h-10 bg-[#121214] border border-border/40 rounded-t-lg flex items-center px-4 transform translate-y-2 z-10">
+                <span className="w-2 h-2 rounded-full bg-rose-500 mr-2"/>
+                <div className="w-12 h-1.5 bg-border/40 rounded-full"/>
+              </div>
+              <div className="w-32 h-10 bg-[#1a1a1d] border-t border-x border-primary/30 rounded-t-lg flex items-center px-4 z-20 shadow-xl">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 mr-2"/>
+                <div className="w-12 h-1.5 bg-primary/40 rounded-full"/>
+              </div>
+              <div className="w-32 h-10 bg-[#121214] border border-border/40 rounded-t-lg flex items-center px-4 transform translate-y-2 z-10">
+                <span className="w-2 h-2 rounded-full bg-blue-500 mr-2"/>
+                <div className="w-12 h-1.5 bg-border/40 rounded-full"/>
+              </div>
+            </div>
+            
+            <div className="relative z-10 max-w-[60%]">
+              <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center mb-6 border border-blue-500/20">
+                <Layout className="text-blue-400" size={24} />
+              </div>
+              <h3 className="text-2xl font-bold text-foreground mb-3 tracking-tight">Multi-Tab Interface</h3>
+              <p className="text-muted-foreground leading-relaxed">Experience a true desktop-class application in the browser. State is preserved across multiple tabs, letting you compare responses and workflows side-by-side without losing data.</p>
+            </div>
+          </motion.div>
+
         </div>
       </section>
 
@@ -334,148 +439,237 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* Right Side: The Dynamic Animated Screen */}
+            {/* Right Side: The Authentic SaaS Application Mockup */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               className="flex-1 w-full"
             >
-              <div className="rounded-2xl bg-background border border-border shadow-[0_0_60px_rgba(var(--primary),0.15)] relative overflow-hidden backdrop-blur-xl h-[450px]">
-                {/* Window decorations */}
-                <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-primary to-primary/40" />
-                <div className="flex gap-2 p-4 border-b border-border/50 bg-muted/50">
-                  <div className="w-3 h-3 rounded-full bg-rose-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-amber-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-primary/80" />
+              <div className="rounded-2xl bg-[#0c0c0e] border border-border/40 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden h-[450px] flex flex-col font-sans ring-1 ring-white/5">
+                {/* Authentic macOS-style Window Header */}
+                <div className="h-12 bg-[#121214] border-b border-border/40 flex items-center px-4 justify-between select-none">
+                  <div className="flex gap-2">
+                    <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
+                    <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
+                    <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
+                  </div>
+                  <div className="flex bg-[#1a1a1d] rounded-md px-3 py-1 items-center justify-center gap-2 border border-border/30 shadow-inner">
+                    <Lock size={12} className="text-muted-foreground" />
+                    <span className="text-xs text-muted-foreground font-mono">api.smartpost.com/workspace</span>
+                  </div>
+                  <div className="w-16 flex justify-end gap-2 text-muted-foreground">
+                    <Menu size={14} />
+                  </div>
                 </div>
 
-                {/* The Animated Viewport */}
-                <div className="p-6 relative h-full w-full">
-                  <AnimatePresence mode="wait">
-                    {/* STEP 0: User providing API */}
-                    {activeStep === 0 && (
-                      <motion.div key="step0" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="h-full flex flex-col justify-center gap-6">
-                        <div className="flex gap-4">
-                          <div className="w-24 h-12 bg-primary/20 text-primary font-bold flex items-center justify-center rounded-lg border border-primary/30">GET</div>
-                          <div className="flex-1 h-12 bg-muted/30 rounded-lg flex items-center px-4 font-mono text-muted-foreground relative overflow-hidden border border-border">
-                            api.smartpost.com/v1/auth
-                            <motion.div animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 0.8 }} className="w-2 h-5 bg-primary ml-1" />
-                          </div>
-                        </div>
-                        <motion.div
-                          animate={{ scale: [1, 1.02, 1], boxShadow: ["0px 0px 0px rgba(var(--primary),0)", "0px 0px 20px rgba(var(--primary),0.5)", "0px 0px 0px rgba(var(--primary),0)"] }}
-                          transition={{ duration: 1.5, repeat: Infinity, delay: 1 }}
-                          className="w-full h-12 bg-primary text-primary-foreground font-bold flex items-center justify-center rounded-lg shadow-lg self-end"
-                        >
-                          <Play size={18} fill="currentColor" className="mr-2" /> SEND REQUEST
-                        </motion.div>
-                      </motion.div>
-                    )}
+                {/* Application Body */}
+                <div className="flex-1 relative flex">
+                  {/* Minimal Sidebar */}
+                  <div className="w-14 border-r border-border/40 bg-[#121214] flex flex-col items-center py-4 gap-6 text-muted-foreground/50">
+                    <Search size={18} className="hover:text-primary transition-colors cursor-pointer" />
+                    <Activity size={18} className="text-primary cursor-pointer" />
+                    <Workflow size={18} className="hover:text-primary transition-colors cursor-pointer" />
+                    <Bot size={18} className="hover:text-primary transition-colors cursor-pointer" />
+                  </div>
 
-                    {/* STEP 1: Analyze Performance */}
-                    {activeStep === 1 && (
-                      <motion.div key="step1" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="h-full flex flex-col">
-                        <div className="flex justify-between items-end mb-8">
-                          <div>
-                            <p className="text-muted-foreground text-sm font-medium mb-1">Status Code</p>
-                            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} type="spring" className="inline-block px-4 py-2 bg-primary/20 border border-primary/50 text-primary font-bold rounded-lg text-2xl">
-                              200 OK
-                            </motion.div>
-                          </div>
-                          <div className="text-right">
-                            <p className="text-muted-foreground text-sm font-medium mb-1">Latency</p>
-                            <div className="text-3xl font-mono text-foreground flex items-center">
-                              <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>45</motion.span>
-                              <span className="text-primary ml-1">ms</span>
+                  {/* Main Content Area */}
+                  <div className="flex-1 relative bg-[#0c0c0e] overflow-hidden">
+                    <AnimatePresence mode="wait">
+                      {/* STEP 0: Request Builder */}
+                      {activeStep === 0 && (
+                        <motion.div key="step0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="h-full flex flex-col p-5">
+                          <div className="flex gap-3 mb-6">
+                            <div className="w-20 h-10 bg-emerald-500/10 text-emerald-500 font-semibold text-sm flex items-center justify-center rounded-md border border-emerald-500/20">GET</div>
+                            <div className="flex-1 h-10 bg-[#1a1a1d] rounded-md flex items-center px-3 font-mono text-sm text-foreground/90 border border-border/30 shadow-inner">
+                              <span className="text-muted-foreground/60 mr-1">https://</span>
+                              api.example.com/v1/users
+                              <motion.div animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 1 }} className="w-1.5 h-4 bg-primary ml-1" />
+                            </div>
+                            <div className="h-10 px-6 bg-primary text-primary-foreground font-medium text-sm flex items-center justify-center rounded-md shadow-lg shadow-primary/20">
+                              Send
                             </div>
                           </div>
-                        </div>
-                        <div className="space-y-4 space-w-full">
-                          <p className="text-muted-foreground text-sm font-medium mb-2">Analyzing Payload Structure...</p>
-                          <div className="w-full bg-muted rounded-full h-3">
-                            <motion.div initial={{ width: "0%" }} animate={{ width: "100%" }} transition={{ duration: 1.5, ease: "easeOut" }} className="bg-primary h-3 rounded-full" />
+                          <div className="flex text-xs text-muted-foreground border-b border-border/40 mb-4 select-none">
+                            <div className="px-4 py-2 border-b-2 border-primary text-foreground">Headers (3)</div>
+                            <div className="px-4 py-2">Params</div>
+                            <div className="px-4 py-2">Auth</div>
+                            <div className="px-4 py-2">Body</div>
                           </div>
-                          <div className="w-full bg-muted rounded-full h-3">
-                            <motion.div initial={{ width: "0%" }} animate={{ width: "80%" }} transition={{ duration: 1.8, ease: "easeOut", delay: 0.2 }} className="bg-primary/50 h-3 rounded-full" />
+                          <div className="space-y-3 font-mono text-xs">
+                            <div className="flex border-b border-border/10 pb-2 hover:bg-white/5 px-2 rounded transition-colors">
+                              <div className="w-1/3 text-emerald-400">Authorization</div>
+                              <div className="flex-1 text-muted-foreground truncate">Bearer token_xyz...</div>
+                            </div>
+                            <div className="flex border-b border-border/10 pb-2 hover:bg-white/5 px-2 rounded transition-colors">
+                              <div className="w-1/3 text-emerald-400">Content-Type</div>
+                              <div className="flex-1 text-muted-foreground">application/json</div>
+                            </div>
+                            <div className="flex pb-2 hover:bg-white/5 px-2 rounded transition-colors">
+                              <div className="w-1/3 text-emerald-400">Accept</div>
+                              <div className="flex-1 text-muted-foreground">*/*</div>
+                            </div>
                           </div>
-                          <div className="w-full bg-muted rounded-full h-3">
-                            <motion.div initial={{ width: "0%" }} animate={{ width: "65%" }} transition={{ duration: 2, ease: "easeOut", delay: 0.4 }} className="bg-amber-500/50 h-3 rounded-full" />
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-
-                    {/* STEP 2: AI Analysis */}
-                    {activeStep === 2 && (
-                      <motion.div key="step2" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="h-full border border-primary/20 bg-primary/5 rounded-xl p-6 relative">
-                        <div className="flex items-center gap-3 mb-6 pb-4 border-b border-primary/20">
-                          <motion.div animate={{ rotate: [0, 15, -15, 0] }} transition={{ repeat: Infinity, duration: 2 }} className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-primary-foreground">
-                            <Bot size={24} />
-                          </motion.div>
-                          <div>
-                            <h4 className="font-bold text-foreground">SmartPost AI Analysis</h4>
-                            <p className="text-xs text-primary flex items-center gap-1"><Sparkles size={10} /> Analysis Complete</p>
-                          </div>
-                        </div>
-                        <div className="space-y-3 font-mono text-sm">
-                          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }} className="text-primary/80">
-                            &gt; Structure validated against schema.
-                          </motion.div>
-                          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.2 }} className="text-amber-500/80">
-                            &gt; Warning: 'user_id' parameter lacks strong typing.
-                          </motion.div>
-                          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.9 }} className="text-primary/80">
-                            &gt; Security headers are properly configured.
-                          </motion.div>
-                          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 2.6 }} className="text-foreground mt-4 border-l-2 border-primary pl-3">
-                            "The endpoint is healthy! Consider adding rate limiting to prevent abuse."
-                          </motion.div>
-                        </div>
-                      </motion.div>
-                    )}
-
-                    {/* STEP 3: Collaborative Workspace */}
-                    {activeStep === 3 && (
-                      <motion.div key="step3" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="h-full relative bg-muted/20 rounded-xl border border-border p-4">
-
-                        <div className="flex justify-between border-b border-border/50 pb-2 mb-4">
-                          <span className="text-muted-foreground font-medium text-sm">Team Activity</span>
-                          <div className="flex -space-x-2">
-                            <div className="w-6 h-6 rounded-full bg-rose-500 border-2 border-background" />
-                            <div className="w-6 h-6 rounded-full bg-indigo-500 border-2 border-background" />
-                            <div className="w-6 h-6 rounded-full bg-primary border-2 border-background" />
-                          </div>
-                        </div>
-
-                        <div className="font-mono text-sm text-muted-foreground space-y-2">
-                          <div>{`{`}</div>
-                          <div className="pl-4">"user": "active",</div>
-                          <div className="pl-4">"permissions": ["read", "write"]</div>
-                          <div>{`}`}</div>
-                        </div>
-
-                        {/* Mock Cursors from teammates */}
-                        <motion.div
-                          animate={{ x: [0, 150, 50, 200, 0], y: [0, 100, 50, 150, 0] }}
-                          transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-                          className="absolute top-10 left-10 flex flex-col items-center pointer-events-none"
-                        >
-                          <MousePointer2 fill="rgba(var(--primary), 1)" color="rgba(var(--primary-foreground), 1)" size={24} className="-rotate-12 drop-shadow-lg" />
-                          <span className="bg-primary text-[10px] text-primary-foreground font-bold px-2 py-0.5 rounded shadow-lg -mt-1 ml-4">Alice</span>
                         </motion.div>
+                      )}
 
-                        <motion.div
-                          animate={{ x: [200, 50, 120, 20, 200], y: [150, 20, 120, 50, 150] }}
-                          transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-                          className="absolute top-10 left-10 flex flex-col items-center pointer-events-none"
-                        >
-                          <MousePointer2 fill="#6366f1" color="#f8fafc" size={24} className="-rotate-12 drop-shadow-lg" />
-                          <span className="bg-indigo-500 text-[10px] text-slate-50 font-bold px-2 py-0.5 rounded shadow-lg -mt-1 ml-4">Bob (Typing...)</span>
+                      {/* STEP 1: Performance */}
+                      {activeStep === 1 && (
+                        <motion.div key="step1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="h-full flex flex-col p-5">
+                          <div className="flex items-center gap-8 mb-6 pb-5 border-b border-border/40">
+                            <div>
+                              <div className="text-xs text-muted-foreground mb-1 uppercase tracking-wider font-semibold">Status</div>
+                              <div className="flex items-center gap-2 text-emerald-500 font-mono text-xl">
+                                <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse" /> 200 OK
+                              </div>
+                            </div>
+                            <div>
+                              <div className="text-xs text-muted-foreground mb-1 uppercase tracking-wider font-semibold">Time</div>
+                              <div className="text-foreground font-mono text-xl">45 <span className="text-sm text-muted-foreground">ms</span></div>
+                            </div>
+                            <div>
+                              <div className="text-xs text-muted-foreground mb-1 uppercase tracking-wider font-semibold">Size</div>
+                              <div className="text-foreground font-mono text-xl">2.4 <span className="text-sm text-muted-foreground">KB</span></div>
+                            </div>
+                          </div>
+                          <div className="flex-1 relative">
+                            <div className="text-xs text-muted-foreground mb-4 font-semibold uppercase tracking-wider">Request Timeline</div>
+                            <div className="space-y-4">
+                              {[
+                                { label: 'DNS Lookup', width: '15%', color: 'bg-indigo-500', time: '12ms' },
+                                { label: 'TCP Connection', width: '25%', color: 'bg-blue-500', time: '22ms' },
+                                { label: 'TLS Handshake', width: '40%', color: 'bg-purple-500', time: '35ms' },
+                                { label: 'First Byte', width: '80%', color: 'bg-emerald-500', time: '42ms' },
+                                { label: 'Download', width: '100%', color: 'bg-primary', time: '45ms' }
+                              ].map((bar, i) => (
+                                <div key={i} className="flex items-center text-xs">
+                                  <div className="w-28 text-muted-foreground font-medium">{bar.label}</div>
+                                  <div className="flex-1 h-1.5 bg-[#1a1a1d] rounded-full overflow-hidden flex border border-border/10">
+                                    <motion.div 
+                                      initial={{ width: 0 }} 
+                                      animate={{ width: bar.width }} 
+                                      transition={{ duration: 0.8, delay: i * 0.15, ease: "easeOut" }} 
+                                      className={`h-full ${bar.color} shadow-[0_0_10px_currentColor]`} 
+                                    />
+                                  </div>
+                                  <div className="w-12 text-right text-muted-foreground font-mono">{bar.time}</div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
                         </motion.div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                      )}
+
+                      {/* STEP 2: AI Analysis */}
+                      {activeStep === 2 && (
+                        <motion.div key="step2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="h-full flex flex-col md:flex-row">
+                          <div className="flex-1 p-5 border-r border-border/40 font-mono text-[11px] sm:text-xs overflow-hidden relative">
+                            <div className="text-muted-foreground mb-3 font-sans font-medium text-xs border-b border-border/20 pb-2">response.json</div>
+                            <div className="text-[#e5e5e5] leading-relaxed">
+                              <div><span className="text-yellow-300">{`{`}</span></div>
+                              <div className="pl-4"><span className="text-emerald-400">"status"</span>: <span className="text-blue-400">"success"</span>,</div>
+                              <div className="pl-4"><span className="text-emerald-400">"data"</span>: <span className="text-purple-400">{`[`}</span></div>
+                              <div className="pl-8"><span className="text-pink-400">{`{`}</span></div>
+                              <motion.div 
+                                animate={{ backgroundColor: ["rgba(239, 68, 68, 0)", "rgba(239, 68, 68, 0.15)", "rgba(239, 68, 68, 0)"] }} 
+                                transition={{ duration: 2, repeat: Infinity }}
+                                className="pl-12 py-0.5 -ml-1 px-1 rounded border border-transparent"
+                                style={{ borderColor: 'rgba(239, 68, 68, 0.2)' }}
+                              >
+                                <span className="text-emerald-400">"email"</span>: <span className="text-blue-400">"admin@example.com"</span>
+                              </motion.div>
+                              <div className="pl-12"><span className="text-emerald-400">"role"</span>: <span className="text-blue-400">"superuser"</span></div>
+                              <div className="pl-8"><span className="text-pink-400">{`}`}</span></div>
+                              <div className="pl-4"><span className="text-purple-400">{`]`}</span></div>
+                              <div><span className="text-yellow-300">{`}`}</span></div>
+                            </div>
+                          </div>
+                          <div className="w-1/2 bg-[#101012] p-5 flex flex-col gap-4">
+                            <div className="flex items-center gap-2 text-primary border-b border-border/20 pb-2">
+                              <Bot size={16} />
+                              <span className="font-semibold text-sm">Smart Analysis</span>
+                            </div>
+                            <motion.div 
+                              initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+                              className="bg-red-500/10 border border-red-500/20 p-3 rounded-lg text-xs relative overflow-hidden"
+                            >
+                              <div className="absolute top-0 left-0 w-1 h-full bg-red-500" />
+                              <div className="text-red-400 font-bold mb-1 ml-1">Security Warning</div>
+                              <div className="text-muted-foreground ml-1">Sensitive data (email) exposed in unprotected endpoint. Consider masking.</div>
+                            </motion.div>
+                            <motion.div 
+                              initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.8 }}
+                              className="bg-emerald-500/10 border border-emerald-500/20 p-3 rounded-lg text-xs relative overflow-hidden"
+                            >
+                              <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500" />
+                              <div className="text-emerald-400 font-bold mb-1 ml-1">Best Practice</div>
+                              <div className="text-muted-foreground ml-1">Response time is excellent. Consider paginating 'data' array for scale.</div>
+                            </motion.div>
+                          </div>
+                        </motion.div>
+                      )}
+
+                      {/* STEP 3: Collaboration */}
+                      {activeStep === 3 && (
+                        <motion.div key="step3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="h-full p-5 relative font-mono text-[11px] sm:text-xs">
+                          <div className="flex justify-between items-center mb-5 border-b border-border/40 pb-3 font-sans">
+                            <div className="text-muted-foreground font-medium text-xs flex items-center gap-2">
+                              <Users size={14} /> collection / auth.json
+                            </div>
+                            <div className="flex -space-x-2">
+                              <div className="w-7 h-7 rounded-full bg-rose-500 flex items-center justify-center text-[10px] font-bold text-white border-2 border-[#0c0c0e] z-20 shadow-md">AS</div>
+                              <div className="w-7 h-7 rounded-full bg-indigo-500 flex items-center justify-center text-[10px] font-bold text-white border-2 border-[#0c0c0e] z-10 shadow-md">SA</div>
+                            </div>
+                          </div>
+
+                          <div className="text-[#e5e5e5] space-y-1.5 leading-relaxed bg-[#121214] p-4 rounded-lg border border-border/20 shadow-inner">
+                            <div><span className="text-yellow-300">{`{`}</span></div>
+                            <div className="pl-4"><span className="text-emerald-400">"name"</span>: <span className="text-blue-400">"Login Request"</span>,</div>
+                            <div className="pl-4"><span className="text-emerald-400">"method"</span>: <span className="text-blue-400">"POST"</span>,</div>
+                            <div className="pl-4"><span className="text-emerald-400">"body"</span>: <span className="text-purple-400">{`{`}</span></div>
+                            
+                            <div className="pl-8 relative inline-block group mt-1">
+                              <span className="text-emerald-400">"username"</span>: <span className="text-blue-400">{'"{{username}}"'}</span>
+                              {/* Cursor 1 */}
+                              <motion.div 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: [1, 0, 1] }} 
+                                transition={{ repeat: Infinity, duration: 1 }}
+                                className="absolute -right-[1px] top-[2px] bottom-[2px] w-[2px] bg-rose-500 shadow-[0_0_5px_#f43f5e]"
+                              />
+                              <motion.div 
+                                initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+                                className="absolute -top-6 -right-6 bg-rose-500 text-white font-sans text-[10px] px-2 py-0.5 rounded shadow-lg z-10 font-medium tracking-wide"
+                              >
+                                Ashish
+                              </motion.div>
+                            </div>
+                            <br/>
+                            
+                            <div className="pl-8 relative inline-block mt-2">
+                              <span className="text-emerald-400">"password"</span>: <span className="text-blue-400">{'"{{password}}"'}</span>
+                              {/* Cursor 2 */}
+                              <motion.div 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: [1, 0, 1] }} 
+                                transition={{ repeat: Infinity, duration: 1, delay: 0.5 }}
+                                className="absolute -right-[1px] top-[2px] bottom-[2px] w-[2px] bg-indigo-500 shadow-[0_0_5px_#6366f1]"
+                              />
+                              <motion.div 
+                                initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1 }}
+                                className="absolute -bottom-6 -right-5 bg-indigo-500 text-white font-sans text-[10px] px-2 py-0.5 rounded shadow-lg z-10 font-medium tracking-wide"
+                              >
+                                Saurabh
+                              </motion.div>
+                            </div>
+                            
+                            <div className="pl-4 mt-1"><span className="text-purple-400">{`}`}</span></div>
+                            <div><span className="text-yellow-300">{`}`}</span></div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -484,31 +678,36 @@ export default function Home() {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Simple, Transparent Pricing</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">Start instantly for free. No credit card required.</p>
+      <section id="pricing" className="py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
+        <div className="text-center mb-20">
+          <h2 className="text-4xl md:text-5xl font-extrabold text-foreground mb-6 tracking-tight">Simple, Transparent Pricing</h2>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">Start instantly for free. No credit card required. Upgrade when you need team power.</p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {/* Free Tier */}
+        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          {/* Developer Tier */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="p-8 rounded-3xl bg-card/40 backdrop-blur-xl border border-border"
+            className="p-10 rounded-3xl bg-[#0c0c0e] border border-border/40 hover:border-border/80 transition-all flex flex-col relative overflow-hidden"
           >
-            <h3 className="text-2xl font-bold text-foreground mb-2">Developer</h3>
-            <p className="text-muted-foreground mb-6">Perfect for individual developers.</p>
-            <div className="text-4xl font-extrabold text-foreground mb-8">₹0 <span className="text-lg font-normal text-muted-foreground">/ forever</span></div>
-            <ul className="space-y-4 mb-8">
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold text-foreground mb-2">Developer</h3>
+              <p className="text-muted-foreground text-sm">Perfect for individual developers.</p>
+            </div>
+            <div className="text-5xl font-extrabold text-foreground mb-10 tracking-tight">₹0 <span className="text-lg font-medium text-muted-foreground tracking-normal">/ forever</span></div>
+            <ul className="space-y-5 mb-10 flex-1">
               {['4 Free API Performance Tests', 'Basic API Requests', 'Local History', 'Standard Network Proxy'].map((item, i) => (
-                <li key={i} className="flex gap-3 items-center text-foreground/80">
-                  <CheckCircle size={18} className="text-primary" /> {item}
+                <li key={i} className="flex gap-4 items-center text-foreground/80 font-medium">
+                  <div className="w-6 h-6 rounded-full bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
+                    <CheckCircle size={14} className="text-emerald-500" />
+                  </div>
+                  {item}
                 </li>
               ))}
             </ul>
-            <Link to="/register" className="block w-full text-center py-3 rounded-xl font-semibold bg-primary/10 border border-primary/20 text-primary hover:bg-primary/20 transition-colors">
+            <Link to="/register" className="block w-full text-center py-4 rounded-xl font-bold bg-[#121214] border border-border/50 text-foreground hover:bg-[#1a1a1d] hover:border-border transition-all">
               Get Started Free
             </Link>
           </motion.div>
@@ -519,19 +718,32 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="p-8 rounded-3xl bg-gradient-to-b from-card to-background backdrop-blur-xl border border-primary/30 relative overflow-hidden shadow-2xl shadow-primary/10"
+            className="p-10 rounded-3xl bg-[#0c0c0e] border border-primary/50 relative overflow-hidden flex flex-col shadow-[0_0_50px_rgba(16,185,129,0.15)] transform md:-translate-y-4"
           >
-            <h3 className="text-2xl font-bold text-foreground mb-2">Pro</h3>
-            <p className="text-muted-foreground mb-6">For teams requiring deep analysis.</p>
-            <div className="text-4xl font-extrabold text-foreground mb-8">₹100 <span className="text-lg font-normal text-muted-foreground">/ year</span></div>
-            <ul className="space-y-4 mb-8">
-              {['Unlimited Performance Analyzer', 'Team Collaboration', 'Create Multiple Workspaces', 'Priority Support'].map((item, i) => (
-                <li key={i} className="flex gap-3 items-center text-foreground/80">
-                  <CheckCircle size={18} className="text-primary" /> {item}
+            {/* Absolute Glow Background */}
+            <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-gradient-to-bl from-primary/20 to-transparent blur-3xl pointer-events-none" />
+            
+            {/* Badge */}
+            <div className="absolute top-0 right-8 bg-primary text-primary-foreground text-xs font-bold px-3 py-1.5 rounded-b-lg shadow-lg">
+              MOST POPULAR
+            </div>
+
+            <div className="mb-8 relative z-10">
+              <h3 className="text-2xl font-bold text-foreground mb-2 flex items-center gap-2">Pro</h3>
+              <p className="text-primary/80 text-sm font-medium">For teams requiring deep analysis.</p>
+            </div>
+            <div className="text-5xl font-extrabold text-foreground mb-10 tracking-tight relative z-10">₹100 <span className="text-lg font-medium text-muted-foreground tracking-normal">/ year</span></div>
+            <ul className="space-y-5 mb-10 flex-1 relative z-10">
+              {['Unlimited Performance Analyzer', 'Team Collaboration Workspaces', 'Create Multiple Workspaces', 'Priority Technical Support'].map((item, i) => (
+                <li key={i} className="flex gap-4 items-center text-foreground font-medium">
+                  <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                    <CheckCircle size={14} className="text-primary" />
+                  </div>
+                  {item}
                 </li>
               ))}
             </ul>
-            <Link to="/register" className="block w-full text-center py-3 rounded-xl font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20 hover:shadow-primary/40">
+            <Link to="/register" className="block w-full text-center py-4 rounded-xl font-bold bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] relative z-10">
               Get Started Pro
             </Link>
           </motion.div>
