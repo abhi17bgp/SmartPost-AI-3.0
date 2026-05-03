@@ -185,28 +185,6 @@ exports.register = catchAsync(async (req, res, next) => {
               <p class="button-note">This link expires in 24 hours</p>
             </div>
             
-            <h2 style="font-size: 17px; margin-top: 32px; color: #09090b;">What you can do after verifying</h2>
-            <div class="steps">
-              <div class="step">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                  <p><strong>Create Workspaces</strong> — Set up project-specific environments for your API testing</p>
-                </div>
-              </div>
-              <div class="step">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                  <p><strong>Build & Test Requests</strong> — Create and manage API requests with advanced testing capabilities</p>
-                </div>
-              </div>
-              <div class="step">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                  <p><strong>Collaborate</strong> — Invite team members and work together in real-time</p>
-                </div>
-              </div>
-            </div>
-            
             <p style="font-size: 13px; color: #a1a1aa; margin-top: 24px;">If you did not create this account, you can safely ignore this email. Your account will not be activated unless you verify.</p>
           </div>
           <div class="footer">
