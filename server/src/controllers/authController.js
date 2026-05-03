@@ -101,11 +101,18 @@ const registerSchema = z.object({
 });
 
 exports.register = catchAsync(async (req, res, next) => {
+  const email = req.body.email.toLowerCase();
+  
+  // Grant 1-year Pro access to students automatically
+  const isStudent = email.endsWith('.ac.in') || email.endsWith('.edu.in') || email.endsWith('.edu');
+
   const newUser = await User.create({
     name: req.body.name,
-    email: req.body.email,
+    email: email,
     password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm
+    passwordConfirm: req.body.passwordConfirm,
+    isSubscribed: isStudent,
+    subscriptionExpiresAt: isStudent ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) : undefined
   });
 
   // Generate verification token
@@ -220,7 +227,8 @@ exports.register = catchAsync(async (req, res, next) => {
 
     res.status(201).json({
       status: 'success',
-      message: 'Registration successful! Verification email sent.'
+      message: 'Registration successful! Verification email sent.',
+      isStudent: isStudent
     });
   } catch (err) {
     console.error("SendGrid Verification Error: ", err);

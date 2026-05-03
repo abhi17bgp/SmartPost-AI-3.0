@@ -32,11 +32,18 @@ const Register = () => {
         register({ name, email, password, passwordConfirm: confirmPassword }),
         {
           loading: 'Creating account...',
-          success: 'Registration successful!',
+          success: (res) => res.data?.isStudent ? '🎉 Student Account Created! Pro Unlocked!' : 'Registration successful!',
           error: (err) => err.response?.data?.message || 'Registration failed. Please try again.'
         }
       );
-      setSuccessMsg(res.data.message || 'Registration Successful! Check your email to verify your account.');
+      
+      if (res.data?.isStudent) {
+        toast.success('1-Year Pro Subscription automatically applied to your student account!', { duration: 5000, icon: '🎓' });
+        setSuccessMsg('🎓 Student Account Created! 1-Year Pro Subscription unlocked. Check your student email to verify your account and activate Pro features.');
+      } else {
+        setSuccessMsg(res.data.message || 'Registration Successful! Check your email to verify your account.');
+      }
+      
       setName('');
       setEmail('');
       setPassword('');
