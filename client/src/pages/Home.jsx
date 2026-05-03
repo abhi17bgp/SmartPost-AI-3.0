@@ -271,11 +271,11 @@ export default function Home() {
           {/* Card 1: API Engine (Spans 2 columns) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="md:col-span-2 relative group overflow-hidden rounded-3xl bg-[#0c0c0e] border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
+            className="md:col-span-2 relative group overflow-hidden rounded-3xl bg-card border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
           >
             <div className="absolute top-0 right-0 w-[400px] h-[300px] bg-gradient-to-bl from-amber-500/10 via-transparent to-transparent opacity-50 blur-3xl pointer-events-none" />
-            <div className="absolute -right-10 -bottom-10 w-[300px] h-[200px] border border-border/20 rounded-2xl bg-[#121214] shadow-2xl rotate-[-5deg] group-hover:rotate-[-2deg] transition-transform duration-500 overflow-hidden flex flex-col">
-              <div className="h-8 border-b border-border/20 flex items-center px-3 gap-2 bg-[#0c0c0e]">
+            <div className="absolute -right-10 -bottom-10 w-[300px] h-[200px] border border-border/20 rounded-2xl bg-muted shadow-2xl rotate-[-5deg] group-hover:rotate-[-2deg] transition-transform duration-500 overflow-hidden flex flex-col">
+              <div className="h-8 border-b border-border/20 flex items-center px-3 gap-2 bg-card">
                 <div className="w-2 h-2 rounded-full bg-rose-500/80" /><div className="w-2 h-2 rounded-full bg-amber-500/80" /><div className="w-2 h-2 rounded-full bg-emerald-500/80" />
               </div>
               <div className="p-4 space-y-2">
@@ -298,7 +298,7 @@ export default function Home() {
           {/* Card 2: AI Analysis (1 column) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-            className="relative group overflow-hidden rounded-3xl bg-gradient-to-b from-[#101014] to-[#0c0c0e] border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
+            className="relative group overflow-hidden rounded-3xl bg-gradient-to-b from-card/80 to-card border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
           >
             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:20px_20px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
             <div className="relative z-10">
@@ -313,7 +313,7 @@ export default function Home() {
           {/* Card 3: Performance (1 column) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-            className="relative group overflow-hidden rounded-3xl bg-[#0c0c0e] border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
+            className="relative group overflow-hidden rounded-3xl bg-card border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
           >
             <div className="absolute right-0 bottom-0 w-32 h-32 flex items-end justify-end p-6 gap-2 opacity-30 group-hover:opacity-100 transition-opacity pointer-events-none">
               <div className="w-3 h-12 bg-rose-500/80 rounded-t-sm" />
@@ -333,12 +333,12 @@ export default function Home() {
           {/* Card 4: Collaboration (Spans 2 columns) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
-            className="md:col-span-2 relative group overflow-hidden rounded-3xl bg-[#0c0c0e] border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
+            className="md:col-span-2 relative group overflow-hidden rounded-3xl bg-card border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
           >
             <div className="absolute right-10 top-1/2 -translate-y-1/2 flex -space-x-4 pointer-events-none">
-               <div className="w-16 h-16 rounded-full border-4 border-[#0c0c0e] bg-indigo-500 flex items-center justify-center text-white font-bold text-xl shadow-xl z-30 transform group-hover:-translate-y-2 transition-transform">AS</div>
-               <div className="w-16 h-16 rounded-full border-4 border-[#0c0c0e] bg-rose-500 flex items-center justify-center text-white font-bold text-xl shadow-xl z-20 transform group-hover:translate-y-2 transition-transform duration-500">SA</div>
-               <div className="w-16 h-16 rounded-full border-4 border-[#0c0c0e] bg-emerald-500 flex items-center justify-center text-white font-bold text-xl shadow-xl z-10 transform group-hover:-translate-y-1 transition-transform duration-700">CH</div>
+               <div className="w-16 h-16 rounded-full border-4 border-card bg-indigo-500 flex items-center justify-center text-white font-bold text-xl shadow-xl z-30 transform group-hover:-translate-y-2 transition-transform">AS</div>
+               <div className="w-16 h-16 rounded-full border-4 border-card bg-rose-500 flex items-center justify-center text-white font-bold text-xl shadow-xl z-20 transform group-hover:translate-y-2 transition-transform duration-500">SA</div>
+               <div className="w-16 h-16 rounded-full border-4 border-card bg-emerald-500 flex items-center justify-center text-white font-bold text-xl shadow-xl z-10 transform group-hover:-translate-y-1 transition-transform duration-700">CH</div>
             </div>
             <div className="relative z-10 max-w-[55%]">
               <div className="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center mb-6 border border-indigo-500/20">
@@ -352,7 +352,7 @@ export default function Home() {
           {/* Card 5: Collections (1 column) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
-            className="relative group overflow-hidden rounded-3xl bg-gradient-to-tr from-[#101014] to-[#0c0c0e] border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
+            className="relative group overflow-hidden rounded-3xl bg-gradient-to-tr from-card/80 to-card border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
           >
             <div className="relative z-10">
               <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-6 border border-emerald-500/20 group-hover:scale-110 transition-transform">
@@ -366,18 +366,18 @@ export default function Home() {
           {/* Card 6: Multi-Tab (Spans 2 columns) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.5 }}
-            className="md:col-span-2 relative group overflow-hidden rounded-3xl bg-[#0c0c0e] border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
+            className="md:col-span-2 relative group overflow-hidden rounded-3xl bg-card border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
           >
             <div className="absolute top-10 right-10 flex gap-2 pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity">
-              <div className="w-32 h-10 bg-[#121214] border border-border/40 rounded-t-lg flex items-center px-4 transform translate-y-2 z-10">
+              <div className="w-32 h-10 bg-muted border border-border/40 rounded-t-lg flex items-center px-4 transform translate-y-2 z-10">
                 <span className="w-2 h-2 rounded-full bg-rose-500 mr-2"/>
                 <div className="w-12 h-1.5 bg-border/40 rounded-full"/>
               </div>
-              <div className="w-32 h-10 bg-[#1a1a1d] border-t border-x border-primary/30 rounded-t-lg flex items-center px-4 z-20 shadow-xl">
+              <div className="w-32 h-10 bg-accent border-t border-x border-primary/30 rounded-t-lg flex items-center px-4 z-20 shadow-xl">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 mr-2"/>
                 <div className="w-12 h-1.5 bg-primary/40 rounded-full"/>
               </div>
-              <div className="w-32 h-10 bg-[#121214] border border-border/40 rounded-t-lg flex items-center px-4 transform translate-y-2 z-10">
+              <div className="w-32 h-10 bg-muted border border-border/40 rounded-t-lg flex items-center px-4 transform translate-y-2 z-10">
                 <span className="w-2 h-2 rounded-full bg-blue-500 mr-2"/>
                 <div className="w-12 h-1.5 bg-border/40 rounded-full"/>
               </div>
@@ -446,15 +446,15 @@ export default function Home() {
               viewport={{ once: true }}
               className="flex-1 w-full"
             >
-              <div className="rounded-2xl bg-[#0c0c0e] border border-border/40 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden h-[450px] flex flex-col font-sans ring-1 ring-white/5">
+              <div className="rounded-2xl bg-card border border-border/40 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden h-[450px] flex flex-col font-sans ring-1 ring-white/5">
                 {/* Authentic macOS-style Window Header */}
-                <div className="h-12 bg-[#121214] border-b border-border/40 flex items-center px-4 justify-between select-none">
+                <div className="h-12 bg-muted border-b border-border/40 flex items-center px-4 justify-between select-none">
                   <div className="flex gap-2">
                     <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
                     <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
                     <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
                   </div>
-                  <div className="flex bg-[#1a1a1d] rounded-md px-3 py-1 items-center justify-center gap-2 border border-border/30 shadow-inner">
+                  <div className="flex bg-accent rounded-md px-3 py-1 items-center justify-center gap-2 border border-border/30 shadow-inner">
                     <Lock size={12} className="text-muted-foreground" />
                     <span className="text-xs text-muted-foreground font-mono">api.smartpost.com/workspace</span>
                   </div>
@@ -466,7 +466,7 @@ export default function Home() {
                 {/* Application Body */}
                 <div className="flex-1 relative flex">
                   {/* Minimal Sidebar */}
-                  <div className="w-14 border-r border-border/40 bg-[#121214] flex flex-col items-center py-4 gap-6 text-muted-foreground/50">
+                  <div className="w-14 border-r border-border/40 bg-muted flex flex-col items-center py-4 gap-6 text-muted-foreground/50">
                     <Search size={18} className="hover:text-primary transition-colors cursor-pointer" />
                     <Activity size={18} className="text-primary cursor-pointer" />
                     <Workflow size={18} className="hover:text-primary transition-colors cursor-pointer" />
@@ -474,14 +474,14 @@ export default function Home() {
                   </div>
 
                   {/* Main Content Area */}
-                  <div className="flex-1 relative bg-[#0c0c0e] overflow-hidden">
+                  <div className="flex-1 relative bg-card overflow-hidden">
                     <AnimatePresence mode="wait">
                       {/* STEP 0: Request Builder */}
                       {activeStep === 0 && (
                         <motion.div key="step0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="h-full flex flex-col p-5">
                           <div className="flex gap-3 mb-6">
                             <div className="w-20 h-10 bg-emerald-500/10 text-emerald-500 font-semibold text-sm flex items-center justify-center rounded-md border border-emerald-500/20">GET</div>
-                            <div className="flex-1 h-10 bg-[#1a1a1d] rounded-md flex items-center px-3 font-mono text-sm text-foreground/90 border border-border/30 shadow-inner">
+                            <div className="flex-1 h-10 bg-accent rounded-md flex items-center px-3 font-mono text-sm text-foreground/90 border border-border/30 shadow-inner">
                               <span className="text-muted-foreground/60 mr-1">https://</span>
                               api.example.com/v1/users
                               <motion.div animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 1 }} className="w-1.5 h-4 bg-primary ml-1" />
@@ -544,7 +544,7 @@ export default function Home() {
                               ].map((bar, i) => (
                                 <div key={i} className="flex items-center text-xs">
                                   <div className="w-28 text-muted-foreground font-medium">{bar.label}</div>
-                                  <div className="flex-1 h-1.5 bg-[#1a1a1d] rounded-full overflow-hidden flex border border-border/10">
+                                  <div className="flex-1 h-1.5 bg-accent rounded-full overflow-hidden flex border border-border/10">
                                     <motion.div 
                                       initial={{ width: 0 }} 
                                       animate={{ width: bar.width }} 
@@ -565,7 +565,7 @@ export default function Home() {
                         <motion.div key="step2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="h-full flex flex-col md:flex-row">
                           <div className="flex-1 p-5 border-r border-border/40 font-mono text-[11px] sm:text-xs overflow-hidden relative">
                             <div className="text-muted-foreground mb-3 font-sans font-medium text-xs border-b border-border/20 pb-2">response.json</div>
-                            <div className="text-[#e5e5e5] leading-relaxed">
+                            <div className="text-foreground/90 leading-relaxed">
                               <div><span className="text-yellow-300">{`{`}</span></div>
                               <div className="pl-4"><span className="text-emerald-400">"status"</span>: <span className="text-blue-400">"success"</span>,</div>
                               <div className="pl-4"><span className="text-emerald-400">"data"</span>: <span className="text-purple-400">{`[`}</span></div>
@@ -584,7 +584,7 @@ export default function Home() {
                               <div><span className="text-yellow-300">{`}`}</span></div>
                             </div>
                           </div>
-                          <div className="w-1/2 bg-[#101012] p-5 flex flex-col gap-4">
+                          <div className="w-1/2 bg-muted/50 p-5 flex flex-col gap-4">
                             <div className="flex items-center gap-2 text-primary border-b border-border/20 pb-2">
                               <Bot size={16} />
                               <span className="font-semibold text-sm">Smart Analysis</span>
@@ -617,12 +617,12 @@ export default function Home() {
                               <Users size={14} /> collection / auth.json
                             </div>
                             <div className="flex -space-x-2">
-                              <div className="w-7 h-7 rounded-full bg-rose-500 flex items-center justify-center text-[10px] font-bold text-white border-2 border-[#0c0c0e] z-20 shadow-md">AS</div>
-                              <div className="w-7 h-7 rounded-full bg-indigo-500 flex items-center justify-center text-[10px] font-bold text-white border-2 border-[#0c0c0e] z-10 shadow-md">SA</div>
+                              <div className="w-7 h-7 rounded-full bg-rose-500 flex items-center justify-center text-[10px] font-bold text-white border-2 border-card z-20 shadow-md">AS</div>
+                              <div className="w-7 h-7 rounded-full bg-indigo-500 flex items-center justify-center text-[10px] font-bold text-white border-2 border-card z-10 shadow-md">SA</div>
                             </div>
                           </div>
 
-                          <div className="text-[#e5e5e5] space-y-1.5 leading-relaxed bg-[#121214] p-4 rounded-lg border border-border/20 shadow-inner">
+                          <div className="text-foreground/90 space-y-1.5 leading-relaxed bg-muted p-4 rounded-lg border border-border/20 shadow-inner">
                             <div><span className="text-yellow-300">{`{`}</span></div>
                             <div className="pl-4"><span className="text-emerald-400">"name"</span>: <span className="text-blue-400">"Login Request"</span>,</div>
                             <div className="pl-4"><span className="text-emerald-400">"method"</span>: <span className="text-blue-400">"POST"</span>,</div>
@@ -690,7 +690,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="p-10 rounded-3xl bg-[#0c0c0e] border border-border/40 hover:border-border/80 transition-all flex flex-col relative overflow-hidden"
+            className="p-10 rounded-3xl bg-card border border-border/40 hover:border-border/80 transition-all flex flex-col relative overflow-hidden"
           >
             <div className="mb-8">
               <h3 className="text-2xl font-bold text-foreground mb-2">Developer</h3>
@@ -707,7 +707,7 @@ export default function Home() {
                 </li>
               ))}
             </ul>
-            <Link to="/register" className="block w-full text-center py-4 rounded-xl font-bold bg-[#121214] border border-border/50 text-foreground hover:bg-[#1a1a1d] hover:border-border transition-all">
+            <Link to="/register" className="block w-full text-center py-4 rounded-xl font-bold bg-muted border border-border/50 text-foreground hover:bg-accent hover:border-border transition-all">
               Get Started Free
             </Link>
           </motion.div>
@@ -718,7 +718,7 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="p-10 rounded-3xl bg-[#0c0c0e] border border-primary/50 relative overflow-hidden flex flex-col shadow-[0_0_50px_rgba(16,185,129,0.15)] transform md:-translate-y-4"
+            className="p-10 rounded-3xl bg-card border border-primary/50 relative overflow-hidden flex flex-col shadow-[0_0_50px_rgba(16,185,129,0.15)] transform md:-translate-y-4"
           >
             {/* Absolute Glow Background */}
             <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-gradient-to-bl from-primary/20 to-transparent blur-3xl pointer-events-none" />
