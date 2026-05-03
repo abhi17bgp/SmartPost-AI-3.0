@@ -92,7 +92,10 @@ const Sidebar = ({ isOpen, onClose }) => {
   };
 
   const handleDeleteAccount = async () => {
+    setShowSettingsModal(false);
+    
     const isConfirmed = await confirm("Delete Account", "Are you absolutely sure you want to delete your account? This action cannot be undone.", { isDanger: true, confirmText: 'Delete My Account' });
+    
     if (isConfirmed) {
       try {
         await toast.promise(
@@ -107,6 +110,9 @@ const Sidebar = ({ isOpen, onClose }) => {
       } catch (err) {
         // Handled by toast
       }
+    } else {
+      // Re-open settings modal if they cancel
+      setShowSettingsModal(true);
     }
   };
 

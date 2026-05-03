@@ -145,7 +145,7 @@ export const DialogProvider = ({ children }) => {
       {children}
       
       {dialogs.length > 0 && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 pointer-events-none font-sans">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 pointer-events-none font-sans">
           {/* Blur Backdrop */}
           <div 
             className="absolute inset-0 bg-background/40 backdrop-blur-[4px] pointer-events-auto"
