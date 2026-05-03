@@ -215,7 +215,15 @@ export const WorkspaceProvider = ({ children }) => {
       if (data.userId === user._id) return; // ignore self if still in room briefly
 
       fetchWorkspaces();
-      toast.success(`${data.userName || 'A member'} left the workspace.`);
+      toast.error(`${data.userName || 'A member'} permanently left the workspace.`);
+    };
+
+    const onMemberLoggedOut = (data) => {
+      console.log('[WorkspaceContext] Member logged out event:', data);
+      if (data.workspaceId?.toString() !== currentWorkspace._id?.toString()) return;
+      if (data.userId === user._id) return; // ignore self
+
+      toast.success(`${data.userName || 'A member'} went offline.`);
     };
 
     const onMemberJoined = (data) => {
@@ -240,6 +248,7 @@ export const WorkspaceProvider = ({ children }) => {
     socket.on('workspace_updated', onWorkspaceUpdate);
     socket.on('member_removed', onMemberRemoved);
     socket.on('member_left', onMemberLeft);
+    socket.on('member_logged_out', onMemberLoggedOut);
     socket.on('member_joined', onMemberJoined);
 
     const onTyping = ({ userName, requestId }) => {
@@ -287,6 +296,7 @@ export const WorkspaceProvider = ({ children }) => {
       socket.off('workspace_updated', onWorkspaceUpdate);
       socket.off('member_removed', onMemberRemoved);
       socket.off('member_left', onMemberLeft);
+      socket.off('member_logged_out', onMemberLoggedOut);
       socket.off('member_joined', onMemberJoined);
       socket.off('user_typing_request', onTyping);
       socket.off('user_stopped_typing', onStopTyping);

@@ -8,7 +8,7 @@ import { useDialog } from '../context/DialogContext';
 
 const WorkspaceSettingsModal = ({ onClose }) => {
   const { currentWorkspace, fetchWorkspaces } = useWorkspace();
-  const { user } = useAuth();
+  const { user, handleUpgrade } = useAuth();
   const { confirm } = useDialog();
   const [copied, setCopied] = useState(false);
   const [loadingCode, setLoadingCode] = useState(false);
@@ -41,6 +41,18 @@ const WorkspaceSettingsModal = ({ onClose }) => {
   };
 
   const handleGenerateCode = async () => {
+    if (!user?.isSubscribed) {
+      const wantUpgrade = await confirm(
+        "Pro Feature", 
+        "Inviting team members to collaborate is a Pro feature. Upgrade to share your workspace.", 
+        { confirmText: "Upgrade to Pro — ₹100/yr", confirmColor: "bg-primary" }
+      );
+      if (wantUpgrade) {
+        onClose();
+        handleUpgrade();
+      }
+      return;
+    }
     setLoadingCode(true);
     try {
       console.log('[WorkspaceSettingsModal] Generating code for workspace:', currentWorkspace._id);

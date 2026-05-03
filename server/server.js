@@ -69,13 +69,13 @@ const io = new Server(server, {
       socket.on('user_logout', ({ workspaceIds, userId, userName }) => {
         if (!workspaceIds || !Array.isArray(workspaceIds)) return;
         workspaceIds.forEach(room => {
-          io.to(room).emit('member_left', {
+          io.to(room).emit('member_logged_out', {
             workspaceId: room,
             userId,
             userName
           });
           io.to(room).emit('workspace_updated');
-          console.log(`Workspace ${room}: emitted member_left and workspace_updated for logout of ${userName}`);
+          console.log(`Workspace ${room}: emitted member_logged_out and workspace_updated for logout of ${userName}`);
         });
       });
 
@@ -90,12 +90,12 @@ const io = new Server(server, {
           if (room === socket.id) return;
 
           if (userId && userName) {
-            io.to(room).emit('member_left', {
+            io.to(room).emit('member_logged_out', {
               workspaceId: room,
               userId,
               userName
             });
-            console.log(`Workspace ${room}: emitted member_left for ${userName}`);
+            console.log(`Workspace ${room}: emitted member_logged_out for ${userName}`);
           }
 
           io.to(room).emit('workspace_updated');

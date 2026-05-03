@@ -283,27 +283,7 @@ exports.logout = catchAsync(async (req, res) => {
     }
   }
 
-  // Remove user from all workspaces they're a member of
-  if (userId) {
-    try {
-      const workspaces = await Workspace.find({
-        'members.user': userId
-      });
-
-      for (const workspace of workspaces) {
-        // Remove user from members array
-        workspace.members = workspace.members.filter(m => m.user.toString() !== userId);
-        await workspace.save();
-
-        // Emit workspace_updated to refresh member lists
-        await workspace.populate('owner', 'name email');
-        await workspace.populate('members.user', 'name email');
-        req.app.get('io').to(workspace._id.toString()).emit('workspace_updated', workspace);
-      }
-    } catch (err) {
-      console.log('Error removing user from workspaces on logout:', err.message);
-    }
-  }
+  // Removed destructive workspace removal logic during logout
 
   // Clear the cookie
   res.cookie('jwt', 'loggedout', {
@@ -572,7 +552,57 @@ exports.verifyEmail = catchAsync(async (req, res, next) => {
 
 
 exports.deleteAccount = catchAsync(async (req, res, next) => {
-  await User.findByIdAndDelete(req.user.id);
+  const userId = req.user.id;
+  const user = await User.findById(userId);
+  
+  if (user) {
+    // 1. Delete photo from Cloudinary
+    if (user.photo && user.photo !== 'default.jpg') {
+      try {
+        const parts = user.photo.split('/');
+        const filename = parts[parts.length - 1];
+        const publicId = `smartpost-avatars/${filename.split('.')[0]}`;
+        await cloudinary.uploader.destroy(publicId);
+      } catch (err) {
+        console.error('Failed to delete photo from Cloudinary during account deletion:', err);
+      }
+    }
+
+    // 2. Delete all workspaces owned by the user
+    try {
+      // Find workspaces to potentially notify users, or just bulk delete
+      const ownedWorkspaces = await Workspace.find({ owner: userId });
+      for (const ws of ownedWorkspaces) {
+        if (req.app.get('io')) {
+          req.app.get('io').to(ws._id.toString()).emit('workspace_deleted', ws._id);
+        }
+      }
+      await Workspace.deleteMany({ owner: userId });
+    } catch (err) {
+      console.error('Failed to delete owned workspaces during account deletion:', err);
+    }
+
+    // 3. Remove user from all other workspaces where they are a member
+    try {
+      const workspaces = await Workspace.find({ 'members.user': userId });
+      for (const workspace of workspaces) {
+        workspace.members = workspace.members.filter(m => m.user.toString() !== userId);
+        await workspace.save();
+        
+        if (req.app.get('io')) {
+          await workspace.populate('owner', 'name email');
+          await workspace.populate('members.user', 'name email');
+          req.app.get('io').to(workspace._id.toString()).emit('workspace_updated', workspace);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to remove user from workspaces during account deletion:', err);
+    }
+
+    // 4. Finally delete the user
+    await User.findByIdAndDelete(userId);
+  }
+
   res.cookie('jwt', 'loggedout', {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
@@ -595,8 +625,26 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     if (allowedFields.includes(el)) filteredBody[el] = req.body[el];
   });
 
-  if (req.file) {
-    filteredBody.photo = req.file.path; // Cloudinary secure URL
+  const currentUser = await User.findById(req.user.id);
+
+  if (req.file || (req.body.removePhoto === true || req.body.removePhoto === 'true')) {
+    // Check if user has an existing photo on Cloudinary
+    if (currentUser.photo && currentUser.photo !== 'default.jpg') {
+      try {
+        const parts = currentUser.photo.split('/');
+        const filename = parts[parts.length - 1]; // xyz.jpg
+        const publicId = `smartpost-avatars/${filename.split('.')[0]}`;
+        await cloudinary.uploader.destroy(publicId);
+      } catch (err) {
+        console.error('Failed to delete old photo from Cloudinary:', err);
+      }
+    }
+
+    if (req.file) {
+      filteredBody.photo = req.file.path; // Cloudinary secure URL
+    } else {
+      filteredBody.photo = 'default.jpg';
+    }
   }
 
   // 3) Update user document

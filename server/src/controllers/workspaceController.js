@@ -33,10 +33,6 @@ exports.getAllWorkspaces = catchAsync(async (req, res, next) => {
 });
 
 exports.createWorkspace = catchAsync(async (req, res, next) => {
-  if (!req.user.isSubscribed) {
-    return next(new AppError('Team Collaboration is a Pro feature. Please upgrade to create additional workspaces.', 403));
-  }
-
   const joinCode = crypto.randomBytes(3).toString('hex').toUpperCase(); // 6 chars
   let newWorkspace = await Workspace.create({
     name: req.body.name,

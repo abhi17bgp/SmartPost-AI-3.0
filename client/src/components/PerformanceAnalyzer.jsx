@@ -95,12 +95,54 @@ const PerformanceAnalyzer = ({ activeReqTab, onClose }) => {
     }
 
     let parsedBody = null;
-    if ((activeReqTab.method === 'POST' || activeReqTab.method === 'PUT' || activeReqTab.method === 'PATCH') && activeReqTab.body.mode === 'json') {
-      try {
-        parsedBody = JSON.parse(activeReqTab.body.content);
-      } catch (e) {
-        parsedBody = activeReqTab.body.content;
+    let isMultipart = false;
+    let proxyPayload;
+
+    if ((activeReqTab.method === 'POST' || activeReqTab.method === 'PUT' || activeReqTab.method === 'PATCH')) {
+      if (activeReqTab.body?.mode === 'form-data' && activeReqTab.formData) {
+        isMultipart = true;
+        proxyPayload = new FormData();
+        proxyPayload.append('url', finalUrl);
+        proxyPayload.append('method', activeReqTab.method);
+        proxyPayload.append('headers', JSON.stringify(activeHeaders));
+        proxyPayload.append('isMultipart', 'true');
+        
+        activeReqTab.formData.forEach(item => {
+          if (item.isActive && item.key) {
+            if (item.type === 'file' && item.file) {
+              proxyPayload.append(`data_file_${item.key}`, item.file);
+            } else {
+              proxyPayload.append(`data_text_${item.key}`, item.value);
+            }
+          }
+        });
+      } else if (activeReqTab.body?.mode === 'json') {
+        try {
+          parsedBody = JSON.parse(activeReqTab.body?.content);
+        } catch (e) {
+          parsedBody = activeReqTab.body?.content;
+        }
+        proxyPayload = {
+          url: finalUrl,
+          method: activeReqTab.method,
+          headers: activeHeaders,
+          data: parsedBody
+        };
+      } else {
+        proxyPayload = {
+          url: finalUrl,
+          method: activeReqTab.method,
+          headers: activeHeaders,
+          data: activeReqTab.body?.content
+        };
       }
+    } else {
+      proxyPayload = {
+        url: finalUrl,
+        method: activeReqTab.method,
+        headers: activeHeaders,
+        data: null
+      };
     }
 
     try {
@@ -109,12 +151,7 @@ const PerformanceAnalyzer = ({ activeReqTab, onClose }) => {
         for (let i = 1; i <= runs; i++) {
           try {
             const startTime = Date.now();
-            const res = await api.post('/proxy', {
-              url: finalUrl,
-              method: activeReqTab.method,
-              headers: activeHeaders,
-              data: parsedBody
-            });
+            const res = await api.post('/proxy', proxyPayload);
             const timeTaken = res.data.data.timeTaken || (Date.now() - startTime);
             const size = res.data.data.data ? JSON.stringify(res.data.data.data).length : 0;
             finalResults.push({ run: i, time: timeTaken, error: false, size });
@@ -134,12 +171,7 @@ const PerformanceAnalyzer = ({ activeReqTab, onClose }) => {
           const runIndex = i + 1;
           try {
             const startTime = Date.now();
-            const res = await api.post('/proxy', {
-              url: finalUrl,
-              method: activeReqTab.method,
-              headers: activeHeaders,
-              data: parsedBody
-            });
+            const res = await api.post('/proxy', proxyPayload);
             const timeTaken = res.data.data.timeTaken || (Date.now() - startTime);
             const size = res.data.data.data ? JSON.stringify(res.data.data.data).length : 0;
             return { run: runIndex, time: timeTaken, error: false, size };
@@ -191,7 +223,20 @@ const PerformanceAnalyzer = ({ activeReqTab, onClose }) => {
         setPayloadSize(payloadSizeValue);
 
         // Calculate Request Payload Size (constant for all runs in the test)
-        if (parsedBody) {
+        if (isMultipart && activeReqTab.formData) {
+          let size = 0;
+          activeReqTab.formData.forEach(item => {
+             if (item.isActive && item.key) {
+                 size += item.key.length;
+                 if (item.type === 'file' && item.file) {
+                     size += item.file.size || 0;
+                 } else {
+                     size += (item.value || '').length;
+                 }
+             }
+          });
+          setRequestPayloadSize(size);
+        } else if (parsedBody) {
           const reqSize = typeof parsedBody === 'string' ? parsedBody.length : JSON.stringify(parsedBody).length;
           setRequestPayloadSize(reqSize);
         } else {
@@ -332,10 +377,17 @@ const PerformanceAnalyzer = ({ activeReqTab, onClose }) => {
         desc: "Ensure your backend uses indexing properly and eliminate unnecessary joins or N+1 queries."
       });
       
-      if (requestPayloadSize > 1024 * 50) { // > 50KB request
+      if (['POST', 'PUT', 'PATCH'].includes(activeReqTab.method)) {
+        if (requestPayloadSize > 1024 * 50) { // > 50KB request
+          suggestions.push({
+            title: "Reduce Request Payload",
+            desc: "Large request body detected. Consider compressing data or removing unused fields before sending."
+          });
+        }
+      } else if (activeReqTab.method === 'GET' && requestPayloadSize > 0) {
         suggestions.push({
-          title: "Reduce Request Payload",
-          desc: "Large request body detected. Consider compressing data or removing unused fields before sending."
+          title: "GET Request Body",
+          desc: "GET requests usually shouldn't have a body. Consider moving parameters to the URL query string."
         });
       }
       
@@ -480,6 +532,9 @@ const PerformanceAnalyzer = ({ activeReqTab, onClose }) => {
               value={testType}
               onChange={e => setTestType(e.target.value)}
               disabled={isRunning}
+              name="testType"
+              id="testType"
+              aria-label="Test Type"
             >
               <option value="sequential">Sequential</option>
               <option value="parallel">Parallel</option>
@@ -495,6 +550,9 @@ const PerformanceAnalyzer = ({ activeReqTab, onClose }) => {
               value={runs}
               onChange={e => setRuns(Number(e.target.value))}
               disabled={isRunning}
+              name="testRuns"
+              id="testRuns"
+              aria-label="Test Runs"
             >
               <option value={5}>5 Runs</option>
               <option value={10}>10 Runs</option>

@@ -58,9 +58,11 @@ app.get('/ping', (req, res) => {
 
 const proxyController = require('./controllers/proxyController');
 const authController = require('./controllers/authController');
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });
 
 // Proxy route for bypassing CORS in API tool
-app.post('/api/proxy', authController.protect, proxyController.proxyRequest);
+app.post('/api/proxy', authController.protect, upload.any(), proxyController.proxyRequest);
 
 // Catch-all unhandled routes
 app.use((req, res, next) => {

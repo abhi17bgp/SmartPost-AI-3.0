@@ -39,6 +39,9 @@ const KeyValueEditor = React.memo(({ name, state, onChange, onAddRow, onDeleteRo
                 checked={item.isActive}
                 onChange={(e) => onChange(item.id, 'isActive', e.target.checked)}
                 className="hidden"
+                name={`${name.toLowerCase()}-active-${item.id}`}
+                id={`${name.toLowerCase()}-active-${item.id}`}
+                aria-label={`Toggle ${name} Active`}
               />
               <div className={`w-4 h-4 rounded transition-all duration-200 border flex items-center justify-center shadow-sm ${item.isActive ? 'bg-primary border-primary shadow-primary/30' : 'bg-background border-border group-hover:border-primary/50'}`}>
                  {item.isActive && (
@@ -55,6 +58,9 @@ const KeyValueEditor = React.memo(({ name, state, onChange, onAddRow, onDeleteRo
             onChange={(e) => onChange(item.id, 'key', e.target.value)}
             placeholder={name + " Key"}
             className="bg-transparent border border-border rounded px-3 py-1.5 text-sm font-mono focus:border-primary/50 focus:outline-none transition-colors w-full placeholder:text-muted-foreground/50"
+            name={`${name.toLowerCase().replace(/\s+/g, '-')}-key-${item.id}`}
+            id={`${name.toLowerCase().replace(/\s+/g, '-')}-key-${item.id}`}
+            aria-label={`${name} Key`}
           />
           <input
             type="text"
@@ -62,7 +68,123 @@ const KeyValueEditor = React.memo(({ name, state, onChange, onAddRow, onDeleteRo
             onChange={(e) => onChange(item.id, 'value', e.target.value)}
             placeholder="Value"
             className="bg-transparent border border-border rounded px-3 py-1.5 text-sm font-mono focus:border-primary/50 focus:outline-none transition-colors w-full placeholder:text-muted-foreground/50"
+            name={`${name.toLowerCase().replace(/\s+/g, '-')}-value-${item.id}`}
+            id={`${name.toLowerCase().replace(/\s+/g, '-')}-value-${item.id}`}
+            aria-label={`${name} Value`}
           />
+          <div className="flex items-center justify-center">
+            {index !== state.length - 1 && (
+              <button
+                onClick={() => onDeleteRow(item.id)}
+                className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive transition-all font-bold"
+              >×</button>
+            )}
+          </div>
+        </div>
+      ))}
+      <div className="mt-3 flex justify-center">
+        <button
+          onClick={onAddRow}
+          className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-primary hover:text-primary/80 bg-primary/10 hover:bg-primary/20 border border-primary/30 hover:border-primary/50 rounded-lg transition-all duration-200"
+        >
+          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
+          Add {name} Row
+        </button>
+      </div>
+    </div>
+  </div>
+));
+
+const FormDataEditor = React.memo(({ name, state, onChange, onAddRow, onDeleteRow }) => (
+  <div className="flex flex-col gap-2 w-full overflow-x-auto custom-scrollbar pb-2">
+    <div className="min-w-[500px]">
+      <div className="grid grid-cols-[30px_1fr_100px_1fr_30px] gap-2 text-xs font-semibold text-muted-foreground uppercase tracking-widest px-2 mb-2">
+        <div></div>
+        <div>Key</div>
+        <div>Type</div>
+        <div>Value</div>
+        <div></div>
+      </div>
+      {state.map((item, index) => (
+        <div key={item.id} className="grid grid-cols-[30px_1fr_100px_1fr_30px] gap-2 items-center group mb-2">
+          <div className="flex items-center justify-center">
+            <label className="relative flex items-center justify-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={item.isActive}
+                onChange={(e) => onChange(item.id, 'isActive', e.target.checked)}
+                className="hidden"
+                name={`${name.toLowerCase().replace(/\s+/g, '-')}-active-${item.id}`}
+                id={`${name.toLowerCase().replace(/\s+/g, '-')}-active-${item.id}`}
+                aria-label={`Toggle ${name} Active`}
+              />
+              <div className={`w-4 h-4 rounded transition-all duration-200 border flex items-center justify-center shadow-sm ${item.isActive ? 'bg-primary border-primary shadow-primary/30' : 'bg-background border-border group-hover:border-primary/50'}`}>
+                 {item.isActive && (
+                    <svg className="w-3 h-3 text-primary-foreground pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                 )}
+              </div>
+            </label>
+          </div>
+          <input
+            type="text"
+            value={item.key}
+            onChange={(e) => onChange(item.id, 'key', e.target.value)}
+            placeholder={name + " Key"}
+            className="bg-transparent border border-border rounded px-3 py-1.5 text-sm font-mono focus:border-primary/50 focus:outline-none transition-colors w-full placeholder:text-muted-foreground/50"
+            name={`${name.toLowerCase().replace(/\s+/g, '-')}-key-${item.id}`}
+            id={`${name.toLowerCase().replace(/\s+/g, '-')}-key-${item.id}`}
+            aria-label={`${name} Key`}
+          />
+          <select
+            value={item.type || 'text'}
+            onChange={(e) => onChange(item.id, 'type', e.target.value)}
+            className="bg-transparent border border-border rounded px-2 py-1.5 text-sm focus:border-primary/50 focus:outline-none transition-colors w-full text-foreground"
+            name={`${name.toLowerCase().replace(/\s+/g, '-')}-type-${item.id}`}
+            id={`${name.toLowerCase().replace(/\s+/g, '-')}-type-${item.id}`}
+            aria-label={`${name} Type`}
+          >
+            <option className="bg-card text-foreground" value="text">Text</option>
+            <option className="bg-card text-foreground" value="file">File</option>
+          </select>
+          {item.type === 'file' ? (
+            <div className="relative flex items-center h-full">
+              <input
+                type="file"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  if (file) {
+                    onChange(item.id, 'file', file);
+                    onChange(item.id, 'value', file.name);
+                  } else {
+                    onChange(item.id, 'file', null);
+                    onChange(item.id, 'value', '');
+                  }
+                }}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                name={`${name.toLowerCase().replace(/\s+/g, '-')}-file-${item.id}`}
+                id={`${name.toLowerCase().replace(/\s+/g, '-')}-file-${item.id}`}
+                aria-label={`${name} File`}
+              />
+              <div className="bg-transparent border border-border rounded px-3 py-1.5 text-sm font-mono focus:border-primary/50 transition-colors w-full truncate text-muted-foreground flex items-center">
+                {item.file ? item.file.name : 'Choose File...'}
+              </div>
+            </div>
+          ) : (
+            <input
+              type="text"
+              value={item.value || ''}
+              onChange={(e) => onChange(item.id, 'value', e.target.value)}
+              placeholder="Value"
+              className="bg-transparent border border-border rounded px-3 py-1.5 text-sm font-mono focus:border-primary/50 focus:outline-none transition-colors w-full placeholder:text-muted-foreground/50"
+              name={`${name.toLowerCase().replace(/\s+/g, '-')}-value-${item.id}`}
+              id={`${name.toLowerCase().replace(/\s+/g, '-')}-value-${item.id}`}
+              aria-label={`${name} Value`}
+            />
+          )}
           <div className="flex items-center justify-center">
             {index !== state.length - 1 && (
               <button
@@ -109,6 +231,9 @@ const RequestPane = ({ setResponseData, setResponseLoading, tab }) => {
   );
   const [bodyMode, setBodyMode] = useState(tab?.body?.mode || 'json');
   const [bodyContent, setBodyContent] = useState(tab?.body?.content || '{\n  \n}');
+  const [formDataState, setFormDataState] = useState(() => 
+    ensureItemsHaveIds(tab?.formData || [{ key: '', value: '', type: 'text', isActive: true }])
+  );
 
   // Ref for debouncing typing indicator
   const typingTimeoutRef = React.useRef(null);
@@ -121,6 +246,7 @@ const RequestPane = ({ setResponseData, setResponseLoading, tab }) => {
     setHeaders(ensureItemsHaveIds(tab?.headers || [{ key: '', value: '', isActive: true }]));
     setBodyMode(tab?.body?.mode || 'json');
     setBodyContent(tab?.body?.content || '{\n  \n}');
+    setFormDataState(ensureItemsHaveIds(tab?.formData || [{ key: '', value: '', type: 'text', isActive: true }]));
     setRequestName(tab?.title && tab.title !== 'Untitled Request' ? tab.title : '');
     setSelectedCollection(tab?.collectionId || '');
 
@@ -188,13 +314,34 @@ const RequestPane = ({ setResponseData, setResponseLoading, tab }) => {
         }
       }
 
+      let proxyPayload;
+      if (bodyMode === 'form-data' && ['POST', 'PUT', 'PATCH'].includes(method)) {
+        proxyPayload = new FormData();
+        proxyPayload.append('url', finalUrl);
+        proxyPayload.append('method', method);
+        proxyPayload.append('headers', JSON.stringify(activeHeaders));
+        proxyPayload.append('isMultipart', 'true');
+        
+        formDataState.forEach(item => {
+          if (item.isActive && item.key) {
+            if (item.type === 'file' && item.file) {
+              proxyPayload.append(`data_file_${item.key}`, item.file);
+            } else {
+              proxyPayload.append(`data_text_${item.key}`, item.value);
+            }
+          }
+        });
+      } else {
+        proxyPayload = {
+          url: finalUrl,
+          method,
+          headers: activeHeaders,
+          data: parsedBody
+        };
+      }
+
       // We proxy everything through our backend to bypass CORS
-      const res = await api.post('/proxy', {
-        url: finalUrl,
-        method,
-        headers: activeHeaders,
-        data: parsedBody
-      });
+      const res = await api.post('/proxy', proxyPayload);
 
       setResponseData(res.data.data);
 
@@ -222,6 +369,7 @@ const RequestPane = ({ setResponseData, setResponseLoading, tab }) => {
         queryParams,
         bodyMode,
         bodyContent,
+        formData: formDataState.map(fd => ({ ...fd, file: undefined })), // don't save file object
         responseData: res.data.data
       }).then((historyRes) => {
         if (historyRes.data?.data?.history?._id) {
@@ -237,7 +385,8 @@ const RequestPane = ({ setResponseData, setResponseLoading, tab }) => {
         url: finalUrl,
         headers,
         queryParams,
-        body: { mode: bodyMode, content: bodyContent }
+        body: { mode: bodyMode, content: bodyContent },
+        formData: formDataState
       } : t));
 
     } catch (err) {
@@ -295,6 +444,7 @@ const RequestPane = ({ setResponseData, setResponseLoading, tab }) => {
         headers,
         queryParams,
         body: { type: bodyMode === 'json' ? 'json' : 'none', content: bodyContent },
+        formData: formDataState.map(fd => ({ ...fd, file: undefined })),
         collectionId: selectedCollection,
         workspaceId: currentWorkspace?._id
       };
@@ -328,6 +478,7 @@ const RequestPane = ({ setResponseData, setResponseLoading, tab }) => {
               headers: payload.headers,
               queryParams: payload.queryParams,
               body: { mode: bodyMode, content: bodyContent },
+              formData: formDataState,
               updatedBy: res.data.data.request.updatedBy
             } : t));
 
@@ -346,6 +497,7 @@ const RequestPane = ({ setResponseData, setResponseLoading, tab }) => {
               headers: payload.headers,
               queryParams: payload.queryParams,
               body: { mode: bodyMode, content: bodyContent },
+              formData: formDataState,
               updatedBy: res.data.data.request.updatedBy
             } : t));
             setActiveTabId(`req_${newReqId}`);
@@ -373,6 +525,21 @@ const RequestPane = ({ setResponseData, setResponseLoading, tab }) => {
     ));
 
     // Debounce typing indicator to avoid excessive socket calls
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+    typingTimeoutRef.current = setTimeout(() => {
+      handleTyping();
+    }, 300);
+  }, [handleTyping]);
+
+  const handleFormDataChange = React.useCallback((itemId, field, value) => {
+    setFormDataState(prev => prev.map(item =>
+      item.id === itemId
+        ? { ...item, [field]: value }
+        : item
+    ));
+
     if (typingTimeoutRef.current) {
       clearTimeout(typingTimeoutRef.current);
     }
@@ -409,6 +576,19 @@ const RequestPane = ({ setResponseData, setResponseLoading, tab }) => {
     ]);
   }, []);
 
+  const addFormDataRow = React.useCallback(() => {
+    setFormDataState(prev => [
+      ...prev,
+      {
+        id: generateId(),
+        key: '',
+        value: '',
+        type: 'text',
+        isActive: true
+      }
+    ]);
+  }, []);
+
   const addQueryParamRow = React.useCallback(() => {
     setQueryParams(prev => [
       ...prev,
@@ -423,6 +603,10 @@ const RequestPane = ({ setResponseData, setResponseLoading, tab }) => {
 
   const deleteHeaderRow = React.useCallback((itemId) => {
     setHeaders(prev => prev.filter(item => item.id !== itemId));
+  }, []);
+
+  const deleteFormDataRow = React.useCallback((itemId) => {
+    setFormDataState(prev => prev.filter(item => item.id !== itemId));
   }, []);
 
   const deleteQueryParamRow = React.useCallback((itemId) => {
@@ -456,6 +640,9 @@ const RequestPane = ({ setResponseData, setResponseLoading, tab }) => {
               <select
                 value={method}
                 onChange={(e) => setMethod(e.target.value)}
+                name="requestMethod"
+                id="requestMethod"
+                aria-label="Request Method"
                 className={`appearance-none bg-transparent font-bold cursor-pointer focus:outline-none px-4 py-2 pr-8 rounded transition-colors uppercase text-sm w-full
                   ${method === 'GET' ? 'text-primary group-hover:bg-primary/10' :
                     method === 'POST' ? 'text-secondary group-hover:bg-secondary/10' :
@@ -476,6 +663,9 @@ const RequestPane = ({ setResponseData, setResponseLoading, tab }) => {
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               placeholder="Enter request URL"
               className="flex-1 bg-transparent px-3 py-2 outline-none text-foreground placeholder:text-muted-foreground font-mono text-sm w-full min-w-0"
+              name="requestUrl"
+              id="requestUrl"
+              aria-label="Request URL"
             />
           </div>
 
@@ -521,10 +711,12 @@ const RequestPane = ({ setResponseData, setResponseLoading, tab }) => {
                   <input
                     type="radio"
                     name="bodyMode"
+                    id={`bodyMode-${m}`}
                     value={m}
                     checked={bodyMode === m}
                     onChange={() => setBodyMode(m)}
                     className="hidden"
+                    aria-label={`Body mode ${m}`}
                   />
                   <span className={`transition-colors ${bodyMode === m ? 'text-primary font-medium' : 'text-muted-foreground group-hover:text-foreground'}`}>{m}</span>
                 </label>
@@ -537,10 +729,15 @@ const RequestPane = ({ setResponseData, setResponseLoading, tab }) => {
                 onChange={(e) => { setBodyContent(e.target.value); handleTyping(); }}
                 className="flex-1 w-full bg-background border border-border rounded-lg p-4 font-mono text-sm text-foreground focus:outline-none focus:border-primary/50 custom-scrollbar shadow-inner resize-none min-h-[300px]"
                 spellCheck="false"
+                name="bodyContent"
+                id="bodyContent"
+                aria-label="Request Body Content"
               />
+            ) : bodyMode === 'form-data' ? (
+              <FormDataEditor name="Form Data" state={formDataState} onChange={handleFormDataChange} onAddRow={addFormDataRow} onDeleteRow={deleteFormDataRow} />
             ) : (
               <div className="p-4 text-sm text-muted-foreground border border-dashed border-border rounded-lg">
-                Only JSON body is fully supported in this demo.
+                Only JSON and form-data are fully supported in this demo.
               </div>
             )}
           </div>
@@ -565,6 +762,9 @@ const RequestPane = ({ setResponseData, setResponseLoading, tab }) => {
                   onChange={e => setRequestName(e.target.value)}
                   className="w-full bg-background border border-border rounded-lg px-3 py-2 text-foreground outline-none focus:border-primary transition-colors"
                   placeholder="e.g. Get User Profile"
+                  name="requestName"
+                  id="requestName"
+                  aria-label="Request Name"
                 />
               </div>
               <div>
@@ -586,6 +786,9 @@ const RequestPane = ({ setResponseData, setResponseLoading, tab }) => {
                     value={selectedCollection}
                     onChange={e => setSelectedCollection(e.target.value)}
                     className="w-full bg-background border border-border rounded-lg px-3 py-2 text-foreground outline-none focus:border-primary transition-colors cursor-pointer appearance-none"
+                    name="selectedCollection"
+                    id="selectedCollection"
+                    aria-label="Select Collection"
                   >
                     <option value="" disabled className="text-muted-foreground">Select a collection...</option>
                     {collections.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}

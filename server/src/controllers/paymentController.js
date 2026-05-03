@@ -49,20 +49,19 @@ exports.verifyPayment = catchAsync(async (req, res, next) => {
     .digest('hex');
 
   if (razorpay_signature === expectedSign) {
-    // Payment is successful
-    // Update user subscription status
-    // Calculate 1 year from now
-    const expiresAt = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
+    const user = await User.findById(req.user._id);
 
-    const updatedUser = await User.findByIdAndUpdate(
-      req.user._id,
-      {
-        isSubscribed: true,
-        razorpayPaymentId: razorpay_payment_id,
-        subscriptionExpiresAt: expiresAt
-      },
-      { new: true, runValidators: true }
-    );
+    let expiresAt;
+    if (user.isSubscribed && user.subscriptionExpiresAt && user.subscriptionExpiresAt > Date.now()) {
+      expiresAt = new Date(user.subscriptionExpiresAt.getTime() + 365 * 24 * 60 * 60 * 1000);
+    } else {
+      expiresAt = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
+    }
+
+    user.isSubscribed = true;
+    user.razorpayPaymentId = razorpay_payment_id;
+    user.subscriptionExpiresAt = expiresAt;
+    const updatedUser = await user.save({ validateBeforeSave: false });
 
     // Send Pro Upgrade Email
     try {

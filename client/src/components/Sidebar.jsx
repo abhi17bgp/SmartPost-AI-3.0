@@ -45,15 +45,21 @@ const Sidebar = ({ isOpen, onClose }) => {
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     try {
-      let dataToSubmit = profileForm;
+      let dataToSubmit = { ...profileForm };
       
+      // Check if user is removing their photo
+      if (!photoFile && photoPreview === 'default.jpg' && user?.photo !== 'default.jpg') {
+        dataToSubmit.removePhoto = true;
+      }
+
       // If a file is selected, use FormData
       if (photoFile) {
-        dataToSubmit = new FormData();
-        Object.keys(profileForm).forEach(key => {
-          dataToSubmit.append(key, profileForm[key]);
+        const formData = new FormData();
+        Object.keys(dataToSubmit).forEach(key => {
+          formData.append(key, dataToSubmit[key]);
         });
-        dataToSubmit.append('photo', photoFile);
+        formData.append('photo', photoFile);
+        dataToSubmit = formData;
       }
 
       await toast.promise(
@@ -78,6 +84,11 @@ const Sidebar = ({ isOpen, onClose }) => {
       setPhotoFile(file);
       setPhotoPreview(URL.createObjectURL(file));
     }
+  };
+
+  const handleRemovePhoto = () => {
+    setPhotoFile(null);
+    setPhotoPreview('default.jpg');
   };
 
   const handleDeleteAccount = async () => {
@@ -107,15 +118,6 @@ const Sidebar = ({ isOpen, onClose }) => {
   }, [performanceModalOpen]);
 
   const handleCreateWorkspace = async () => {
-    if (!user?.isSubscribed) {
-      const wantUpgrade = await confirm(
-        "Pro Feature", 
-        "Team Collaboration is a Pro feature. Upgrade to Pro for unlimited workspaces and members.", 
-        { confirmText: "Upgrade to Pro — ₹100/yr", confirmColor: "bg-primary" }
-      );
-      if (wantUpgrade) handleUpgrade();
-      return;
-    }
     const name = await prompt("New Workspace", "Enter a name for your new workspace:", { placeholder: "e.g. My Team Project" });
     if (!name) return;
     try {
@@ -137,7 +139,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     if (!user?.isSubscribed) {
       const wantUpgrade = await confirm(
         "Pro Feature", 
-        "Team Collaboration is a Pro feature. Upgrade to Pro to join workspaces and collaborate.", 
+        "Joining team workspaces is a Pro feature. Upgrade to collaborate with others.", 
         { confirmText: "Upgrade to Pro — ₹100/yr", confirmColor: "bg-primary" }
       );
       if (wantUpgrade) handleUpgrade();
@@ -635,52 +637,71 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <h4 className="text-xs font-semibold text-muted-foreground mb-4 uppercase tracking-wider">Profile Information</h4>
                 
                 <div className="flex flex-col items-center mb-6">
-                  <div className="relative group cursor-pointer mb-2">
-                    <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-border group-hover:border-primary transition-colors bg-card flex items-center justify-center text-2xl font-bold text-muted-foreground">
-                      {photoPreview && photoPreview !== 'default.jpg' ? (
-                        <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
-                      ) : (
-                        user?.name?.charAt(0).toUpperCase()
-                      )}
-                    </div>
-                    <label className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                      <Camera size={20} className="text-white mb-1" />
-                      <span className="text-[8px] text-white font-bold uppercase">Change</span>
+                  <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-border mb-3 bg-card flex items-center justify-center text-3xl font-bold text-muted-foreground relative">
+                    {photoPreview && photoPreview !== 'default.jpg' ? (
+                      <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
+                    ) : (
+                      user?.name?.charAt(0).toUpperCase()
+                    )}
+                  </div>
+                  <div className="flex gap-2">
+                    <label className="cursor-pointer text-[10px] font-bold uppercase bg-primary hover:bg-primary/90 text-primary-foreground px-3 py-1.5 rounded transition-colors flex items-center gap-1.5 shadow-sm">
+                      <Camera size={12} />
+                      Change
                       <input 
                         type="file" 
                         accept="image/*" 
                         className="hidden" 
                         onChange={handlePhotoChange}
+                        id="profilePhotoUpload"
+                        name="profilePhotoUpload"
+                        aria-label="Upload Profile Photo"
                       />
                     </label>
+                    {photoPreview && photoPreview !== 'default.jpg' && (
+                      <button 
+                        type="button"
+                        onClick={handleRemovePhoto}
+                        className="text-[10px] font-bold uppercase bg-destructive/10 hover:bg-destructive/20 text-destructive px-3 py-1.5 rounded transition-colors flex items-center gap-1.5 shadow-sm"
+                      >
+                        <Trash2 size={12} />
+                        Remove
+                      </button>
+                    )}
                   </div>
-                  <span className="text-[10px] text-muted-foreground">Max size: 10MB</span>
+                  <span className="text-[10px] text-muted-foreground mt-2">Max size: 10MB</span>
                 </div>
 
                 <div className="space-y-3">
                   <div>
-                    <label className="text-[10px] uppercase font-bold text-muted-foreground block mb-0.5 tracking-wider">Name *</label>
+                    <label htmlFor="profileName" className="text-[10px] uppercase font-bold text-muted-foreground block mb-0.5 tracking-wider">Name *</label>
                     <input
                       required
                       type="text"
+                      id="profileName"
+                      name="profileName"
                       className="w-full bg-card border border-border text-foreground text-sm rounded px-2 py-1.5 focus:outline-none focus:border-primary"
                       value={profileForm.name}
                       onChange={(e) => setProfileForm({ ...profileForm, name: e.target.value })}
                     />
                   </div>
                   <div>
-                    <label className="text-[10px] uppercase font-bold text-muted-foreground block mb-0.5 tracking-wider">Email Address (Read-only)</label>
+                    <label htmlFor="profileEmail" className="text-[10px] uppercase font-bold text-muted-foreground block mb-0.5 tracking-wider">Email Address (Read-only)</label>
                     <input
                       disabled
                       type="email"
+                      id="profileEmail"
+                      name="profileEmail"
                       className="w-full bg-card/50 border border-border text-muted-foreground text-sm font-mono rounded px-2 py-1.5 focus:outline-none cursor-not-allowed select-none"
                       value={profileForm.email}
                       title="Your email address cannot be changed"
                     />
                   </div>
                   <div className="pt-2 border-t border-border">
-                    <label className="text-[10px] uppercase font-bold text-muted-foreground block mb-0.5 tracking-wider">Bio (Optional)</label>
+                    <label htmlFor="profileBio" className="text-[10px] uppercase font-bold text-muted-foreground block mb-0.5 tracking-wider">Bio (Optional)</label>
                     <textarea
+                      id="profileBio"
+                      name="profileBio"
                       className="w-full bg-card border border-border text-foreground text-sm rounded px-2 py-1.5 focus:outline-none focus:border-primary resize-none h-16"
                       value={profileForm.bio}
                       placeholder="A short bio about yourself..."
@@ -689,9 +710,11 @@ const Sidebar = ({ isOpen, onClose }) => {
                   </div>
                   <div className="flex gap-3">
                     <div className="flex-1">
-                      <label className="text-[10px] uppercase font-bold text-muted-foreground block mb-0.5 tracking-wider">Company (Optional)</label>
+                      <label htmlFor="profileCompany" className="text-[10px] uppercase font-bold text-muted-foreground block mb-0.5 tracking-wider">Company (Optional)</label>
                       <input
                         type="text"
+                        id="profileCompany"
+                        name="profileCompany"
                         className="w-full bg-card border border-border text-foreground text-sm rounded px-2 py-1.5 focus:outline-none focus:border-primary"
                         value={profileForm.company}
                         placeholder="e.g. Acme Corp"
@@ -699,9 +722,11 @@ const Sidebar = ({ isOpen, onClose }) => {
                       />
                     </div>
                     <div className="flex-1">
-                      <label className="text-[10px] uppercase font-bold text-muted-foreground block mb-0.5 tracking-wider">Title (Optional)</label>
+                      <label htmlFor="profileTitle" className="text-[10px] uppercase font-bold text-muted-foreground block mb-0.5 tracking-wider">Title (Optional)</label>
                       <input
                         type="text"
+                        id="profileTitle"
+                        name="profileTitle"
                         className="w-full bg-card border border-border text-foreground text-sm rounded px-2 py-1.5 focus:outline-none focus:border-primary"
                         value={profileForm.title}
                         placeholder="e.g. Developer"
