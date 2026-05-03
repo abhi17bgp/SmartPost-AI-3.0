@@ -76,56 +76,60 @@ exports.verifyPayment = catchAsync(async (req, res, next) => {
           <meta charset="UTF-8">
           <style>
             * { margin: 0; padding: 0; box-sizing: border-box; }
-            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif; background: #000; color: #fff; line-height: 1.6; }
-            .wrapper { background: #000; padding: 40px 20px; }
-            .container { max-width: 600px; margin: 0 auto; background: #0a0a0a; border-radius: 24px; border: 1px solid #1a1a1a; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-            .header { background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%); padding: 60px 40px; text-align: center; color: #ffffff; }
-            .badge { display: inline-block; background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; backdrop-blur: 10px; }
-            .header-logo { font-size: 32px; font-weight: 800; letter-spacing: -1px; margin-bottom: 8px; }
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif; background: #f4f4f5; color: #27272a; line-height: 1.7; }
+            .wrapper { background: #f4f4f5; padding: 40px 20px; }
+            .container { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; border: 1px solid #e4e4e7; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.05); }
+            .header { background: #ffffff; padding: 40px 40px 20px; text-align: center; border-bottom: 1px solid #f4f4f5; }
+            .header img { height: 48px; margin-bottom: 16px; border-radius: 12px; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2); }
+            .badge { display: inline-block; background: #dbeafe; color: #1d4ed8; padding: 6px 16px; border-radius: 100px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+            .header-logo { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; color: #09090b; }
             .content { padding: 40px; }
-            h2 { font-size: 24px; font-weight: 700; margin-bottom: 16px; color: #fff; }
-            p { font-size: 16px; color: #a1a1a1; margin-bottom: 24px; }
-            .info-card { background: #111; border: 1px solid #222; border-radius: 16px; padding: 24px; margin-bottom: 32px; }
-            .info-item { display: flex; justify-content: space-between; margin-bottom: 12px; }
-            .info-label { color: #666; font-size: 14px; }
-            .info-value { color: #fff; font-size: 14px; font-weight: 600; }
-            .button { display: inline-block; background: #fff; color: #000 !important; padding: 16px 40px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 16px; transition: all 0.3s ease; text-align: center; width: 100%; box-sizing: border-box; }
-            .footer { padding: 30px; text-align: center; border-top: 1px solid #1a1a1a; font-size: 12px; color: #444; }
+            h2 { font-size: 22px; font-weight: 700; margin-bottom: 16px; color: #09090b; }
+            p { font-size: 15px; color: #52525b; margin-bottom: 24px; }
+            .info-card { width: 100%; background: #fafafa; border: 1px solid #e4e4e7; border-radius: 12px; padding: 16px 24px; margin-bottom: 32px; border-collapse: separate; border-spacing: 0; }
+            .info-label { color: #71717a; font-size: 14px; padding: 12px 0; border-bottom: 1px solid #f4f4f5; text-align: left; vertical-align: top; }
+            .info-value { color: #09090b; font-size: 14px; font-weight: 600; text-align: right; padding: 12px 0; border-bottom: 1px solid #f4f4f5; vertical-align: top; }
+            .info-card tr:last-child .info-label, .info-card tr:last-child .info-value { border-bottom: none; padding-bottom: 4px; }
+            .info-card tr:first-child .info-label, .info-card tr:first-child .info-value { padding-top: 4px; }
+            .button { display: inline-block; background: #2563eb; color: #fff !important; padding: 14px 48px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 15px; box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3); transition: all 0.2s; text-align: center; width: 100%; box-sizing: border-box; }
+            .footer { background: #fafafa; padding: 24px 40px; text-align: center; border-top: 1px solid #e4e4e7; font-size: 12px; color: #a1a1aa; }
+            .footer p { margin: 4px 0; }
           </style>
         </head>
         <body>
           <div class="wrapper">
             <div class="container">
               <div class="header">
+                <img src="${frontendUrl}/logo.png" alt="SmartPost AI Logo" />
                 <div class="badge">Success</div>
-                <div class="header-logo">SmartPost AI</div>
-                <h1 style="font-size: 28px; font-weight: 800;">Welcome to Pro, ${updatedUser.name}!</h1>
+                <div class="header-logo">Welcome to Pro, ${updatedUser.name}!</div>
               </div>
               <div class="content">
                 <h2>Your upgrade is complete.</h2>
                 <p>We've received your payment of ₹100. Your account has been upgraded to <strong>SmartPost AI Pro</strong> for the next 12 months. You now have unlimited access to all premium features.</p>
                 
-                <div class="info-card">
-                  <div class="info-item">
-                    <span class="info-label">Plan</span>
-                    <span class="info-value">Pro Annual</span>
-                  </div>
-                  <div class="info-item">
-                    <span class="info-label">Payment ID</span>
-                    <span class="info-value">${razorpay_payment_id}</span>
-                  </div>
-                  <div class="info-item">
-                    <span class="info-label">Expires On</span>
-                    <span class="info-value">${expiresAt.toLocaleDateString()}</span>
-                  </div>
-                </div>
+                <table class="info-card" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td class="info-label">Plan</td>
+                    <td class="info-value">Pro Annual</td>
+                  </tr>
+                  <tr>
+                    <td class="info-label">Payment ID</td>
+                    <td class="info-value">${razorpay_payment_id}</td>
+                  </tr>
+                  <tr>
+                    <td class="info-label">Expires On</td>
+                    <td class="info-value">${expiresAt.toLocaleDateString()}</td>
+                  </tr>
+                </table>
 
                 <a href="${dashboardUrl}" class="button">Go to Dashboard</a>
                 
-                <p style="margin-top: 32px; font-size: 14px; text-align: center;">Need help? <a href="mailto:support@smartpostai.online" style="color: #3a7bd5;">Contact Support</a></p>
+                <p style="margin-top: 32px; font-size: 13px; text-align: center; color: #71717a;">Need help? <a href="mailto:support@smartpostai.online" style="color: #2563eb; text-decoration: none; font-weight: 500;">Contact Support</a></p>
               </div>
               <div class="footer">
-                <p>&copy; 2026 SmartPost AI. All rights reserved.</p>
+                <p>&copy; ${new Date().getFullYear()} SmartPost AI. All rights reserved.</p>
+                <p style="margin-top: 6px;">This receipt is an automated message — please do not reply.</p>
               </div>
             </div>
           </div>
@@ -135,7 +139,7 @@ exports.verifyPayment = catchAsync(async (req, res, next) => {
 
       await sendEmail({
         email: updatedUser.email,
-        subject: 'Welcome to SmartPost AI Pro! 🚀',
+        subject: 'Welcome to SmartPost AI Pro! ',
         html
       });
     } catch (err) {

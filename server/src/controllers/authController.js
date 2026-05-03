@@ -139,26 +139,27 @@ exports.register = catchAsync(async (req, res, next) => {
       <meta charset="UTF-8">
       <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif; background: #0a0a0a; color: #e5e5e5; line-height: 1.7; }
-        .wrapper { background: #0a0a0a; padding: 40px 20px; }
-        .container { max-width: 600px; margin: 0 auto; background: #111; border-radius: 16px; border: 1px solid #222; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
-        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 50px 40px; text-align: center; color: #fff; }
-        .header-logo { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
-        .header-subtitle { font-size: 14px; opacity: 0.9; font-weight: 500; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif; background: #f4f4f5; color: #27272a; line-height: 1.7; }
+        .wrapper { background: #f4f4f5; padding: 40px 20px; }
+        .container { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; border: 1px solid #e4e4e7; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.05); }
+        .header { background: #ffffff; padding: 40px 40px 20px; text-align: center; border-bottom: 1px solid #f4f4f5; }
+        .header img { height: 48px; margin-bottom: 16px; border-radius: 12px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
+        .header-logo { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; color: #09090b; }
+        .header-subtitle { font-size: 14px; color: #71717a; font-weight: 500; margin-top: 4px; }
         .content { padding: 40px; }
-        h2 { color: #fff; font-size: 22px; margin-bottom: 16px; font-weight: 700; }
-        p { color: #a3a3a3; font-size: 15px; margin-bottom: 16px; }
+        h2 { color: #09090b; font-size: 22px; margin-bottom: 16px; font-weight: 700; }
+        p { color: #52525b; font-size: 15px; margin-bottom: 16px; }
         .highlight { color: #10b981; font-weight: 600; }
-        .info-box { background: #1a1a1a; border-left: 3px solid #10b981; padding: 16px 20px; margin: 24px 0; border-radius: 6px; }
-        .info-box p { margin: 4px 0; font-size: 14px; color: #d4d4d4; }
+        .info-box { background: #f0fdf4; border-left: 4px solid #10b981; padding: 16px 20px; margin: 24px 0; border-radius: 0 6px 6px 0; }
+        .info-box p { margin: 4px 0; font-size: 14px; color: #166534; }
         .button-container { text-align: center; margin: 32px 0; }
-        .button { display: inline-block; background: #10b981; color: #fff !important; padding: 14px 48px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 15px; box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3); }
-        .button-note { color: #737373; font-size: 12px; margin-top: 12px; }
-        .steps { background: #1a1a1a; border-radius: 8px; padding: 24px; margin: 24px 0; }
+        .button { display: inline-block; background: #10b981; color: #fff !important; padding: 14px 48px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 15px; box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3); transition: all 0.2s; }
+        .button-note { color: #a1a1aa; font-size: 12px; margin-top: 12px; }
+        .steps { background: #fafafa; border: 1px solid #e4e4e7; border-radius: 8px; padding: 24px; margin: 24px 0; }
         .step { display: flex; margin: 14px 0; align-items: flex-start; }
         .step-number { background: #10b981; color: #fff; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-right: 14px; flex-shrink: 0; font-size: 13px; }
-        .step-content p { margin: 0; color: #d4d4d4; font-size: 14px; }
-        .footer { background: #0a0a0a; padding: 24px 40px; text-align: center; border-top: 1px solid #222; font-size: 12px; color: #525252; }
+        .step-content p { margin: 0; color: #3f3f46; font-size: 14px; }
+        .footer { background: #fafafa; padding: 24px 40px; text-align: center; border-top: 1px solid #e4e4e7; font-size: 12px; color: #a1a1aa; }
         .footer p { margin: 4px 0; }
       </style>
     </head>
@@ -166,6 +167,7 @@ exports.register = catchAsync(async (req, res, next) => {
       <div class="wrapper">
         <div class="container">
           <div class="header">
+            <img src="${frontendUrl}/logo.png" alt="SmartPost AI Logo" />
             <div class="header-logo">SmartPost AI</div>
             <div class="header-subtitle">Verify Your Email Address</div>
           </div>
@@ -183,7 +185,7 @@ exports.register = catchAsync(async (req, res, next) => {
               <p class="button-note">This link expires in 24 hours</p>
             </div>
             
-            <h2 style="font-size: 17px; margin-top: 32px;">What you can do after verifying</h2>
+            <h2 style="font-size: 17px; margin-top: 32px; color: #09090b;">What you can do after verifying</h2>
             <div class="steps">
               <div class="step">
                 <div class="step-number">1</div>
@@ -205,11 +207,11 @@ exports.register = catchAsync(async (req, res, next) => {
               </div>
             </div>
             
-            <p style="font-size: 13px; color: #737373; margin-top: 24px;">If you did not create this account, you can safely ignore this email. Your account will not be activated unless you verify.</p>
+            <p style="font-size: 13px; color: #a1a1aa; margin-top: 24px;">If you did not create this account, you can safely ignore this email. Your account will not be activated unless you verify.</p>
           </div>
           <div class="footer">
             <p>&copy; ${new Date().getFullYear()} SmartPost AI. All rights reserved.</p>
-            <p style="margin-top: 6px; color: #404040;">This is an automated message — please do not reply.</p>
+            <p style="margin-top: 6px; color: #a1a1aa;">This is an automated message — please do not reply.</p>
           </div>
         </div>
       </div>
@@ -366,27 +368,28 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
       <meta charset="UTF-8">
       <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif; background: #0a0a0a; color: #e5e5e5; line-height: 1.7; }
-        .wrapper { background: #0a0a0a; padding: 40px 20px; }
-        .container { max-width: 600px; margin: 0 auto; background: #111; border-radius: 16px; border: 1px solid #222; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
-        .header { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); padding: 50px 40px; text-align: center; color: #fff; }
-        .header-logo { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
-        .header-subtitle { font-size: 14px; opacity: 0.9; font-weight: 500; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif; background: #f4f4f5; color: #27272a; line-height: 1.7; }
+        .wrapper { background: #f4f4f5; padding: 40px 20px; }
+        .container { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; border: 1px solid #e4e4e7; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.05); }
+        .header { background: #ffffff; padding: 40px 40px 20px; text-align: center; border-bottom: 1px solid #f4f4f5; }
+        .header img { height: 48px; margin-bottom: 16px; border-radius: 12px; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2); }
+        .header-logo { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; color: #09090b; }
+        .header-subtitle { font-size: 14px; color: #71717a; font-weight: 500; margin-top: 4px; }
         .content { padding: 40px; }
-        h2 { color: #fff; font-size: 22px; margin-bottom: 16px; font-weight: 700; }
-        h3 { color: #e5e5e5; font-size: 16px; margin-top: 28px; margin-bottom: 12px; font-weight: 700; }
-        p { color: #a3a3a3; font-size: 15px; margin-bottom: 16px; }
+        h2 { color: #09090b; font-size: 22px; margin-bottom: 16px; font-weight: 700; }
+        h3 { color: #09090b; font-size: 16px; margin-top: 28px; margin-bottom: 12px; font-weight: 700; }
+        p { color: #52525b; font-size: 15px; margin-bottom: 16px; }
         .highlight { color: #dc2626; font-weight: 600; }
-        .warning-box { background: #1a1a1a; border-left: 3px solid #dc2626; padding: 16px 20px; margin: 24px 0; border-radius: 6px; }
-        .warning-box p { margin: 4px 0; font-size: 14px; color: #d4d4d4; }
-        .warning-title { color: #ef4444; font-weight: 700; }
+        .warning-box { background: #fef2f2; border-left: 4px solid #dc2626; padding: 16px 20px; margin: 24px 0; border-radius: 0 6px 6px 0; }
+        .warning-box p { margin: 4px 0; font-size: 14px; color: #991b1b; }
+        .warning-title { color: #dc2626; font-weight: 700; }
         .button-container { text-align: center; margin: 32px 0; }
-        .button { display: inline-block; background: #dc2626; color: #fff !important; padding: 14px 48px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 15px; box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3); }
-        .timer { background: #1a1a1a; border: 1px solid #333; border-radius: 6px; padding: 10px; margin: 12px 0; text-align: center; color: #ef4444; font-weight: 600; font-size: 13px; }
-        .security-tips { background: #1a1a1a; border: 1px solid #222; border-radius: 8px; padding: 20px; margin: 24px 0; }
-        .security-tips p { font-size: 14px; color: #d4d4d4; margin: 6px 0; }
-        .security-tips li { color: #a3a3a3; font-size: 14px; margin: 8px 0; margin-left: 20px; }
-        .footer { background: #0a0a0a; padding: 24px 40px; text-align: center; border-top: 1px solid #222; font-size: 12px; color: #525252; }
+        .button { display: inline-block; background: #dc2626; color: #fff !important; padding: 14px 48px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 15px; box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3); transition: all 0.2s; }
+        .timer { background: #fafafa; border: 1px solid #e4e4e7; border-radius: 6px; padding: 10px; margin: 12px 0; text-align: center; color: #dc2626; font-weight: 600; font-size: 13px; }
+        .security-tips { background: #fafafa; border: 1px solid #e4e4e7; border-radius: 8px; padding: 20px; margin: 24px 0; }
+        .security-tips p { font-size: 14px; color: #3f3f46; margin: 6px 0; }
+        .security-tips li { color: #52525b; font-size: 14px; margin: 8px 0; margin-left: 20px; }
+        .footer { background: #fafafa; padding: 24px 40px; text-align: center; border-top: 1px solid #e4e4e7; font-size: 12px; color: #a1a1aa; }
         .footer p { margin: 4px 0; }
       </style>
     </head>
@@ -394,6 +397,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
       <div class="wrapper">
         <div class="container">
           <div class="header">
+            <img src="${frontendUrl}/logo.png" alt="SmartPost AI Logo" />
             <div class="header-logo">SmartPost AI</div>
             <div class="header-subtitle">Password Reset Request</div>
           </div>
@@ -424,11 +428,11 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
               </ul>
             </div>
             
-            <p style="font-size: 13px; color: #737373; margin-top: 24px;">If you are having trouble, contact us at <a href="mailto:support@smartpostai.online" style="color: #dc2626;">support@smartpostai.online</a></p>
+            <p style="font-size: 13px; color: #a1a1aa; margin-top: 24px;">If you are having trouble, contact us at <a href="mailto:support@smartpostai.online" style="color: #dc2626;">support@smartpostai.online</a></p>
           </div>
           <div class="footer">
             <p>&copy; ${new Date().getFullYear()} SmartPost AI. All rights reserved.</p>
-            <p style="margin-top: 6px; color: #404040;">This is an automated message — please do not reply.</p>
+            <p style="margin-top: 6px; color: #a1a1aa;">This is an automated message — please do not reply.</p>
           </div>
         </div>
       </div>

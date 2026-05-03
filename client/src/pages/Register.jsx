@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
+import { Mail, CheckCircle, ArrowRight, Bot } from 'lucide-react';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -84,18 +85,53 @@ const Register = () => {
         </div>
 
         {successMsg && (
-          <div className="bg-primary/10 border border-primary/50 text-primary p-6 rounded-lg mb-6 text-center shadow-inner">
-            <div className="flex justify-center mb-3">
-              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
-                <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="relative overflow-hidden bg-card border border-border rounded-2xl p-6 text-center shadow-[0_0_40px_rgba(var(--primary),0.15)] group"
+          >
+            {/* Animated glowing border effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/20 to-primary/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out pointer-events-none" />
+            
+            <div className="flex justify-center mb-4 relative z-10">
+              <div className="relative">
+                <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full" />
+                <div className="w-16 h-16 bg-gradient-to-br from-[#121214] to-card border border-primary/30 rounded-2xl flex items-center justify-center relative z-10 shadow-xl">
+                  <Mail className="w-8 h-8 text-primary" />
+                  <motion.div 
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.3, type: 'spring' }}
+                    className="absolute -bottom-2 -right-2 bg-background rounded-full"
+                  >
+                    <CheckCircle className="w-6 h-6 text-emerald-500 fill-emerald-500/20" />
+                  </motion.div>
+                </div>
               </div>
             </div>
-            <p className="font-semibold text-lg mb-2 text-primary">{successMsg}</p>
-            <p className="text-sm text-primary/80 mb-6">You must click the secure link in your email before you can sign in to your new workspace.</p>
-            <Link to="/login" className="inline-block bg-primary hover:bg-primary/80 text-primary-foreground font-medium py-2 px-8 rounded-lg transition-colors shadow-md shadow-primary/20">
-              Go to Login
-            </Link>
-          </div>
+            
+            <div className="relative z-10">
+              <h3 className="font-bold text-xl mb-3 text-foreground tracking-tight">Verify Your Identity</h3>
+              
+              <div className="bg-muted/50 rounded-xl p-4 mb-5 border border-border/50 text-left">
+                <div className="flex gap-3">
+                  <Bot className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm text-foreground/90 leading-relaxed font-medium mb-1">
+                      {successMsg}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Click the secure link in the email to activate your workspace and complete setup.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <Link to="/login" className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 px-6 rounded-xl transition-all shadow-[0_0_20px_rgba(var(--primary),0.3)] hover:shadow-[0_0_30px_rgba(var(--primary),0.5)]">
+                Proceed to Login <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </motion.div>
         )}
 
         {!successMsg && (
