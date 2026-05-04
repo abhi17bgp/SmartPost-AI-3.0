@@ -274,7 +274,7 @@ export default function Home() {
             className="md:col-span-2 relative group overflow-hidden rounded-3xl bg-card border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
           >
             <div className="absolute top-0 right-0 w-[400px] h-[300px] bg-gradient-to-bl from-amber-500/10 via-transparent to-transparent opacity-50 blur-3xl pointer-events-none" />
-            <div className="absolute -right-10 -bottom-10 w-[300px] h-[200px] border border-border/20 rounded-2xl bg-muted shadow-2xl rotate-[-5deg] group-hover:rotate-[-2deg] transition-transform duration-500 overflow-hidden flex flex-col">
+            <div className="absolute md:-right-10 md:-bottom-10 -right-20 -bottom-20 w-[300px] h-[200px] border border-border/20 rounded-2xl bg-muted shadow-2xl rotate-[-5deg] group-hover:rotate-[-2deg] transition-transform duration-500 overflow-hidden flex flex-col opacity-30 md:opacity-100">
               <div className="h-8 border-b border-border/20 flex items-center px-3 gap-2 bg-card">
                 <div className="w-2 h-2 rounded-full bg-rose-500/80" /><div className="w-2 h-2 rounded-full bg-amber-500/80" /><div className="w-2 h-2 rounded-full bg-emerald-500/80" />
               </div>
@@ -286,7 +286,7 @@ export default function Home() {
               </div>
             </div>
             
-            <div className="relative z-10 max-w-[60%]">
+            <div className="relative z-10 md:max-w-[60%]">
               <div className="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center mb-6 border border-amber-500/20">
                 <Zap className="text-amber-500" size={24} />
               </div>
@@ -335,17 +335,17 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
             className="md:col-span-2 relative group overflow-hidden rounded-3xl bg-card border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
           >
-            <div className="absolute right-10 top-1/2 -translate-y-1/2 flex -space-x-4 pointer-events-none">
+            <div className="absolute right-4 md:right-10 top-4 md:top-1/2 md:-translate-y-1/2 flex -space-x-4 pointer-events-none opacity-30 md:opacity-100 scale-75 md:scale-100 origin-top-right">
                <div className="w-16 h-16 rounded-full border-4 border-card bg-indigo-500 flex items-center justify-center text-white font-bold text-xl shadow-xl z-30 transform group-hover:-translate-y-2 transition-transform">AS</div>
                <div className="w-16 h-16 rounded-full border-4 border-card bg-rose-500 flex items-center justify-center text-white font-bold text-xl shadow-xl z-20 transform group-hover:translate-y-2 transition-transform duration-500">SA</div>
                <div className="w-16 h-16 rounded-full border-4 border-card bg-emerald-500 flex items-center justify-center text-white font-bold text-xl shadow-xl z-10 transform group-hover:-translate-y-1 transition-transform duration-700">CH</div>
             </div>
-            <div className="relative z-10 max-w-[55%]">
+            <div className="relative z-10 md:max-w-[55%] mt-8 md:mt-0">
               <div className="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center mb-6 border border-indigo-500/20">
                 <Users className="text-indigo-400" size={24} />
               </div>
               <h3 className="text-2xl font-bold text-foreground mb-3 tracking-tight">Real-Time Workspaces</h3>
-              <p className="text-muted-foreground leading-relaxed">Invite your entire engineering team. Share endpoints, environments, and response history securely in real-time without ever sending a `.env` file via Slack.</p>
+              <p className="text-muted-foreground leading-relaxed">Invite your entire engineering team. Share endpoints, environments, and response history securely in real-time.</p>
             </div>
           </motion.div>
 
@@ -368,7 +368,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.5 }}
             className="md:col-span-2 relative group overflow-hidden rounded-3xl bg-card border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
           >
-            <div className="absolute top-10 right-10 flex gap-2 pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity">
+            <div className="absolute top-4 md:top-10 right-4 md:right-10 flex gap-2 pointer-events-none opacity-20 md:opacity-50 group-hover:opacity-100 transition-opacity scale-50 md:scale-100 origin-top-right">
               <div className="w-32 h-10 bg-muted border border-border/40 rounded-t-lg flex items-center px-4 transform translate-y-2 z-10">
                 <span className="w-2 h-2 rounded-full bg-rose-500 mr-2"/>
                 <div className="w-12 h-1.5 bg-border/40 rounded-full"/>
@@ -383,8 +383,8 @@ export default function Home() {
               </div>
             </div>
             
-            <div className="relative z-10 max-w-[60%]">
-              <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center mb-6 border border-blue-500/20">
+            <div className="relative z-10 md:max-w-[60%] mt-4 md:mt-0">
+              <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center mb-6 border border-blue-500/20 relative z-10 bg-card">
                 <Layout className="text-blue-400" size={24} />
               </div>
               <h3 className="text-2xl font-bold text-foreground mb-3 tracking-tight">Multi-Tab Interface</h3>
@@ -446,7 +446,7 @@ export default function Home() {
               viewport={{ once: true }}
               className="flex-1 w-full"
             >
-              <div className="rounded-2xl bg-card border border-border/40 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden h-[450px] flex flex-col font-sans ring-1 ring-white/5">
+              <div className="rounded-2xl bg-card border border-border/40 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden h-[550px] sm:h-[450px] flex flex-col font-sans ring-1 ring-white/5">
                 {/* Authentic macOS-style Window Header */}
                 <div className="h-12 bg-muted border-b border-border/40 flex items-center px-4 justify-between select-none">
                   <div className="flex gap-2">
@@ -466,25 +466,25 @@ export default function Home() {
                 {/* Application Body */}
                 <div className="flex-1 relative flex">
                   {/* Minimal Sidebar */}
-                  <div className="w-14 border-r border-border/40 bg-muted flex flex-col items-center py-4 gap-6 text-muted-foreground/50">
-                    <Search size={18} className="hover:text-primary transition-colors cursor-pointer" />
-                    <Activity size={18} className="text-primary cursor-pointer" />
-                    <Workflow size={18} className="hover:text-primary transition-colors cursor-pointer" />
-                    <Bot size={18} className="hover:text-primary transition-colors cursor-pointer" />
+                  <div className="w-14 border-r border-border/40 bg-muted flex flex-col items-center py-4 gap-6 text-muted-foreground/50 z-10">
+                    <Search size={18} className={`transition-all duration-300 ${activeStep === 0 ? 'text-primary scale-125 drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'opacity-70'}`} />
+                    <Activity size={18} className={`transition-all duration-300 ${activeStep === 1 ? 'text-primary scale-125 drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'opacity-70'}`} />
+                    <Bot size={18} className={`transition-all duration-300 ${activeStep === 2 ? 'text-primary scale-125 drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'opacity-70'}`} />
+                    <Users size={18} className={`transition-all duration-300 ${activeStep === 3 ? 'text-primary scale-125 drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'opacity-70'}`} />
                   </div>
 
                   {/* Main Content Area */}
-                  <div className="flex-1 relative bg-card overflow-hidden">
+                  <div className="flex-1 relative bg-card overflow-y-auto overflow-x-hidden sm:overflow-hidden">
                     <AnimatePresence mode="wait">
                       {/* STEP 0: Request Builder */}
                       {activeStep === 0 && (
                         <motion.div key="step0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="h-full flex flex-col p-5">
                           <div className="flex gap-3 mb-6">
                             <div className="w-20 h-10 bg-emerald-500/10 text-emerald-500 font-semibold text-sm flex items-center justify-center rounded-md border border-emerald-500/20">GET</div>
-                            <div className="flex-1 h-10 bg-accent rounded-md flex items-center px-3 font-mono text-sm text-foreground/90 border border-border/30 shadow-inner">
-                              <span className="text-muted-foreground/60 mr-1">https://</span>
-                              api.example.com/v1/users
-                              <motion.div animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 1 }} className="w-1.5 h-4 bg-primary ml-1" />
+                            <div className="flex-1 h-10 bg-accent rounded-md flex items-center px-3 font-mono text-sm text-foreground/90 border border-border/30 shadow-inner overflow-hidden">
+                              <span className="text-muted-foreground/60 mr-1 hidden sm:inline">https://</span>
+                              <span className="truncate">api.example.com/v1/users</span>
+                              <motion.div animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 1 }} className="w-1.5 h-4 bg-primary ml-1 flex-shrink-0" />
                             </div>
                             <div className="h-10 px-6 bg-primary text-primary-foreground font-medium text-sm flex items-center justify-center rounded-md shadow-lg shadow-primary/20">
                               Send
@@ -497,17 +497,17 @@ export default function Home() {
                             <div className="px-4 py-2">Body</div>
                           </div>
                           <div className="space-y-3 font-mono text-xs">
-                            <div className="flex border-b border-border/10 pb-2 hover:bg-white/5 px-2 rounded transition-colors">
-                              <div className="w-1/3 text-emerald-400">Authorization</div>
-                              <div className="flex-1 text-muted-foreground truncate">Bearer token_xyz...</div>
+                            <div className="flex flex-col sm:flex-row sm:items-center border-b border-border/10 pb-2 hover:bg-white/5 px-2 rounded transition-colors gap-1 sm:gap-0">
+                              <div className="w-full sm:w-1/3 text-emerald-400">Authorization</div>
+                              <div className="w-full sm:flex-1 text-muted-foreground truncate">Bearer token_xyz...</div>
                             </div>
-                            <div className="flex border-b border-border/10 pb-2 hover:bg-white/5 px-2 rounded transition-colors">
-                              <div className="w-1/3 text-emerald-400">Content-Type</div>
-                              <div className="flex-1 text-muted-foreground">application/json</div>
+                            <div className="flex flex-col sm:flex-row sm:items-center border-b border-border/10 pb-2 hover:bg-white/5 px-2 rounded transition-colors gap-1 sm:gap-0">
+                              <div className="w-full sm:w-1/3 text-emerald-400">Content-Type</div>
+                              <div className="w-full sm:flex-1 text-muted-foreground truncate">application/json</div>
                             </div>
-                            <div className="flex pb-2 hover:bg-white/5 px-2 rounded transition-colors">
-                              <div className="w-1/3 text-emerald-400">Accept</div>
-                              <div className="flex-1 text-muted-foreground">*/*</div>
+                            <div className="flex flex-col sm:flex-row sm:items-center pb-2 hover:bg-white/5 px-2 rounded transition-colors gap-1 sm:gap-0">
+                              <div className="w-full sm:w-1/3 text-emerald-400">Accept</div>
+                              <div className="w-full sm:flex-1 text-muted-foreground truncate">*/*</div>
                             </div>
                           </div>
                         </motion.div>
@@ -584,7 +584,7 @@ export default function Home() {
                               <div><span className="text-yellow-300">{`}`}</span></div>
                             </div>
                           </div>
-                          <div className="w-1/2 bg-muted/50 p-5 flex flex-col gap-4">
+                          <div className="w-full md:w-1/2 bg-muted/50 p-5 flex flex-col gap-4 border-t md:border-t-0 md:border-l border-border/40 z-10">
                             <div className="flex items-center gap-2 text-primary border-b border-border/20 pb-2">
                               <Bot size={16} />
                               <span className="font-semibold text-sm">Smart Analysis</span>
@@ -611,8 +611,8 @@ export default function Home() {
 
                       {/* STEP 3: Collaboration */}
                       {activeStep === 3 && (
-                        <motion.div key="step3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="h-full p-5 relative font-mono text-[11px] sm:text-xs">
-                          <div className="flex justify-between items-center mb-5 border-b border-border/40 pb-3 font-sans">
+                        <motion.div key="step3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="h-full p-5 relative font-mono text-[11px] sm:text-xs flex flex-col">
+                          <div className="flex justify-between items-center mb-5 border-b border-border/40 pb-3 font-sans flex-shrink-0">
                             <div className="text-muted-foreground font-medium text-xs flex items-center gap-2">
                               <Users size={14} /> collection / auth.json
                             </div>
@@ -622,49 +622,78 @@ export default function Home() {
                             </div>
                           </div>
 
-                          <div className="text-foreground/90 space-y-1.5 leading-relaxed bg-muted p-4 rounded-lg border border-border/20 shadow-inner">
+                          <div className="text-foreground/90 space-y-1.5 leading-relaxed bg-muted p-4 rounded-lg border border-border/20 shadow-inner relative flex-1 overflow-hidden">
                             <div><span className="text-yellow-300">{`{`}</span></div>
                             <div className="pl-4"><span className="text-emerald-400">"name"</span>: <span className="text-blue-400">"Login Request"</span>,</div>
                             <div className="pl-4"><span className="text-emerald-400">"method"</span>: <span className="text-blue-400">"POST"</span>,</div>
                             <div className="pl-4"><span className="text-emerald-400">"body"</span>: <span className="text-purple-400">{`{`}</span></div>
                             
-                            <div className="pl-8 relative inline-block group mt-1">
-                              <span className="text-emerald-400">"username"</span>: <span className="text-blue-400">{'"{{username}}"'}</span>
-                              {/* Cursor 1 */}
-                              <motion.div 
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: [1, 0, 1] }} 
-                                transition={{ repeat: Infinity, duration: 1 }}
-                                className="absolute -right-[1px] top-[2px] bottom-[2px] w-[2px] bg-rose-500 shadow-[0_0_5px_#f43f5e]"
-                              />
-                              <motion.div 
-                                initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
-                                className="absolute -top-6 -right-6 bg-rose-500 text-white font-sans text-[10px] px-2 py-0.5 rounded shadow-lg z-10 font-medium tracking-wide"
-                              >
-                                Ashish
-                              </motion.div>
+                            <div className="pl-8 relative flex items-center mt-1 w-fit group h-5">
+                              <span className="text-emerald-400 mr-2">"username":</span>
+                              <span className="text-blue-400">
+                                <TypeAnimation
+                                  sequence={[500, '""', 500, '"ashish_dev"', 2000]}
+                                  wrapper="span" cursor={false} speed={20}
+                                />
+                              </span>
+                              <div className="relative flex items-center ml-[1px]">
+                                <motion.div 
+                                  animate={{ opacity: [1, 0, 1] }} 
+                                  transition={{ repeat: Infinity, duration: 0.8 }}
+                                  className="w-[2px] h-3.5 bg-rose-500 shadow-[0_0_5px_#f43f5e]"
+                                />
+                                <motion.div 
+                                  initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+                                  className="absolute -top-6 -left-2 bg-rose-500 text-white font-sans text-[10px] px-2 py-0.5 rounded shadow-lg z-10 font-medium tracking-wide whitespace-nowrap"
+                                >
+                                  Ashish
+                                </motion.div>
+                              </div>
                             </div>
-                            <br/>
                             
-                            <div className="pl-8 relative inline-block mt-2">
-                              <span className="text-emerald-400">"password"</span>: <span className="text-blue-400">{'"{{password}}"'}</span>
-                              {/* Cursor 2 */}
-                              <motion.div 
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: [1, 0, 1] }} 
-                                transition={{ repeat: Infinity, duration: 1, delay: 0.5 }}
-                                className="absolute -right-[1px] top-[2px] bottom-[2px] w-[2px] bg-indigo-500 shadow-[0_0_5px_#6366f1]"
-                              />
-                              <motion.div 
-                                initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1 }}
-                                className="absolute -bottom-6 -right-5 bg-indigo-500 text-white font-sans text-[10px] px-2 py-0.5 rounded shadow-lg z-10 font-medium tracking-wide"
-                              >
-                                Saurabh
-                              </motion.div>
+                            <div className="pl-8 relative flex items-center mt-2 w-fit group h-5">
+                              <span className="text-emerald-400 mr-2">"password":</span>
+                              <span className="text-blue-400">
+                                <TypeAnimation
+                                  sequence={[1500, '""', 500, '"secret_pass_123"', 1000]}
+                                  wrapper="span" cursor={false} speed={30}
+                                />
+                              </span>
+                              <div className="relative flex items-center ml-[1px]">
+                                <motion.div 
+                                  animate={{ opacity: [1, 0, 1] }} 
+                                  transition={{ repeat: Infinity, duration: 0.8, delay: 0.5 }}
+                                  className="w-[2px] h-3.5 bg-indigo-500 shadow-[0_0_5px_#6366f1]"
+                                />
+                                <motion.div 
+                                  initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1 }}
+                                  className="absolute -bottom-6 -left-2 bg-indigo-500 text-white font-sans text-[10px] px-2 py-0.5 rounded shadow-lg z-10 font-medium tracking-wide whitespace-nowrap"
+                                >
+                                  Saurabh
+                                </motion.div>
+                              </div>
                             </div>
                             
                             <div className="pl-4 mt-1"><span className="text-purple-400">{`}`}</span></div>
                             <div><span className="text-yellow-300">{`}`}</span></div>
+
+                            {/* Real-time Activity Toasts */}
+                            <div className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 flex flex-col gap-2 z-30">
+                              <motion.div
+                                initial={{ opacity: 0, y: 20, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.5 }}
+                                className="bg-card border border-border/40 px-3 py-2 rounded-lg shadow-xl flex items-center gap-2"
+                              >
+                                <div className="w-2 h-2 rounded-full bg-rose-500 animate-pulse shadow-[0_0_8px_#f43f5e]" />
+                                <span className="text-[10px] text-muted-foreground font-sans">Ashish started editing...</span>
+                              </motion.div>
+                              <motion.div
+                                initial={{ opacity: 0, y: 20, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 1.5 }}
+                                className="bg-card border border-border/40 px-3 py-2 rounded-lg shadow-xl flex items-center gap-2"
+                              >
+                                <div className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse shadow-[0_0_8px_#6366f1]" />
+                                <span className="text-[10px] text-muted-foreground font-sans">Saurabh joined the file</span>
+                              </motion.div>
+                            </div>
                           </div>
                         </motion.div>
                       )}
