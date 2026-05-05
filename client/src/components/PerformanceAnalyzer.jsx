@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { useWorkspace } from '../context/WorkspaceContext';
 import { useAuth } from '../context/AuthContext';
 import { useDialog } from '../context/DialogContext';
+import CustomSelect from './CustomSelect';
 
 const PerformanceAnalyzer = ({ activeReqTab, onClose }) => {
   const { currentWorkspace, latestHistoryId, performanceViewState, setPerformanceViewState } = useWorkspace();
@@ -527,39 +528,36 @@ const PerformanceAnalyzer = ({ activeReqTab, onClose }) => {
             <div className="flex items-center pl-2 gap-1.5 text-xs font-mono text-muted-foreground shrink-0">
               <Settings size={14} /> Type:
             </div>
-            <select
-              className="bg-background border border-border text-foreground text-sm rounded cursor-pointer px-2 py-1 outline-none focus:border-primary shrink-0"
+            <CustomSelect
               value={testType}
-              onChange={e => setTestType(e.target.value)}
+              onChange={(val) => setTestType(val)}
               disabled={isRunning}
-              name="testType"
-              id="testType"
-              aria-label="Test Type"
-            >
-              <option value="sequential">Sequential</option>
-              <option value="parallel">Parallel</option>
-            </select>
+              className="bg-background border border-border text-foreground text-sm rounded px-3 py-1 outline-none focus:border-primary shrink-0 min-w-[120px]"
+              options={[
+                { value: 'sequential', label: 'Sequential' },
+                { value: 'parallel', label: 'Parallel' }
+              ]}
+            />
 
             <div className="hidden md:block w-px h-5 bg-border shrink-0"></div>
 
             <div className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground shrink-0">
               Runs:
             </div>
-            <select
-              className="bg-background border border-border text-foreground text-sm rounded cursor-pointer px-2 py-1 outline-none focus:border-primary shrink-0"
+            <CustomSelect
               value={runs}
-              onChange={e => setRuns(Number(e.target.value))}
+              onChange={(val) => setRuns(val)}
               disabled={isRunning}
-              name="testRuns"
-              id="testRuns"
-              aria-label="Test Runs"
-            >
-              <option value={5}>5 Runs</option>
-              <option value={10}>10 Runs</option>
-              <option value={20}>20 Runs (Recommended)</option>
-              <option value={50}>50 Runs</option>
-              <option value={100}>100 Runs (Stress Test)</option>
-            </select>
+              className="bg-background border border-border text-foreground text-sm rounded px-3 py-1 outline-none focus:border-primary shrink-0 min-w-[120px]"
+              listClassName="w-[200px] right-0"
+              options={[
+                { value: 5, label: '5 Runs' },
+                { value: 10, label: '10 Runs' },
+                { value: 20, label: '20 Runs (Recommended)' },
+                { value: 50, label: '50 Runs' },
+                { value: 100, label: '100 Runs (Stress Test)' }
+              ]}
+            />
             <button
               onClick={startTest}
               disabled={isRunning}

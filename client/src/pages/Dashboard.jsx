@@ -7,14 +7,14 @@ import PerformanceAnalyzer from '../components/PerformanceAnalyzer';
 import { useWorkspace } from '../context/WorkspaceContext';
 
 const Dashboard = () => {
-  const { 
-    tabs, 
-    activeTabId, 
-    responseData, 
-    setResponseData, 
-    responseLoading, 
-    setResponseLoading, 
-    performanceModalOpen, 
+  const {
+    tabs,
+    activeTabId,
+    responseData,
+    setResponseData,
+    responseLoading,
+    setResponseLoading,
+    performanceModalOpen,
     setPerformanceModalOpen,
     performanceViewState,
     setPerformanceViewState
@@ -62,23 +62,23 @@ const Dashboard = () => {
           </section>
         </div>
       </main>
-      
+
       {/* Global Performance Modal - High Z-index with screen-wide backdrop */}
       {performanceModalOpen && (
-        <div className={performanceViewState === 'minimized' 
-          ? "fixed bottom-6 right-6 z-[110] w-auto h-auto transition-all duration-500 ease-in-out" 
+        <div className={performanceViewState === 'minimized'
+          ? "fixed bottom-6 right-6 z-[110] w-auto h-auto transition-all duration-500 ease-in-out"
           : "fixed inset-0 z-[100] bg-black/70 flex items-center justify-center p-4 backdrop-blur-md animate-fade-in transition-all duration-500"
         }>
           <div className={`transition-all duration-500 ease-in-out overflow-hidden rounded-xl shadow-[0_0_50px_rgba(0,0,0,0.5)] 
-            ${performanceViewState === 'maximized' ? 'w-full h-full max-w-none' : 
-              performanceViewState === 'minimized' ? 'w-72 h-auto' : 
-              'w-full max-w-4xl h-[85vh]'}`}>
-            <PerformanceAnalyzer 
-              activeReqTab={activeTab} 
+            ${performanceViewState === 'maximized' ? 'w-full h-full max-w-none' :
+              performanceViewState === 'minimized' ? 'w-72 h-auto' :
+                'w-full max-w-4xl h-[85vh]'}`}>
+            <PerformanceAnalyzer
+              activeReqTab={activeTab}
               onClose={() => {
                 setPerformanceModalOpen(false);
                 setPerformanceViewState('normal');
-              }} 
+              }}
             />
           </div>
         </div>

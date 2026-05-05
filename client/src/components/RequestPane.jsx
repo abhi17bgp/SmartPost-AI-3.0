@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Send, Save, ChevronDown, X } from 'lucide-react';
-import api from '../utils/axiosInstance';
+import { Send, Save, ChevronDown, X, Settings } from 'lucide-react';
+import CustomSelect from './CustomSelect';
 import { useWorkspace } from '../context/WorkspaceContext';
 import { useAuth } from '../context/AuthContext';
 import { useDialog } from '../context/DialogContext';
@@ -217,6 +217,13 @@ const RequestPane = ({ setResponseData, setResponseLoading, tab }) => {
   const [method, setMethod] = useState(tab?.method || 'GET');
   const [url, setUrl] = useState(tab?.url || '');
   const [activeTab, setActiveTab] = useState('Params');
+  const [showLocalhostHelper, setShowLocalhostHelper] = useState(false);
+
+  // Detect localhost/local IP
+  React.useEffect(() => {
+    const isLocal = url.toLowerCase().includes('localhost') || url.includes('127.0.0.1');
+    setShowLocalhostHelper(isLocal);
+  }, [url]);
 
   // Save Request Modal States
   const [showSaveModal, setShowSaveModal] = useState(false);
@@ -636,22 +643,22 @@ const RequestPane = ({ setResponseData, setResponseLoading, tab }) => {
 
         <div className="flex flex-col sm:flex-row gap-2 bg-background p-1.5 rounded-lg border border-border ring-1 ring-inset ring-black/5">
           <div className="flex gap-2 flex-1 w-full sm:w-auto">
-            <div className="relative group shrink-0">
-              <select
+            <div className="relative group shrink-0 min-w-[110px]">
+              <CustomSelect
                 value={method}
-                onChange={(e) => setMethod(e.target.value)}
-                name="requestMethod"
-                id="requestMethod"
-                aria-label="Request Method"
-                className={`appearance-none bg-transparent font-bold cursor-pointer focus:outline-none px-4 py-2 pr-8 rounded transition-colors uppercase text-sm w-full
-                  ${method === 'GET' ? 'text-primary group-hover:bg-primary/10' :
-                    method === 'POST' ? 'text-secondary group-hover:bg-secondary/10' :
-                      method === 'DELETE' ? 'text-destructive group-hover:bg-destructive/10' :
-                        'text-primary/70 group-hover:bg-primary/5'}`}
-              >
-                {METHODS.map(m => <option key={m} value={m} className="bg-card text-foreground">{m}</option>)}
-              </select>
-              <ChevronDown size={14} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                onChange={(val) => setMethod(val)}
+                className={`bg-transparent font-bold px-4 py-2 rounded transition-colors uppercase text-sm w-full
+                  ${method === 'GET' ? 'text-primary hover:bg-primary/10' :
+                    method === 'POST' ? 'text-blue-500 hover:bg-blue-500/10' :
+                      method === 'DELETE' ? 'text-destructive hover:bg-destructive/10' :
+                        'text-primary/70 hover:bg-primary/5'}`}
+                listClassName="w-[150px] left-0 mt-2"
+                options={METHODS.map(m => ({
+                  value: m,
+                  label: m,
+                  className: m === 'GET' ? 'text-primary' : m === 'POST' ? 'text-blue-500' : m === 'DELETE' ? 'text-destructive' : 'text-primary/70'
+                }))}
+              />
             </div>
 
             <div className="hidden sm:block w-[1px] bg-border my-1 shrink-0" />
@@ -681,6 +688,63 @@ const RequestPane = ({ setResponseData, setResponseLoading, tab }) => {
             </button>
           </div>
         </div>
+
+        {/* Localhost Helper Guide */}
+        {showLocalhostHelper && (
+          <div className="mt-3 p-4 bg-amber-50 border border-amber-200 dark:bg-amber-500/10 dark:border-amber-500/20 rounded-xl animate-in fade-in slide-in-from-top-2 duration-300 shadow-md max-h-[220px] overflow-y-auto custom-scrollbar">
+            <div className="flex items-start gap-3 mb-4">
+              <div className="p-2 bg-amber-100 dark:bg-amber-500/20 rounded-lg text-amber-600 dark:text-amber-500 shadow-sm shrink-0">
+                <Settings size={18} className="animate-spin-slow" />
+              </div>
+              <div>
+                <h4 className="text-sm font-black text-amber-800 dark:text-amber-500 uppercase tracking-widest">Localhost Detected</h4>
+                <p className="text-xs text-foreground/80 dark:text-muted-foreground leading-relaxed mt-1">
+                  Since SmartPost AI is a <span className="text-foreground font-bold underline decoration-amber-500/50">Cloud Website</span>, our servers cannot directly reach <span className="font-mono text-amber-900 dark:text-amber-400 bg-amber-100 dark:bg-amber-500/20 px-1.5 py-0.5 rounded border border-amber-200 dark:border-transparent">localhost</span> on your laptop.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Method 1: Ngrok */}
+              <div className="bg-background p-3 rounded-lg border border-border shadow-sm">
+                <div className="flex items-center gap-2 mb-2.5">
+                  <div className="w-5 h-5 rounded-md bg-foreground text-background flex items-center justify-center text-[11px] font-black">1</div>
+                  <span className="text-xs font-bold text-foreground">Tunneling (Recommended)</span>
+                </div>
+                <p className="text-[11px] text-muted-foreground mb-3">Make your local API public in seconds using VS Code terminal:</p>
+                <div className="bg-muted p-2.5 rounded-md font-mono text-[11px] text-foreground mb-3 select-all border border-border font-bold">
+                  npx ngrok http 3000
+                </div>
+                <p className="text-[10px] text-muted-foreground italic leading-tight">
+                  * Replace 3000 with your port. Copy the <span className="text-primary font-bold underline">https://...</span> URL and paste it above.
+                </p>
+              </div>
+
+              {/* Method 2: Extension */}
+              <div className="bg-background p-3 rounded-lg border border-border shadow-sm">
+                <div className="flex items-center gap-2 mb-2.5">
+                  <div className="w-5 h-5 rounded-md bg-foreground text-background flex items-center justify-center text-[11px] font-black">2</div>
+                  <span className="text-xs font-bold text-foreground">CORS Bypass Extension</span>
+                </div>
+                <p className="text-[11px] text-muted-foreground mb-3">Use a browser extension to ignore security rules:</p>
+                <ul className="text-[11px] text-muted-foreground space-y-1.5 ml-1">
+                  <li className="flex items-start gap-2">
+                    <span className="text-amber-500 mt-1">•</span>
+                    <span>Install <span className="text-foreground font-black underline decoration-primary">"Allow CORS"</span> from Chrome Store.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-amber-500 mt-1">•</span>
+                    <span>Toggle the extension to <span className="text-primary font-black">"ON"</span>.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-amber-500 mt-1">•</span>
+                    <span>Refresh this page and try again!</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="flex border-b border-border shrink-0 px-2 mt-1 overflow-x-auto custom-scrollbar">

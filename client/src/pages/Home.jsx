@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import { Bot, Zap, Shield, ChevronRight, Activity, Workflow, CheckCircle, MousePointer2, Users, Search, Play, ChevronUp, Menu, X, Lock, Layers, Layout } from 'lucide-react';
+import { Bot, Zap, Shield, ChevronRight, Activity, Workflow, CheckCircle, MousePointer2, Users, Search, Play, ChevronUp, Menu, X, Lock, Layers, Layout, Maximize, Minimize } from 'lucide-react';
 import { TypeAnimation } from 'react-type-animation';
 import { useAuth } from '../context/AuthContext';
 import ThemeToggle from '../components/ThemeToggle';
@@ -41,6 +41,23 @@ export default function Home() {
   const [activeStep, setActiveStep] = useState(0);
   const [showTopBtn, setShowTopBtn] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => console.log("Fullscreen API error:", err));
+    } else {
+      document.exitFullscreen().catch(err => console.log("Exit Fullscreen error:", err));
+    }
+  };
 
   // Redirect authenticated users to dashboard
   useEffect(() => {
@@ -97,7 +114,10 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-transparent overflow-hidden font-sans relative">
+    <div className="min-h-screen bg-background overflow-hidden font-sans relative p-3 sm:p-4">
+      {/* Global Page Border Frame */}
+      <div className="fixed inset-0 border-[12px] border-background z-[40] pointer-events-none" />
+      <div className="min-h-[calc(100vh-2rem)] border border-border/60 rounded-[2.5rem] relative overflow-hidden bg-background shadow-sm border-t-4 border-t-primary">
       {/* Animated Background Orbs */}
       <motion.div
         animate={{ ...pulseGlow, x: [0, 20, 0], y: [0, -20, 0] }}
@@ -116,7 +136,7 @@ export default function Home() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="fixed top-6 left-0 right-0 z-50 px-4 sm:px-6 flex justify-center pointer-events-none"
       >
-        <div className="w-full max-w-5xl bg-background/50 backdrop-blur-2xl border border-border rounded-full h-16 flex items-center justify-between px-6 shadow-[0_8px_32px_rgba(0,0,0,0.6)] pointer-events-auto transition-all hover:bg-background/70 hover:border-primary/30 text-foreground">
+        <div className="w-full max-w-5xl bg-background/60 backdrop-blur-2xl border border-border rounded-full h-16 flex items-center justify-between px-6 shadow-[0_8px_32px_rgba(0,0,0,0.15)] pointer-events-auto transition-all hover:bg-background/80 hover:border-primary/50 text-foreground">
           {/* Logo Left */}
           <Link to="/" className="flex items-center gap-2 group w-1/4 min-w-max">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary to-primary/60 flex items-center justify-center shadow-lg shadow-primary/20 group-hover:shadow-primary/40 group-hover:scale-110 transition-all overflow-hidden">
@@ -135,7 +155,7 @@ export default function Home() {
           </Link>
 
           {/* Center Links */}
-          <div className="hidden md:flex items-center justify-center gap-1 flex-1 relative bg-muted/20 p-1 rounded-full border border-border">
+          <div className="hidden md:flex items-center justify-center gap-1 flex-1 relative bg-muted/50 p-1 rounded-full border border-border/60">
             {[
               { name: 'Features', id: 'features' },
               { name: 'Workflow', id: 'workflow' },
@@ -154,6 +174,13 @@ export default function Home() {
 
           {/* Right Buttons */}
           <div className="hidden md:flex items-center justify-end gap-2 w-1/4 min-w-max">
+            <button
+              onClick={toggleFullscreen}
+              className="p-2 rounded-full text-muted-foreground hover:bg-accent hover:text-foreground transition-colors mr-1"
+              title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+            >
+              {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
+            </button>
             <ThemeToggle />
             <Link to="/login" className="px-5 py-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-accent ml-2">
               Login
@@ -167,6 +194,13 @@ export default function Home() {
 
           {/* Mobile Menu Toggle Button */}
           <div className="md:hidden flex items-center justify-end gap-3 min-w-max">
+            <button
+              onClick={toggleFullscreen}
+              className="p-2 rounded-full text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+              title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+            >
+              {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
+            </button>
             <ThemeToggle />
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -271,7 +305,7 @@ export default function Home() {
           {/* Card 1: API Engine (Spans 2 columns) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="md:col-span-2 relative group overflow-hidden rounded-3xl bg-card border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
+            className="md:col-span-2 relative group overflow-hidden rounded-3xl bg-card border border-border hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_4px_20px_rgba(0,0,0,0.1)]"
           >
             <div className="absolute top-0 right-0 w-[400px] h-[300px] bg-gradient-to-bl from-amber-500/10 via-transparent to-transparent opacity-50 blur-3xl pointer-events-none" />
             <div className="absolute md:-right-10 md:-bottom-10 -right-20 -bottom-20 w-[300px] h-[200px] border border-border/20 rounded-2xl bg-muted shadow-2xl rotate-[-5deg] group-hover:rotate-[-2deg] transition-transform duration-500 overflow-hidden flex flex-col opacity-30 md:opacity-100">
@@ -298,7 +332,7 @@ export default function Home() {
           {/* Card 2: AI Analysis (1 column) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-            className="relative group overflow-hidden rounded-3xl bg-gradient-to-b from-card/80 to-card border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
+            className="relative group overflow-hidden rounded-3xl bg-gradient-to-b from-card/80 to-card border border-border hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_4px_20px_rgba(0,0,0,0.1)]"
           >
             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:20px_20px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
             <div className="relative z-10">
@@ -313,7 +347,7 @@ export default function Home() {
           {/* Card 3: Performance (1 column) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-            className="relative group overflow-hidden rounded-3xl bg-card border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
+            className="relative group overflow-hidden rounded-3xl bg-card border border-border hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_4px_20px_rgba(0,0,0,0.1)]"
           >
             <div className="absolute right-0 bottom-0 w-32 h-32 flex items-end justify-end p-6 gap-2 opacity-30 group-hover:opacity-100 transition-opacity pointer-events-none">
               <div className="w-3 h-12 bg-rose-500/80 rounded-t-sm" />
@@ -333,7 +367,7 @@ export default function Home() {
           {/* Card 4: Collaboration (Spans 2 columns) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
-            className="md:col-span-2 relative group overflow-hidden rounded-3xl bg-card border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
+            className="md:col-span-2 relative group overflow-hidden rounded-3xl bg-card border border-border hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_4px_20px_rgba(0,0,0,0.1)]"
           >
             <div className="absolute right-4 md:right-10 top-4 md:top-1/2 md:-translate-y-1/2 flex -space-x-4 pointer-events-none opacity-30 md:opacity-100 scale-75 md:scale-100 origin-top-right">
                <div className="w-16 h-16 rounded-full border-4 border-card bg-indigo-500 flex items-center justify-center text-white font-bold text-xl shadow-xl z-30 transform group-hover:-translate-y-2 transition-transform">AS</div>
@@ -352,7 +386,7 @@ export default function Home() {
           {/* Card 5: Collections (1 column) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
-            className="relative group overflow-hidden rounded-3xl bg-gradient-to-tr from-card/80 to-card border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
+            className="relative group overflow-hidden rounded-3xl bg-gradient-to-tr from-card/80 to-card border border-border hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_4px_20px_rgba(0,0,0,0.1)]"
           >
             <div className="relative z-10">
               <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-6 border border-emerald-500/20 group-hover:scale-110 transition-transform">
@@ -366,7 +400,7 @@ export default function Home() {
           {/* Card 6: Multi-Tab (Spans 2 columns) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.5 }}
-            className="md:col-span-2 relative group overflow-hidden rounded-3xl bg-card border border-border/40 hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
+            className="md:col-span-2 relative group overflow-hidden rounded-3xl bg-card border border-border hover:border-primary/40 transition-all p-8 flex flex-col justify-between shadow-[0_4px_20px_rgba(0,0,0,0.1)]"
           >
             <div className="absolute top-4 md:top-10 right-4 md:right-10 flex gap-2 pointer-events-none opacity-20 md:opacity-50 group-hover:opacity-100 transition-opacity scale-50 md:scale-100 origin-top-right">
               <div className="w-32 h-10 bg-muted border border-border/40 rounded-t-lg flex items-center px-4 transform translate-y-2 z-10">
@@ -622,7 +656,7 @@ export default function Home() {
                             </div>
                           </div>
 
-                          <div className="text-foreground/90 space-y-1.5 leading-relaxed bg-muted p-4 rounded-lg border border-border/20 shadow-inner relative flex-1 overflow-hidden">
+                          <div className="text-foreground/90 space-y-1.5 leading-relaxed bg-muted p-4 rounded-lg border border-border/40 shadow-inner relative flex-1 overflow-hidden">
                             <div><span className="text-yellow-300">{`{`}</span></div>
                             <div className="pl-4"><span className="text-emerald-400">"name"</span>: <span className="text-blue-400">"Login Request"</span>,</div>
                             <div className="pl-4"><span className="text-emerald-400">"method"</span>: <span className="text-blue-400">"POST"</span>,</div>
@@ -681,14 +715,14 @@ export default function Home() {
                             <div className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 flex flex-col gap-2 z-30">
                               <motion.div
                                 initial={{ opacity: 0, y: 20, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.5 }}
-                                className="bg-card border border-border/40 px-3 py-2 rounded-lg shadow-xl flex items-center gap-2"
+                                className="bg-card border border-border px-3 py-2 rounded-lg shadow-xl flex items-center gap-2"
                               >
                                 <div className="w-2 h-2 rounded-full bg-rose-500 animate-pulse shadow-[0_0_8px_#f43f5e]" />
                                 <span className="text-[10px] text-muted-foreground font-sans">Ashish started editing...</span>
                               </motion.div>
                               <motion.div
                                 initial={{ opacity: 0, y: 20, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 1.5 }}
-                                className="bg-card border border-border/40 px-3 py-2 rounded-lg shadow-xl flex items-center gap-2"
+                                className="bg-card border border-border px-3 py-2 rounded-lg shadow-xl flex items-center gap-2"
                               >
                                 <div className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse shadow-[0_0_8px_#6366f1]" />
                                 <span className="text-[10px] text-muted-foreground font-sans">Saurabh joined the file</span>
@@ -719,7 +753,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="p-10 rounded-3xl bg-card border border-border/40 hover:border-border/80 transition-all flex flex-col relative overflow-hidden"
+            className="p-10 rounded-3xl bg-card border border-border hover:border-border transition-all flex flex-col relative overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.1)]"
           >
             <div className="mb-8">
               <h3 className="text-2xl font-bold text-foreground mb-2">Developer</h3>
@@ -736,7 +770,7 @@ export default function Home() {
                 </li>
               ))}
             </ul>
-            <Link to="/register" className="block w-full text-center py-4 rounded-xl font-bold bg-muted border border-border/50 text-foreground hover:bg-accent hover:border-border transition-all">
+            <Link to="/register" className="block w-full text-center py-4 rounded-xl font-bold bg-muted border border-border text-foreground hover:bg-accent hover:border-border transition-all">
               Get Started Free
             </Link>
           </motion.div>
@@ -810,6 +844,7 @@ export default function Home() {
           </motion.button>
         )}
       </AnimatePresence>
+      </div>
     </div>
   );
 }

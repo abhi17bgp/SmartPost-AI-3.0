@@ -130,7 +130,7 @@ const WorkspaceSettingsModal = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[200] bg-background/40 backdrop-blur-[4px] flex items-center justify-center p-4">
       <div className="bg-card border border-border rounded-xl w-full max-w-lg p-6 shadow-2xl max-h-[90vh] overflow-y-auto custom-scrollbar relative flex flex-col">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-xl font-bold flex items-center gap-2 text-foreground tracking-tight">
@@ -172,7 +172,7 @@ const WorkspaceSettingsModal = ({ onClose }) => {
               <button
                 onClick={handleGenerateCode}
                 disabled={loadingCode}
-                className="mt-3 w-full text-xs bg-secondary/20 hover:bg-secondary/30 text-secondary-foreground py-2 rounded font-medium border border-secondary/30 transition-colors"
+                className="mt-3 w-full text-xs bg-background hover:bg-accent text-foreground py-2 rounded font-medium border border-border shadow-sm transition-colors"
               >
                 {currentWorkspace.joinCode ? 'Regenerate Code' : 'Generate Join Code'}
               </button>
@@ -203,7 +203,7 @@ const WorkspaceSettingsModal = ({ onClose }) => {
                       </div>
                     </div>
                     <div className="flex flex-col items-end gap-1 shrink-0 ml-2">
-                      <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${isMemberAdmin ? 'bg-secondary/20 text-secondary-foreground border border-secondary/30' : 'bg-muted text-muted-foreground'}`}>
+                      <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${isMemberAdmin ? 'bg-primary/10 text-primary border border-primary/30' : 'bg-muted text-muted-foreground border border-transparent'}`}>
                         {member.role}
                       </span>
                       {isAdmin && !isMe && !isMemberAdmin && (

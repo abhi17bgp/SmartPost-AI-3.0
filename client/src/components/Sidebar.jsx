@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import imageCompression from 'browser-image-compression';
 import { useWorkspace } from '../context/WorkspaceContext';
 import { useAuth } from '../context/AuthContext';
@@ -417,6 +418,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         w-72 flex-shrink-0 bg-card border-r border-border flex flex-col h-full font-sans transition-all duration-300 z-[100]
         fixed inset-y-0 left-0 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:relative md:translate-x-0
       `}>
+
         <div className="p-4 border-b border-border flex items-center justify-between bg-card/80 backdrop-blur top-0 sticky z-10">
           <span className="font-bold text-xl flex items-center gap-2 tracking-tight">
             <div className="w-7 h-7 overflow-hidden">
@@ -523,7 +525,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                     <div className="pl-6 border-l border-border flex flex-col gap-1 ml-3 mt-1">
                       {savedRequests.filter(r => r.collectionId === c._id).map(req => (
                         <div key={req._id} onClick={() => handleSavedRequestClick(req)} className="p-1.5 rounded hover:bg-accent cursor-pointer flex items-center gap-2 text-xs transition-colors group/req">
-                          <span className={`font-mono font-bold text-[10px] ${req.method === 'GET' ? 'text-primary' : req.method === 'POST' ? 'text-secondary' : req.method === 'DELETE' ? 'text-destructive' : 'text-primary/70'}`}>
+                          <span className={`font-mono font-bold text-[10px] ${req.method === 'GET' ? 'text-primary' : req.method === 'POST' ? 'text-blue-500' : req.method === 'DELETE' ? 'text-destructive' : 'text-primary/70'}`}>
                             {req.method}
                           </span>
                           <span className="truncate flex-1 text-muted-foreground group-hover/req:text-foreground transition-colors">{req.name}</span>
@@ -550,7 +552,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 history.map((h, i) => (
                   <div key={i} onClick={() => handleHistoryClick(h)} className="p-2 rounded hover:bg-accent cursor-pointer text-xs transition-colors group relative">
                     <div className="flex items-center gap-2 mb-1 pr-6">
-                      <span className={`font-mono font-bold ${h.method === 'GET' ? 'text-primary' : h.method === 'POST' ? 'text-secondary' : h.method === 'DELETE' ? 'text-destructive' : 'text-primary/70'}`}>
+                      <span className={`font-mono font-bold ${h.method === 'GET' ? 'text-primary' : h.method === 'POST' ? 'text-blue-500' : h.method === 'DELETE' ? 'text-destructive' : 'text-primary/70'}`}>
                         {h.method}
                       </span>
                       <span className="truncate flex-1 text-foreground group-hover:text-foreground transition-colors">{h.url}</span>
@@ -781,8 +783,9 @@ const Sidebar = ({ isOpen, onClose }) => {
       )}
 
       {/* Workspace Settings Modal - Moved outside aside */}
-      {showWorkspaceSettings && (
-        <WorkspaceSettingsModal onClose={() => setShowWorkspaceSettings(false)} />
+      {showWorkspaceSettings && createPortal(
+        <WorkspaceSettingsModal onClose={() => setShowWorkspaceSettings(false)} />,
+        document.body
       )}
     </>
   );
