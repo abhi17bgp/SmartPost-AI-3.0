@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import imageCompression from 'browser-image-compression';
 import { useWorkspace } from '../context/WorkspaceContext';
 import { useAuth } from '../context/AuthContext';
 import { LogOut, Settings, Plus, PlaySquare, ChevronRight, ChevronDown, Trash2, X, Folder, History, Users, KeyRound, Check, Bot, Activity, Camera } from 'lucide-react';
@@ -46,7 +47,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     e.preventDefault();
     try {
       let dataToSubmit = { ...profileForm };
-      
+
       // Check if user is removing their photo
       if (!photoFile && photoPreview === 'default.jpg' && user?.photo !== 'default.jpg') {
         dataToSubmit.removePhoto = true;
@@ -74,15 +75,31 @@ const Sidebar = ({ isOpen, onClose }) => {
     } catch (err) { }
   };
 
-  const handlePhotoChange = (e) => {
+  const handlePhotoChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (file.size > 10 * 1024 * 1024) {
-        toast.error("Image size should be less than 10MB");
+      if (file.size > 2 * 1024 * 1024) {
+        toast.error("Image size should be less than 2MB");
         return;
       }
-      setPhotoFile(file);
-      setPhotoPreview(URL.createObjectURL(file));
+
+      try {
+        // Compress image to under 500KB before uploading
+        const options = {
+          maxSizeMB: 0.5,          // 500KB max
+          maxWidthOrHeight: 800,   // Resize to max 800px
+          useWebWorker: true,
+        };
+
+        const compressedFile = await imageCompression(file, options);
+        console.log(`📸 Image compressed: ${(file.size / 1024).toFixed(0)}KB → ${(compressedFile.size / 1024).toFixed(0)}KB`);
+
+        setPhotoFile(compressedFile);
+        setPhotoPreview(URL.createObjectURL(compressedFile));
+      } catch (err) {
+        console.error('Image compression failed:', err);
+        toast.error('Failed to process image. Please try a different one.');
+      }
     }
   };
 
@@ -93,9 +110,9 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   const handleDeleteAccount = async () => {
     setShowSettingsModal(false);
-    
+
     const isConfirmed = await confirm("Delete Account", "Are you absolutely sure you want to delete your account? This action cannot be undone.", { isDanger: true, confirmText: 'Delete My Account' });
-    
+
     if (isConfirmed) {
       try {
         await toast.promise(
@@ -144,8 +161,8 @@ const Sidebar = ({ isOpen, onClose }) => {
   const handleJoinWorkspace = async () => {
     if (!user?.isSubscribed) {
       const wantUpgrade = await confirm(
-        "Pro Feature", 
-        "Joining team workspaces is a Pro feature. Upgrade to collaborate with others.", 
+        "Pro Feature",
+        "Joining team workspaces is a Pro feature. Upgrade to collaborate with others.",
         { confirmText: "Upgrade to Pro — ₹100/yr", confirmColor: "bg-primary" }
       );
       if (wantUpgrade) handleUpgrade();
@@ -390,12 +407,12 @@ const Sidebar = ({ isOpen, onClose }) => {
     <>
       {/* Mobile Overlay */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 z-[90] md:hidden"
           onClick={onClose}
         />
       )}
-      
+
       <aside className={`
         w-72 flex-shrink-0 bg-card border-r border-border flex flex-col h-full font-sans transition-all duration-300 z-[100]
         fixed inset-y-0 left-0 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:relative md:translate-x-0
@@ -415,215 +432,215 @@ const Sidebar = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-      <div className="p-3 border-b border-border relative">
-        <div
-          onClick={() => setShowWorkspaceMenu(!showWorkspaceMenu)}
-          className="bg-background rounded-lg p-2 px-3 border border-border flex items-center justify-between cursor-pointer hover:border-accent transition-colors"
-        >
-          <div className="flex flex-col overflow-hidden">
-            <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">Workspace</span>
-            <span className="text-sm font-medium text-foreground truncate">{currentWorkspace?.name || 'Loading...'}</span>
+        <div className="p-3 border-b border-border relative">
+          <div
+            onClick={() => setShowWorkspaceMenu(!showWorkspaceMenu)}
+            className="bg-background rounded-lg p-2 px-3 border border-border flex items-center justify-between cursor-pointer hover:border-accent transition-colors"
+          >
+            <div className="flex flex-col overflow-hidden">
+              <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">Workspace</span>
+              <span className="text-sm font-medium text-foreground truncate">{currentWorkspace?.name || 'Loading...'}</span>
+            </div>
+            <ChevronDown size={14} className={`text-muted-foreground transition-transform ${showWorkspaceMenu ? 'rotate-180' : ''}`} />
           </div>
-          <ChevronDown size={14} className={`text-muted-foreground transition-transform ${showWorkspaceMenu ? 'rotate-180' : ''}`} />
+
+          {/* Workspace Dropdown */}
+          {showWorkspaceMenu && (
+            <div className="absolute top-full left-3 right-3 mt-2 bg-card border border-border rounded-lg shadow-xl z-50 overflow-hidden transform origin-top animate-dropdown border-b border-background">
+              <div className="max-h-48 overflow-y-auto custom-scrollbar">
+                {workspaces.map((w) => (
+                  <button
+                    key={w._id}
+                    onClick={() => {
+                      setCurrentWorkspace(w);
+                      setShowWorkspaceMenu(false);
+                    }}
+                    className={`w-full text-left px-4 py-2 text-sm flex items-center gap-2 hover:bg-accent transition-colors ${currentWorkspace?._id === w._id ? 'text-primary font-semibold bg-primary/5' : 'text-muted-foreground hover:text-foreground'}`}
+                  >
+                    <div className="w-4 flex-shrink-0 flex justify-center">
+                      {currentWorkspace?._id === w._id && <Check size={14} />}
+                    </div>
+                    <span className="truncate">{w.name}</span>
+                  </button>
+                ))}
+              </div>
+              <div className="border-t border-border bg-card/80 p-1 flex flex-col">
+                <button onClick={() => { setShowWorkspaceSettings(true); setShowWorkspaceMenu(false); }} className="w-full text-left px-3 py-2 text-xs text-muted-foreground flex items-center gap-2 hover:bg-accent hover:text-foreground transition-colors rounded">
+                  <Settings size={14} className="text-muted-foreground" /> Manage Current Workspace
+                </button>
+                <button onClick={handleCreateWorkspace} className="w-full text-left px-3 py-2 text-xs text-muted-foreground flex items-center gap-2 hover:bg-accent hover:text-foreground transition-colors rounded">
+                  <Plus size={14} className="text-muted-foreground" /> Create New Workspace
+                </button>
+                <button onClick={handleJoinWorkspace} className="w-full text-left px-3 py-2 text-xs text-muted-foreground flex items-center gap-2 hover:bg-accent hover:text-foreground transition-colors rounded">
+                  <KeyRound size={14} className="text-muted-foreground" /> Join Workspace
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Workspace Dropdown */}
-        {showWorkspaceMenu && (
-          <div className="absolute top-full left-3 right-3 mt-2 bg-card border border-border rounded-lg shadow-xl z-50 overflow-hidden transform origin-top animate-dropdown border-b border-background">
-            <div className="max-h-48 overflow-y-auto custom-scrollbar">
-              {workspaces.map((w) => (
-                <button
-                  key={w._id}
-                  onClick={() => {
-                    setCurrentWorkspace(w);
-                    setShowWorkspaceMenu(false);
-                  }}
-                  className={`w-full text-left px-4 py-2 text-sm flex items-center gap-2 hover:bg-accent transition-colors ${currentWorkspace?._id === w._id ? 'text-primary font-semibold bg-primary/5' : 'text-muted-foreground hover:text-foreground'}`}
-                >
-                  <div className="w-4 flex-shrink-0 flex justify-center">
-                    {currentWorkspace?._id === w._id && <Check size={14} />}
-                  </div>
-                  <span className="truncate">{w.name}</span>
-                </button>
-              ))}
+        <div className="flex border-b border-border text-sm">
+          <button
+            onClick={() => setActiveTab('collections')}
+            className={`flex-1 py-3 font-medium transition-colors ${activeTab === 'collections' ? 'text-primary border-b-2 border-primary bg-primary/5' : 'text-muted-foreground hover:text-foreground hover:bg-accent'}`}
+          >
+            <div className="flex items-center justify-center gap-2">
+              <Folder size={16} /> Collections
             </div>
-            <div className="border-t border-border bg-card/80 p-1 flex flex-col">
-              <button onClick={() => { setShowWorkspaceSettings(true); setShowWorkspaceMenu(false); }} className="w-full text-left px-3 py-2 text-xs text-muted-foreground flex items-center gap-2 hover:bg-accent hover:text-foreground transition-colors rounded">
-                <Settings size={14} className="text-muted-foreground" /> Manage Current Workspace
-              </button>
-              <button onClick={handleCreateWorkspace} className="w-full text-left px-3 py-2 text-xs text-muted-foreground flex items-center gap-2 hover:bg-accent hover:text-foreground transition-colors rounded">
-                <Plus size={14} className="text-muted-foreground" /> Create New Workspace
-              </button>
-              <button onClick={handleJoinWorkspace} className="w-full text-left px-3 py-2 text-xs text-muted-foreground flex items-center gap-2 hover:bg-accent hover:text-foreground transition-colors rounded">
-                <KeyRound size={14} className="text-muted-foreground" /> Join Workspace
-              </button>
+          </button>
+          <button
+            onClick={() => setActiveTab('history')}
+            className={`flex-1 py-3 font-medium transition-colors ${activeTab === 'history' ? 'text-primary border-b-2 border-primary bg-primary/5' : 'text-muted-foreground hover:text-foreground hover:bg-accent'}`}
+          >
+            <div className="flex items-center justify-center gap-2">
+              <History size={16} /> History
             </div>
-          </div>
-        )}
-      </div>
+          </button>
+        </div>
 
-      <div className="flex border-b border-border text-sm">
-        <button
-          onClick={() => setActiveTab('collections')}
-          className={`flex-1 py-3 font-medium transition-colors ${activeTab === 'collections' ? 'text-primary border-b-2 border-primary bg-primary/5' : 'text-muted-foreground hover:text-foreground hover:bg-accent'}`}
-        >
-          <div className="flex items-center justify-center gap-2">
-            <Folder size={16} /> Collections
-          </div>
-        </button>
-        <button
-          onClick={() => setActiveTab('history')}
-          className={`flex-1 py-3 font-medium transition-colors ${activeTab === 'history' ? 'text-primary border-b-2 border-primary bg-primary/5' : 'text-muted-foreground hover:text-foreground hover:bg-accent'}`}
-        >
-          <div className="flex items-center justify-center gap-2">
-            <History size={16} /> History
-          </div>
-        </button>
-      </div>
-
-      <div className="flex-1 overflow-y-auto w-full max-h-[calc(100vh-220px)] custom-scrollbar">
-        {activeTab === 'collections' ? (
-          <div className="p-2 space-y-1">
-            <div className="p-2 flex items-center justify-between text-xs text-muted-foreground uppercase font-semibold tracking-wider">
-              <span>Saved Requests</span>
-              <button onClick={handleCreateCollection} className="hover:text-primary hover:bg-primary/10 p-1 rounded transition-colors" title="New Collection"><Plus size={14} /></button>
-            </div>
-            {collections.length === 0 ? (
-              <div className="p-4 text-center text-sm text-muted-foreground mt-4 border border-dashed border-border rounded-lg mx-2">
-                No collections yet.<br /><span onClick={handleCreateCollection} className="text-primary cursor-pointer hover:text-primary-foreground">Create one</span> to save requests.
+        <div className="flex-1 overflow-y-auto w-full max-h-[calc(100vh-220px)] custom-scrollbar">
+          {activeTab === 'collections' ? (
+            <div className="p-2 space-y-1">
+              <div className="p-2 flex items-center justify-between text-xs text-muted-foreground uppercase font-semibold tracking-wider">
+                <span>Saved Requests</span>
+                <button onClick={handleCreateCollection} className="hover:text-primary hover:bg-primary/10 p-1 rounded transition-colors" title="New Collection"><Plus size={14} /></button>
               </div>
-            ) : (
-              collections.map(c => (
-                <div key={c._id} className="mb-2">
-                  <div className="p-2 rounded hover:bg-accent cursor-pointer flex items-center text-sm text-foreground transition-colors group/col">
-                    <ChevronRight size={14} className="text-muted-foreground mr-2" />
-                    <Folder size={14} className="text-primary/70 mr-2" />
-                    <span className="truncate flex-1 font-medium">{c.name}</span>
-                    <button onClick={(e) => handleDeleteCollection(e, c._id)} className="opacity-0 group-hover/col:opacity-100 p-1 hover:bg-destructive/20 hover:text-destructive text-muted-foreground rounded transition-all">
-                      <Trash2 size={12} />
-                    </button>
-                  </div>
-                  <div className="pl-6 border-l border-border flex flex-col gap-1 ml-3 mt-1">
-                    {savedRequests.filter(r => r.collectionId === c._id).map(req => (
-                      <div key={req._id} onClick={() => handleSavedRequestClick(req)} className="p-1.5 rounded hover:bg-accent cursor-pointer flex items-center gap-2 text-xs transition-colors group/req">
-                        <span className={`font-mono font-bold text-[10px] ${req.method === 'GET' ? 'text-primary' : req.method === 'POST' ? 'text-secondary' : req.method === 'DELETE' ? 'text-destructive' : 'text-primary/70'}`}>
-                          {req.method}
-                        </span>
-                        <span className="truncate flex-1 text-muted-foreground group-hover/req:text-foreground transition-colors">{req.name}</span>
-                        <button onClick={(e) => handleDeleteRequest(e, req._id)} className="opacity-0 group-hover/req:opacity-100 p-1 hover:bg-destructive/20 hover:text-destructive text-muted-foreground rounded transition-all">
-                          <Trash2 size={12} />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
+              {collections.length === 0 ? (
+                <div className="p-4 text-center text-sm text-muted-foreground mt-4 border border-dashed border-border rounded-lg mx-2">
+                  No collections yet.<br /><span onClick={handleCreateCollection} className="text-primary cursor-pointer hover:text-primary-foreground">Create one</span> to save requests.
                 </div>
-              ))
-            )}
-          </div>
-        ) : (
-          <div className="p-2 space-y-1">
-            <div className="p-2 flex items-center text-xs text-muted-foreground uppercase font-semibold tracking-wider">
-              <span>Recent Activity</span>
-            </div>
-            {history.length === 0 ? (
-              <div className="p-4 text-center text-sm text-muted-foreground mt-4 border border-dashed border-border rounded-lg mx-2">
-                No recent requests.
-              </div>
-            ) : (
-              history.map((h, i) => (
-                <div key={i} onClick={() => handleHistoryClick(h)} className="p-2 rounded hover:bg-accent cursor-pointer text-xs transition-colors group relative">
-                  <div className="flex items-center gap-2 mb-1 pr-6">
-                    <span className={`font-mono font-bold ${h.method === 'GET' ? 'text-primary' : h.method === 'POST' ? 'text-secondary' : h.method === 'DELETE' ? 'text-destructive' : 'text-primary/70'}`}>
-                      {h.method}
-                    </span>
-                    <span className="truncate flex-1 text-foreground group-hover:text-foreground transition-colors">{h.url}</span>
-                    <div className="flex items-center gap-1">
-                      {h.aiAnalysis && <Bot size={12} className="text-primary" title="AI Analysis Attached" />}
-                      {h.performanceMetrics && <Activity size={12} className="text-secondary" title="Performance Metrics Attached" />}
+              ) : (
+                collections.map(c => (
+                  <div key={c._id} className="mb-2">
+                    <div className="p-2 rounded hover:bg-accent cursor-pointer flex items-center text-sm text-foreground transition-colors group/col">
+                      <ChevronRight size={14} className="text-muted-foreground mr-2" />
+                      <Folder size={14} className="text-primary/70 mr-2" />
+                      <span className="truncate flex-1 font-medium">{c.name}</span>
+                      <button onClick={(e) => handleDeleteCollection(e, c._id)} className="opacity-0 group-hover/col:opacity-100 p-1 hover:bg-destructive/20 hover:text-destructive text-muted-foreground rounded transition-all">
+                        <Trash2 size={12} />
+                      </button>
+                    </div>
+                    <div className="pl-6 border-l border-border flex flex-col gap-1 ml-3 mt-1">
+                      {savedRequests.filter(r => r.collectionId === c._id).map(req => (
+                        <div key={req._id} onClick={() => handleSavedRequestClick(req)} className="p-1.5 rounded hover:bg-accent cursor-pointer flex items-center gap-2 text-xs transition-colors group/req">
+                          <span className={`font-mono font-bold text-[10px] ${req.method === 'GET' ? 'text-primary' : req.method === 'POST' ? 'text-secondary' : req.method === 'DELETE' ? 'text-destructive' : 'text-primary/70'}`}>
+                            {req.method}
+                          </span>
+                          <span className="truncate flex-1 text-muted-foreground group-hover/req:text-foreground transition-colors">{req.name}</span>
+                          <button onClick={(e) => handleDeleteRequest(e, req._id)} className="opacity-0 group-hover/req:opacity-100 p-1 hover:bg-destructive/20 hover:text-destructive text-muted-foreground rounded transition-all">
+                            <Trash2 size={12} />
+                          </button>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                  <div className="flex items-center justify-between text-[10px] text-muted-foreground font-mono pr-6">
-                    <span className={h.status >= 200 && h.status < 300 ? 'text-primary/70' : 'text-destructive/70'}>{h.status} {h.status >= 200 && h.status < 300 ? 'OK' : 'ERR'}</span>
-                    <span>{h.timeTaken}ms</span>
-                  </div>
-                  <button
-                    onClick={(e) => handleDeleteHistory(e, h._id)}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 p-1.5 hover:bg-destructive/20 hover:text-destructive text-muted-foreground rounded transition-all"
-                    title="Delete history item"
-                  >
-                    <Trash2 size={14} />
-                  </button>
+                ))
+              )}
+            </div>
+          ) : (
+            <div className="p-2 space-y-1">
+              <div className="p-2 flex items-center text-xs text-muted-foreground uppercase font-semibold tracking-wider">
+                <span>Recent Activity</span>
+              </div>
+              {history.length === 0 ? (
+                <div className="p-4 text-center text-sm text-muted-foreground mt-4 border border-dashed border-border rounded-lg mx-2">
+                  No recent requests.
                 </div>
-              ))
-            )}
-          </div>
-        )}
-      </div>
+              ) : (
+                history.map((h, i) => (
+                  <div key={i} onClick={() => handleHistoryClick(h)} className="p-2 rounded hover:bg-accent cursor-pointer text-xs transition-colors group relative">
+                    <div className="flex items-center gap-2 mb-1 pr-6">
+                      <span className={`font-mono font-bold ${h.method === 'GET' ? 'text-primary' : h.method === 'POST' ? 'text-secondary' : h.method === 'DELETE' ? 'text-destructive' : 'text-primary/70'}`}>
+                        {h.method}
+                      </span>
+                      <span className="truncate flex-1 text-foreground group-hover:text-foreground transition-colors">{h.url}</span>
+                      <div className="flex items-center gap-1">
+                        {h.aiAnalysis && <Bot size={12} className="text-primary" title="AI Analysis Attached" />}
+                        {h.performanceMetrics && <Activity size={12} className="text-secondary" title="Performance Metrics Attached" />}
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between text-[10px] text-muted-foreground font-mono pr-6">
+                      <span className={h.status >= 200 && h.status < 300 ? 'text-primary/70' : 'text-destructive/70'}>{h.status} {h.status >= 200 && h.status < 300 ? 'OK' : 'ERR'}</span>
+                      <span>{h.timeTaken}ms</span>
+                    </div>
+                    <button
+                      onClick={(e) => handleDeleteHistory(e, h._id)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 p-1.5 hover:bg-destructive/20 hover:text-destructive text-muted-foreground rounded transition-all"
+                      title="Delete history item"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+        </div>
 
-      {/* Subscription Status Area */}
-      <div className="p-4 border-t border-border bg-card shrink-0">
-        {!user?.isSubscribed ? (
-          <div className="mb-3 p-3 rounded-lg bg-background border border-border">
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Free Plan</span>
-              <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded font-bold">{user?.performanceTestCount || 0}/4 Tests Used</span>
+        {/* Subscription Status Area */}
+        <div className="p-4 border-t border-border bg-card shrink-0">
+          {!user?.isSubscribed ? (
+            <div className="mb-3 p-3 rounded-lg bg-background border border-border">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Free Plan</span>
+                <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded font-bold">{user?.performanceTestCount || 0}/4 Tests Used</span>
+              </div>
+              <div className="w-full bg-accent rounded-full h-1.5 mb-3">
+                <div
+                  className="bg-primary h-1.5 rounded-full transition-all duration-500"
+                  style={{ width: `${Math.min(((user?.performanceTestCount || 0) / 4) * 100, 100)}%` }}
+                ></div>
+              </div>
+              <button
+                onClick={handleUpgrade}
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold py-2 rounded-lg transition-colors shadow-sm flex justify-center items-center gap-1"
+              >
+                Upgrade to Pro — ₹100/yr
+              </button>
             </div>
-            <div className="w-full bg-accent rounded-full h-1.5 mb-3">
-              <div 
-                className="bg-primary h-1.5 rounded-full transition-all duration-500" 
-                style={{ width: `${Math.min(((user?.performanceTestCount || 0) / 4) * 100, 100)}%` }}
-              ></div>
+          ) : (
+            <div className="mb-3 p-3 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center">
+                  <Check size={14} className="text-primary-foreground" />
+                </div>
+                <span className="text-sm font-bold text-primary">Pro Plan Active</span>
+              </div>
             </div>
-            <button 
-              onClick={handleUpgrade}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold py-2 rounded-lg transition-colors shadow-sm flex justify-center items-center gap-1"
-            >
-              Upgrade to Pro — ₹100/yr
+          )}
+
+          <div className={`flex items-center gap-3 mb-4 p-2 rounded-lg bg-background border ${user?.isSubscribed ? 'border-primary/50 shadow-[0_0_15px_rgba(var(--primary),0.15)] relative overflow-hidden' : 'border-border'}`}>
+            {user?.isSubscribed && (
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent pointer-events-none" />
+            )}
+            <div className={`w-8 h-8 rounded flex items-center justify-center font-bold text-sm shadow-sm ring-1 overflow-hidden ${user?.isSubscribed ? 'bg-gradient-to-br from-primary to-primary/70 text-primary-foreground ring-primary/50' : 'bg-primary text-primary-foreground ring-border'}`}>
+              {user?.photo && user.photo !== 'default.jpg' ? (
+                <img src={user.photo} alt={user.name} className="w-full h-full object-cover" />
+              ) : (
+                user?.name?.charAt(0).toUpperCase()
+              )}
+            </div>
+            <div className="flex flex-col overflow-hidden relative z-10">
+              <span className="text-sm font-semibold text-foreground truncate flex items-center gap-2">
+                {user?.name}
+                {user?.isSubscribed && (
+                  <span className="text-[9px] font-black uppercase tracking-widest bg-gradient-to-r from-amber-500 to-orange-600 text-white px-1.5 py-0.5 rounded-sm shadow-sm" title="Pro User">
+                    PRO
+                  </span>
+                )}
+              </span>
+              <span className="text-[10px] text-muted-foreground truncate font-mono">{user?.email}</span>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <button onClick={() => setShowSettingsModal(true)} className="flex-1 flex items-center justify-center gap-2 text-xs font-medium bg-secondary hover:bg-secondary/80 text-secondary-foreground py-2 rounded-lg transition-colors border border-border">
+              <Settings size={14} /> Settings
+            </button>
+            <button onClick={() => logout(workspaces)} className="flex-1 flex items-center justify-center gap-2 text-xs font-medium bg-background hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30 text-muted-foreground border border-border py-2 rounded-lg transition-colors">
+              <LogOut size={14} /> Logout
             </button>
           </div>
-        ) : (
-          <div className="mb-3 p-3 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center">
-                <Check size={14} className="text-primary-foreground" />
-              </div>
-              <span className="text-sm font-bold text-primary">Pro Plan Active</span>
-            </div>
-          </div>
-        )}
-
-        <div className={`flex items-center gap-3 mb-4 p-2 rounded-lg bg-background border ${user?.isSubscribed ? 'border-primary/50 shadow-[0_0_15px_rgba(var(--primary),0.15)] relative overflow-hidden' : 'border-border'}`}>
-          {user?.isSubscribed && (
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent pointer-events-none" />
-          )}
-          <div className={`w-8 h-8 rounded flex items-center justify-center font-bold text-sm shadow-sm ring-1 overflow-hidden ${user?.isSubscribed ? 'bg-gradient-to-br from-primary to-primary/70 text-primary-foreground ring-primary/50' : 'bg-primary text-primary-foreground ring-border'}`}>
-            {user?.photo && user.photo !== 'default.jpg' ? (
-              <img src={user.photo} alt={user.name} className="w-full h-full object-cover" />
-            ) : (
-              user?.name?.charAt(0).toUpperCase()
-            )}
-          </div>
-          <div className="flex flex-col overflow-hidden relative z-10">
-            <span className="text-sm font-semibold text-foreground truncate flex items-center gap-2">
-              {user?.name}
-              {user?.isSubscribed && (
-                <span className="text-[9px] font-black uppercase tracking-widest bg-gradient-to-r from-amber-500 to-orange-600 text-white px-1.5 py-0.5 rounded-sm shadow-sm" title="Pro User">
-                  PRO
-                </span>
-              )}
-            </span>
-            <span className="text-[10px] text-muted-foreground truncate font-mono">{user?.email}</span>
-          </div>
         </div>
-        <div className="flex gap-2">
-          <button onClick={() => setShowSettingsModal(true)} className="flex-1 flex items-center justify-center gap-2 text-xs font-medium bg-secondary hover:bg-secondary/80 text-secondary-foreground py-2 rounded-lg transition-colors border border-border">
-            <Settings size={14} /> Settings
-          </button>
-          <button onClick={() => logout(workspaces)} className="flex-1 flex items-center justify-center gap-2 text-xs font-medium bg-background hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30 text-muted-foreground border border-border py-2 rounded-lg transition-colors">
-            <LogOut size={14} /> Logout
-          </button>
-        </div>
-      </div>
 
       </aside>
 
@@ -641,7 +658,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             <div className="space-y-6">
               <form onSubmit={handleUpdateProfile} className="bg-background border border-border rounded-lg p-4 shadow-inner">
                 <h4 className="text-xs font-semibold text-muted-foreground mb-4 uppercase tracking-wider">Profile Information</h4>
-                
+
                 <div className="flex flex-col items-center mb-6">
                   <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-border mb-3 bg-card flex items-center justify-center text-3xl font-bold text-muted-foreground relative">
                     {photoPreview && photoPreview !== 'default.jpg' ? (
@@ -654,10 +671,10 @@ const Sidebar = ({ isOpen, onClose }) => {
                     <label className="cursor-pointer text-[10px] font-bold uppercase bg-primary hover:bg-primary/90 text-primary-foreground px-3 py-1.5 rounded transition-colors flex items-center gap-1.5 shadow-sm">
                       <Camera size={12} />
                       Change
-                      <input 
-                        type="file" 
-                        accept="image/*" 
-                        className="hidden" 
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
                         onChange={handlePhotoChange}
                         id="profilePhotoUpload"
                         name="profilePhotoUpload"
@@ -665,7 +682,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                       />
                     </label>
                     {photoPreview && photoPreview !== 'default.jpg' && (
-                      <button 
+                      <button
                         type="button"
                         onClick={handleRemovePhoto}
                         className="text-[10px] font-bold uppercase bg-destructive/10 hover:bg-destructive/20 text-destructive px-3 py-1.5 rounded transition-colors flex items-center gap-1.5 shadow-sm"
@@ -675,7 +692,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                       </button>
                     )}
                   </div>
-                  <span className="text-[10px] text-muted-foreground mt-2">Max size: 10MB</span>
+                  <span className="text-[10px] text-muted-foreground mt-2">Max size: 2MB</span>
                 </div>
 
                 <div className="space-y-3">

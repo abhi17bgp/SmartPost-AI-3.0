@@ -38,7 +38,7 @@ const multerFilter = (req, file, cb) => {
 const upload = multer({
   storage: multerStorage,
   fileFilter: multerFilter,
-  limits: { fileSize: 10 * 1024 * 1024 } // 10MB
+  limits: { fileSize: 2 * 1024 * 1024 } // 2MB
 });
 
 exports.uploadUserPhoto = upload.single('photo');
