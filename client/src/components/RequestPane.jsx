@@ -5,6 +5,7 @@ import { useWorkspace } from '../context/WorkspaceContext';
 import { useAuth } from '../context/AuthContext';
 import { useDialog } from '../context/DialogContext';
 import toast from 'react-hot-toast';
+import api from '../utils/axiosInstance';
 
 // Utility function to generate unique IDs
 const generateId = () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
